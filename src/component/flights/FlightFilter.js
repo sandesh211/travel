@@ -31,12 +31,15 @@ const FlightFilter = () => {
   const [childrenAge, setChildrenAge] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [tripType, setTripType] = useState("");
+  const [tripType, setTripType] = useState("oneway");
   const [countryCode, setCountryCode] = useState();
   const [travelClass, setTravelClass] = useState("ECONOMY");
   const [preferdAirLine, setPreferdAirLine] = useState([]);
   const [directFlight, setDirectFlight] = useState(false);
   const [pft, setPft] = useState("REGULAR");
+  const [routeInfo, setRouteInfo] = useState([]);
+  const [onewayRoute, setOneWay] = useState([]);
+  const [roundRoute, setRoundWay] = useState([]);
 
   const [selectedDates, setSelectedDates] = useState({
     startDate: null,
@@ -137,14 +140,6 @@ const FlightFilter = () => {
 
   const FlightApiCall = () => {
     setLoaderApiRes(true);
-    let data = {
-      location: locationCode,
-      destination: destinationCode,
-      startDate: startDate,
-      endDate: endDate,
-      adults: adults,
-      children: children,
-    };
     const newConfig = {
       "Content-Type": "application/json ",
       apikey: ApiKey,
@@ -164,17 +159,7 @@ const FlightFilter = () => {
           //   iiss: false,
           pft: pft,
         },
-        routeInfos: [
-          {
-            fromCityOrAirport: {
-              code: locationCode,
-            },
-            toCityOrAirport: {
-              code: destinationCode,
-            },
-            travelDate: moment(startDate).format("YYYY-MM-DD"),
-          },
-        ],
+        routeInfos: tripType === "oneway" ? onewayRoute : roundRoute,
         paxInfo: {
           ADULT: adults,
           CHILD: children,
@@ -192,13 +177,54 @@ const FlightFilter = () => {
         console.log("air-flight", data?.data?.searchResult?.tripInfos?.ONWARD);
         // setFlightFilterData(data);
         navigate("/flight-detail", {
-          state: { data: data?.data?.searchResult?.tripInfos?.ONWARD },
+          state: { data: data?.data?.searchResult?.tripInfos },
         });
       })
       .catch((err) => {
         setLoaderApiRes(false);
       });
   };
+
+  useEffect(() => {
+    let routeArr = [];
+
+    let onewayRoute = [
+      {
+        fromCityOrAirport: {
+          code: locationCode,
+        },
+        toCityOrAirport: {
+          code: destinationCode,
+        },
+        travelDate: moment(startDate).format("YYYY-MM-DD"),
+      },
+    ];
+
+    let roundRoute = [
+      {
+        fromCityOrAirport: {
+          code: locationCode,
+        },
+        toCityOrAirport: {
+          code: destinationCode,
+        },
+        travelDate: moment(startDate).format("YYYY-MM-DD"),
+      },
+      {
+        fromCityOrAirport: {
+          code: destinationCode,
+        },
+        toCityOrAirport: {
+          code: locationCode,
+        },
+        travelDate: moment(endDate).format("YYYY-MM-DD"),
+      },
+    ];
+
+    setOneWay(onewayRoute);
+    setRoundWay(roundRoute);
+    console.log(locationCode, destinationCode, startDate);
+  }, [locationCode, destinationCode, startDate, endDate]);
 
   //   const handleValueChange = (newValue) => {
   //     console.log("newValue:", newValue);
@@ -207,7 +233,7 @@ const FlightFilter = () => {
   return (
     <>
       <div class="tabs__pane -tab-item-1 is-tab-el-active">
-        <div class="mainSearch bg-transparent bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 rounded-4 shadow-1">
+        <div class="mainSearch bg-transparent bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 shadow-1">
           <div className="toggle_radio onewaycity">
             <input
               onClick={() => {
@@ -277,14 +303,14 @@ const FlightFilter = () => {
                     data-x-dd="searchMenu-loc"
                     data-x-dd-toggle="-is-active"
                   >
-                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15">
                       <div class="y-gap-5 js-results">
                         <div className="cityDataScroll">
                           {airportFilterValue?.map((data) => {
                             return (
                               <button
                                 key={data.code}
-                                class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option"
+                                class="-link d-block col-12 text-left px-20 py-15 js-search-option"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleAirportSelect(data);
@@ -339,14 +365,14 @@ const FlightFilter = () => {
                     data-x-dd="searchMenu-loc"
                     data-x-dd-toggle="-is-active"
                   >
-                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15">
                       <div class="y-gap-5 js-results">
                         <div className="cityDataScroll">
                           {airportFilterValueDest?.map((data) => {
                             return (
                               <button
                                 key={data.code}
-                                class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option"
+                                class="-link d-block col-12 text-left px-20 py-15 js-search-option"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleAirportSelectDest(data);
@@ -425,7 +451,7 @@ const FlightFilter = () => {
                   data-x-dd="searchMenu-guests"
                   data-x-dd-toggle="-is-active"
                 >
-                  <div class="bg-white px-30 py-30 rounded-4">
+                  <div class="bg-white px-30 py-30">
                     <div class="row y-gap-10 justify-between items-center">
                       <div class="col-auto">
                         <div class="text-15 fw-500">Adults(12y +)</div>
@@ -438,7 +464,7 @@ const FlightFilter = () => {
                           data-value-change=".js-count-adult"
                         >
                           <button
-                            className="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
+                            className="button -outline-blue-1 text-blue-1 size-38 js-down"
                             onClick={handleAdultsDecrement}
                           >
                             <i class="icon-minus text-12"></i>
@@ -449,7 +475,7 @@ const FlightFilter = () => {
                           </div>
 
                           <button
-                            className="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
+                            className="button -outline-blue-1 text-blue-1 size-38 js-up"
                             onClick={handleAdultsIncrement}
                           >
                             <i class="icon-plus text-12"></i>
@@ -474,7 +500,7 @@ const FlightFilter = () => {
                           data-value-change=".js-count-child"
                         >
                           <button
-                            class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
+                            class="button -outline-blue-1 text-blue-1 size-38 js-down"
                             onClick={handleChildrenDecrement}
                           >
                             <i class="icon-minus text-12"></i>
@@ -485,7 +511,7 @@ const FlightFilter = () => {
                           </div>
 
                           <button
-                            class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
+                            class="button -outline-blue-1 text-blue-1 size-38 js-up"
                             onClick={handleChildrenIncrement}
                           >
                             <i class="icon-plus text-12"></i>
@@ -510,7 +536,7 @@ const FlightFilter = () => {
                           data-value-change=".js-count-child"
                         >
                           <button
-                            class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
+                            class="button -outline-blue-1 text-blue-1 size-38 js-down"
                             onClick={handleInfantsDecrement}
                           >
                             <i class="icon-minus text-12"></i>
@@ -521,7 +547,7 @@ const FlightFilter = () => {
                           </div>
 
                           <button
-                            class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
+                            class="button -outline-blue-1 text-blue-1 size-38 js-up"
                             onClick={handleInfantsIncrement}
                           >
                             <i class="icon-plus text-12"></i>
@@ -572,12 +598,12 @@ const FlightFilter = () => {
                         </p>
                       </div>
 
-                      <div class="col-auto">
+                      <div class="col-auto col-12">
                         <div
-                          class="d-flex items-center js-counter"
+                          class="js-counter"
                           data-value-change=".js-count-child"
                         >
-                          <div class="flex-center size-20 ml-15 mr-15">
+                          <div class="">
                             <div class="text-15 js-count">{travelClass}</div>
                           </div>
                         </div>
@@ -589,22 +615,16 @@ const FlightFilter = () => {
             </div>
             <div class="button-item">
               <button
-                class="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
+                class="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 bg-blue-1 text-white"
                 onClick={() => {
                   FlightApiCall();
                 }}
               >
                 <i class="icon-search text-20 mr-10"></i>
                 {loaderApiRes ? (
-                  <img
-                    src={loadingImg}
-                    style={{
-                      width: "40px",
-                      height: "30px",
-                      borderRadius: "50px",
-                    }}
-                    alt="loading..."
-                  />
+                  <div className="spinner-border" role="status">
+                    <span className="sr-only"></span>
+                  </div>
                 ) : (
                   "Search"
                 )}

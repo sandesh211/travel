@@ -107,7 +107,7 @@ const Tabss = () => {
                     <button
                       className={
                         activeTab === 1
-                          ? "active tabs__button px-30 py-20 rounded-4 fw-600 text-white js-tabs-button is-tab-el-active"
+                          ? "active tabs__button px-30 py-20 fw-600 text-white js-tabs-button is-tab-el-active"
                           : ""
                       }
                       onClick={() => handleTabClick(1)}
@@ -117,7 +117,7 @@ const Tabss = () => {
                     <button
                       className={
                         activeTab === 2
-                          ? "active tabs__button px-30 py-20 rounded-4 fw-600 text-white js-tabs-button"
+                          ? "active tabs__button px-30 py-20 fw-600 text-white js-tabs-button"
                           : ""
                       }
                       onClick={() => handleTabClick(2)}
@@ -127,7 +127,7 @@ const Tabss = () => {
                     <button
                       className={
                         activeTab === 3
-                          ? "active tabs__button px-30 py-20 rounded-4 fw-600 text-white js-tabs-button"
+                          ? "active tabs__button px-30 py-20 fw-600 text-white js-tabs-button"
                           : ""
                       }
                       onClick={() => handleTabClick(3)}
@@ -143,7 +143,7 @@ const Tabss = () => {
                       {activeTab === 2 && (
                         <div class="d">
                           <div class="tabs__pane -tab-item-1 is-tab-el-active">
-                            <div class="mainSearch bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 rounded-4 shadow-1">
+                            <div class="mainSearch bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 shadow-1">
                               <div class="button-grid items-center grid-colams">
                                 <div class="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
                                   <div data-x-dd-click="searchMenu-loc">
@@ -168,14 +168,14 @@ const Tabss = () => {
                                     data-x-dd="searchMenu-loc"
                                     data-x-dd-toggle="-is-active"
                                   >
-                                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15">
                                       <div class="y-gap-5 js-results">
                                         <div className="cityDataScroll">
                                           {cityFilterValue?.map((data) => {
                                             return (
                                               <button
                                                 key={data.cityName}
-                                                class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option"
+                                                class="-link d-block col-12 text-left px-20 py-15 js-search-option"
                                                 onClick={(e) => {
                                                   e.stopPropagation();
                                                   handleCitySelect(data);
@@ -223,14 +223,14 @@ const Tabss = () => {
                                     data-x-dd="searchMenu-loc"
                                     data-x-dd-toggle="-is-active"
                                   >
-                                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15">
                                       <div class="y-gap-5 js-results">
                                         <div className="cityDataScroll">
                                           {cityFilterValueDest?.map((data) => {
                                             return (
                                               <button
                                                 key={data.cityName}
-                                                class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option"
+                                                class="-link d-block col-12 text-left px-20 py-15 js-search-option"
                                               >
                                                 <div
                                                   class="d-flex"
@@ -279,7 +279,7 @@ const Tabss = () => {
                                   </div>
                                 </div>
                                 <div class="button-item">
-                                  <button class="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white">
+                                  <button class="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 bg-blue-1 text-white">
                                     <i class="icon-search text-20 mr-10"></i>
                                     Search
                                   </button>

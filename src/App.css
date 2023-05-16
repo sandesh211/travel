@@ -37,9 +37,15 @@
   }
 }
 
-
-
 .cityDataScroll {
   overflow-y: scroll;
-  height: 90px;
+  height: 200px;
+}
+
+.accordion__button .accordion-button:after {
+  display: none !important;
+}
+
+.accordion__button .accordion-button {
+  padding: 0 !important;
 }

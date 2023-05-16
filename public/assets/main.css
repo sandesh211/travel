@@ -14681,10 +14681,9 @@ select {
 }
 
 #dropdown-basic-button {
-  background-color: #7fc700 !important;
-  width: 100%;
-  text-align: left;
-  position: relative;
+  background-color: #7ec70000 !important;
+  border: none;
+  padding: 0px;
 }
 
 .dropdown-basic-button2 {
