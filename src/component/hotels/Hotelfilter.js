@@ -1,0 +1,581 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Datepicker from "react-tailwindcss-datepicker";
+import "react-bootstrap";
+import axios from "axios";
+import Country from "../Country.json";
+import { ApiKey, ApiUrlHotel } from "../../config/Config";
+import loadingImg from "../../images/loaderApi.gif";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+const Hotelfilter = () => {
+  const navigate = useNavigate();
+
+  const [cityvalue, setCityValue] = useState("");
+  const [age, setAge] = useState([]);
+  const [countryValue, setCountryValue] = useState("");
+  const [cityListFlag, setCityListFlag] = useState(false);
+  const [destinationListFlag, setDestinationListFlag] = useState(false);
+  const [cityFilterValue, setCityFilterValue] = useState([]);
+  const [selectnationlity, setSelectnationlity] = useState("");
+  const [selectedRatings, setSelectedRatings] = useState(["5", "4"]);
+  const [isShown, setIsShown] = useState(false);
+  const [adults, setAdults] = useState(1);
+  const [children, setChildren] = useState(0);
+  const [rooms, setRooms] = useState(1);
+  const [error, setError] = useState();
+  const [startDate, setStartDate] = useState("");
+  const [loaderApiRes, setLoaderApiRes] = useState(false);
+  const [endDate, setEndDate] = useState("");
+  const [childrenAge, setChildrenAge] = useState([]);
+  const [selectedCityObject, setSelectedCityObject] = useState({});
+  const [selectedDates, setSelectedDates] = useState({
+    startDate: null,
+    endDate: null,
+  });
+
+  const handleshow = (event) => {
+    if (isShown == false) {
+      setIsShown(true);
+    } else {
+      setIsShown(false);
+    }
+  };
+
+  const handleAdultsDecrement = () => {
+    if (adults > 0) {
+      setAdults(adults - 1);
+    }
+  };
+
+  const handleAdultsIncrement = () => {
+    setAdults(adults + 1);
+  };
+
+  const handleChildrenDecrement = () => {
+    if (children > 0) {
+      setChildren(children - 1);
+      childrenAge.pop();
+    }
+  };
+
+  const handleChildrenIncrement = () => {
+    setChildren(children + 1);
+    childrenAge.push("5");
+  };
+
+  const handleRoomsDecrement = () => {
+    if (rooms > 0) {
+      setRooms(rooms - 1);
+    }
+  };
+
+  const handleRoomsIncrement = () => {
+    setRooms(rooms + 1);
+  };
+
+  const handleDateValue = (value) => {
+    if (value.startDate && value.endDate) {
+      setSelectedDates({ startDate: value.startDate, endDate: value.endDate });
+      setStartDate(value.startDate);
+      setEndDate(value.endDate);
+    }
+  };
+
+  const handleRatingChange = (event) => {
+    const rating = event.target.value;
+    if (event.target.checked) {
+      setSelectedRatings((prevRatings) => [...prevRatings, rating]);
+    } else {
+      setSelectedRatings((prevRatings) =>
+        prevRatings.filter((prevRating) => prevRating !== rating)
+      );
+    }
+  };
+
+  const handleCountryChange = (event) => {
+    // selectedCityObject.countryName
+    const selectedCountryName = event.target.value;
+    const selectedCountry = Country.find(
+      (country) => country.name === selectedCountryName
+    );
+  };
+  const handleChangeNationlity = (event) => {
+    const selectedCountryName = event.target.value;
+    const selectedCountry = Country.find(
+      (country) => country.name === selectedCountryName
+    );
+    setSelectnationlity(selectedCountry?.countryid);
+  };
+
+  const Searchlist = () => {
+    setLoaderApiRes(true);
+    const searchQuery = {
+      searchQuery: {
+        checkinDate: startDate,
+        checkoutDate: endDate,
+        roomInfo: [
+          {
+            numberOfAdults: adults,
+            numberOfChild: children,
+            childAge: children ? childrenAge : [],
+          },
+        ],
+        searchCriteria: {
+          city: selectedCityObject?.id,
+          // city: setid.toString(),
+          nationality: selectnationlity,
+          currency: "INR",
+        },
+        searchPreferences: {
+          ratings: selectedRatings,
+          fsc: true,
+        },
+      },
+      sync: true,
+    };
+    const newConfig = {
+      "Content-Type": "application/json ",
+      apikey: ApiKey,
+    };
+    const data = JSON.stringify(searchQuery);
+    axios
+      .post(`${ApiUrlHotel}hotel-searchquery-list`, data, {
+        headers: newConfig,
+      })
+      .then((response) => {
+        setLoaderApiRes(false);
+        console.log("response", response);
+        navigate("/HotelList", { state: { data: response.data } });
+      })
+      .catch((error) => {
+        console.log("error", error.message);
+        setError(error);
+        alert("no data found");
+        setLoaderApiRes(false);
+      });
+  };
+
+  const handleChangeCity = (val) => {
+    setCityListFlag(true);
+    setDestinationListFlag(false);
+    setCityValue(val);
+    // const newData = allCities?.filter((data) =>
+    //   data.cityName.toLowerCase().includes(val.toLowerCase())
+    // );
+    // setCityFilterValue(newData);
+    handleSearchCity(val);
+    // const debouncedSave = debounce(() => handleSearchCity(val), 1000);
+    // debouncedSave();
+  };
+
+  const handleSearchCity = (val) => {
+    setCityFilterValue([]);
+    axios
+      .get(`https://rasatva.apponedemo.top/travel/api/cities?searchVal=${val}`)
+      .then((data) => {
+        console.log("cityyyy data", data?.data?.data);
+        const newData = data?.data?.data?.filter((item) =>
+          item.cityName.toLowerCase().includes(cityvalue.toLowerCase())
+        );
+        setCityFilterValue(newData);
+      });
+  };
+
+  const handleCitySelect = (val) => {
+    console.log("selected city", val);
+    setSelectedCityObject(val);
+    const selectedCountry = Country.find(
+      (country) =>
+        country?.name?.toLowerCase() === val?.countryName?.toLowerCase()
+    );
+    setSelectnationlity(selectedCountry?.countryid);
+    //   {
+    //     "id": 180144,
+    //     "cityName": "BIJAIPUR",
+    //     "countryName": "INDIA",
+    //     "type": "CITY"
+    // }
+    setCityValue(val?.cityName);
+  };
+
+  return (
+    <div class="tabs__pane -tab-item-1 is-tab-el-active">
+      <div class="mainSearch bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 rounded-4 shadow-1">
+        <div class="button-grid items-center grid-colams hotelscols">
+          <div class="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
+            <div data-x-dd-click="searchMenu-loc">
+              <h4 class="text-15 fw-500 ls-2 lh-16">Location</h4>
+
+              <div class="text-15 text-light-1 ls-2 lh-16">
+                <input
+                  autocomplete="off"
+                  type="text"
+                  value={cityvalue}
+                  onChange={(e) => {
+                    handleChangeCity(e.target.value);
+                  }}
+                  placeholder="Where are you going?"
+                  class="js-search js-dd-focus"
+                />
+              </div>
+
+              {cityFilterValue && cityFilterValue.length > 0 && (
+                <div
+                  class="searchMenu-loc__field shadow-2 js-popup-window -is-active"
+                  data-x-dd="searchMenu-loc"
+                  data-x-dd-toggle="-is-active"
+                >
+                  <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                    <div class="y-gap-5 js-results">
+                      <div className="cityDataScroll">
+                        {cityFilterValue?.map((data) => {
+                          return (
+                            <button
+                              key={data.cityName}
+                              class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option"
+                            >
+                              <div
+                                class="d-flex"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleCitySelect(data);
+                                  setCityFilterValue(null);
+                                }}
+                              >
+                                <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                <div class="ml-10">
+                                  <div class="text-15 lh-12 fw-500 js-search-option-target">
+                                    {data.cityName}
+                                  </div>
+                                  <div class="text-14 lh-12 text-light-1 mt-5">
+                                    {data.countryName}
+                                  </div>
+                                </div>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div class="searchMenu-date px-30 lg:py-20 lg:px-0 js-form-dd js-calendar">
+            <div data-x-dd-click="searchMenu-date">
+              <h4 class="text-15 fw-500 ls-2 lh-16">Check in - Check out</h4>
+              <div>
+                <Datepicker
+                  classNames="date_width"
+                  value={{
+                    startDate: selectedDates.startDate,
+                    endDate: selectedDates.endDate,
+                  }}
+                  onChange={handleDateValue}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* <div class="searchMenu-date px-10 lg:py-20 lg:px-0 js-form-dd js-calendar">
+            <div data-x-dd-click="searchMenu-date">
+              <div className="d-flex justify-content-between">
+                <div>
+                  <h4 class="text-15 fw-500 ls-2 lh-16">Check in</h4>
+
+                  <DatePicker
+                    placeholderText={"dd-mm-yyyy"}
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                  />
+                </div>
+                <div>
+                  <h4 class="text-15 fw-500 ls-2 lh-16">Check out</h4>
+
+                  <DatePicker
+                    placeholderText={"dd-mm-yyyy"}
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div> */}
+
+          <div class="searchMenu-guests px-30 lg:py-20 lg:px-0 js-form-dd js-form-counters">
+            <div data-x-dd-click="searchMenu-guests">
+              <h4 class="text-15 fw-500 ls-2 lh-16">Guest</h4>
+
+              <div class="text-15 text-light-1 ls-2 lh-16" onClick={handleshow}>
+                <span class="js-count-adult">{adults}</span> adults{" "}
+                <span class="js-count-child">{children}</span> children{" "}
+                <span class="js-count-room">{rooms}</span> rooms
+              </div>
+            </div>
+            {isShown ? (
+              <div
+                class="searchMenu-guests__field shadow-2 -is-active"
+                data-x-dd="searchMenu-guests"
+                data-x-dd-toggle="-is-active"
+              >
+                <div class="bg-white px-30 py-30 rounded-4">
+                  <div class="row y-gap-10 justify-between items-center">
+                    <div class="col-auto">
+                      <div class="text-15 fw-500">Adults</div>
+                    </div>
+
+                    <div class="col-auto">
+                      <div
+                        class="d-flex items-center js-counter"
+                        data-value-change=".js-count-adult"
+                      >
+                        <button
+                          className="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
+                          onClick={handleAdultsDecrement}
+                        >
+                          <i class="icon-minus text-12"></i>
+                        </button>
+
+                        <div class="flex-center size-20 ml-15 mr-15">
+                          <div class="text-15 js-count">{adults}</div>
+                        </div>
+
+                        <button
+                          className="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
+                          onClick={handleAdultsIncrement}
+                        >
+                          <i class="icon-plus text-12"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="border-top-light mt-24 mb-24"></div>
+
+                  <div class="row y-gap-10 justify-between items-center">
+                    <div class="col-auto">
+                      <div class="text-15 lh-12 fw-500">Children</div>
+                    </div>
+
+                    <div class="col-auto">
+                      <div
+                        class="d-flex items-center js-counter"
+                        data-value-change=".js-count-child"
+                      >
+                        <button
+                          class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
+                          onClick={handleChildrenDecrement}
+                        >
+                          <i class="icon-minus text-12"></i>
+                        </button>
+
+                        <div class="flex-center size-20 ml-15 mr-15">
+                          <div class="text-15 js-count">{children}</div>
+                        </div>
+
+                        <button
+                          class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
+                          onClick={handleChildrenIncrement}
+                        >
+                          <i class="icon-plus text-12"></i>
+                        </button>
+                      </div>
+                      {/* <div class="col-auto">
+                        <lable>age</lable>
+                        <input
+                          type="number"
+                          value={age}
+                          onChange={(e) => {
+                            setAge([...age, e.target.value]);
+                          }}
+                        />
+                      </div> */}
+                    </div>
+                  </div>
+
+                  <div class="border-top-light mt-24 mb-24"></div>
+
+                  <div class="row y-gap-10 justify-between items-center">
+                    <div class="col-auto">
+                      <div class="text-15 fw-500">Rooms</div>
+                    </div>
+
+                    <div class="col-auto">
+                      <div
+                        class="d-flex items-center js-counter"
+                        data-value-change=".js-count-room"
+                      >
+                        <button
+                          class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
+                          onClick={handleRoomsDecrement}
+                        >
+                          <i class="icon-minus text-12"></i>
+                        </button>
+
+                        <div class="flex-center size-20 ml-15 mr-15">
+                          <div class="text-15 js-count">{rooms}</div>
+                        </div>
+
+                        <button
+                          class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
+                          onClick={handleRoomsIncrement}
+                        >
+                          <i class="icon-plus text-12"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          <div class="button-item">
+            <button
+              class="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
+              onClick={() => {
+                Searchlist();
+              }}
+            >
+              <i class="icon-search text-20 mr-10"></i>
+              {loaderApiRes ? (
+                <img
+                  src={loadingImg}
+                  style={{
+                    width: "40px",
+                    height: "30px",
+                    borderRadius: "50px",
+                  }}
+                  alt="loading..."
+                />
+              ) : (
+                "Search"
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="moreOption text-white">
+        <div className="selextbox">
+          <DropdownButton
+            id="dropdown-basic-button"
+            className="bg-arrowndown dropdown-basic-button2"
+            title="Rating"
+          >
+            <i class="fa fa-angle-down" aria-hidden="true"></i>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                defaultChecked
+                value="5"
+                id="onestar5"
+                onChange={handleRatingChange}
+              />
+              <label className="form-check-label" htmlFor="onestar5">
+                5 Star
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value="4"
+                defaultChecked
+                id="onestar4"
+                onChange={handleRatingChange}
+              />
+              <label className="form-check-label" htmlFor="onestar4">
+                4 Star
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value="3"
+                id="onestar3"
+                onChange={handleRatingChange}
+              />
+              <label className="form-check-label" htmlFor="onestar3">
+                3 Star
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value="2"
+                id="onestar2"
+                onChange={handleRatingChange}
+              />
+              <label className="form-check-label" htmlFor="onestar2">
+                2 Star
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value="1"
+                id="onestar"
+                onChange={handleRatingChange}
+              />
+              <label className="form-check-label" htmlFor="onestar">
+                1 Star
+              </label>
+            </div>
+          </DropdownButton>
+        </div>
+        <div className="selextbox">
+          <select
+            className="bg-arrowndown dropdown-basic-button2"
+            value={selectedCityObject?.countryName?.toLowerCase()}
+            onChange={handleCountryChange}
+          >
+            <option>Netionality</option>
+            {Country.map((country, index) => (
+              <option value={country?.name?.toLowerCase()} key={index}>
+                {country.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="selextbox">
+          <select
+            value={selectedCityObject?.countryName?.toLowerCase()}
+            className="bg-arrowndown dropdown-basic-button2"
+            onChange={handleChangeNationlity}
+          >
+            <option>Country</option>
+            {Country.map((country, index) => (
+              <option value={country?.name?.toLowerCase()} key={index}>
+                {country.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="selextbox selectcheck">
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              defaultValue
+              id="onestar"
+            />
+            <label className="form-check-label" htmlFor="onestar">
+              Special Category
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Hotelfilter;
