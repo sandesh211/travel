@@ -89,6 +89,7 @@ const Header = () => {
           </div>
         </div>
       </header>
+      <div className="header-margin"></div>
     </div>
   );
 };

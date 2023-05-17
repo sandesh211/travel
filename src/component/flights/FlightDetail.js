@@ -13,6 +13,8 @@ import Footer from "../Footer";
 import moment from "moment";
 const FlightDetail = (props) => {
   const [stateData, setStateData] = useState();
+  const [selectedOnwardFlight, setSelectedOnwardFlight] = useState();
+  const [selectedReturnFlight, setSelectedReturnFlight] = useState();
   const { state } = useLocation();
   const LocationData = state?.data?.ONWARD;
   const LocationDataReturn = state?.data?.RETURN;
@@ -32,7 +34,8 @@ const FlightDetail = (props) => {
     const end = new Date(endDate);
     const diffInMs = Math.abs(end - start);
     const diffInDays = Math.round(diffInMs / (1000 * 60 * 60));
-    console.log(diffInDays); // prints the difference in days
+    // console.log(diffInDays);
+    // prints the difference in days
     return `${diffInDays} hr`;
   };
 
@@ -42,14 +45,26 @@ const FlightDetail = (props) => {
     const year = dateObj.getFullYear();
     const month = dateObj.getMonth() + 1; // JavaScript months are 0-indexed, so add 1
     const day = dateObj.getDate();
-    console.log(`${year}-${month}-${day}`);
+    // console.log(`${year}-${month}-${day}`);
     return `${year}-${month}-${day}`;
   };
+
+  const selectOnwardFlight = (data) => {
+    setSelectedOnwardFlight(data);
+  };
+
+  const selectReturnFlight = (data) => {
+    setSelectedReturnFlight(data);
+  };
+
+  const BookOneWayFlight = (data) => {};
+
+  const FlightBookingApi = () => {};
 
   return (
     <div>
       <main>
-        <section className="layout-pt-md layout-pb-md bg-light-2">
+        <section className="pt-30 layout-pb-md bg-light-2">
           <div className="container">
             <div className="row y-gap-30">
               <div className="col-xl-3 col-lg-4">
@@ -416,68 +431,94 @@ const FlightDetail = (props) => {
                   </div>
                 </div>
 
-                <div className="js-accordion">
-                  <div className="accordion__item bg-white base-tr mt-30">
+                <div
+                  className={
+                    LocationDataReturn
+                      ? `js-accordion grid grid-cols-2 gap-4 `
+                      : `js-accordion grid grid-cols-1 gap-4 gap-3`
+                  }
+                >
+                  <div
+                    className={
+                      LocationDataReturn
+                        ? `js-accordion  base-tr`
+                        : `js-accordion grid grid-cols-2 gap-4  base-tr`
+                    }
+                  >
                     {LocationData?.map((item) => {
                       return (
-                        <Accordion defaultKey="0">
+                        <Accordion
+                          defaultKey="0"
+                          onClick={() => {
+                            selectOnwardFlight(item);
+                          }}
+                        >
                           <Accordion.Item
                             eventKey="0"
                             className="accordion-hide border-0"
                           >
-                            <div className="row y-gap-30 px-30 py-30 justify-between">
-                              <div className="col my-auto p-0 gap-2">
-                                <div className="row y-gap-10 items-center">
-                                  <div className="col-sm-auto">
-                                    <img
-                                      className="size-40 me-2"
-                                      src={flighticon2}
-                                      alt="image"
-                                    />
-                                    {item?.sI[0]?.fD?.aI?.name}
-                                    {item?.sI[0]?.fD?.aI?.code}
-                                  </div>
-                                  <div className="col p-0">
-                                    <div className="row x-gap-20 items-end">
-                                      <div className="col-auto">
-                                        <div className="lh-15 fw-500">
-                                          {/* {moment(item?.sI[0]?.dt).format()} */}
-                                          {convertTime(item?.sI[0]?.dt)}
-                                        </div>
-                                        <div className="text-15 lh-15 text-light-1">
-                                          {item?.sI[0]?.da?.code}
+                            <div className="px-20 py-20 justify-between">
+                              <div className="col-12 my-auto p-0 gap-2">
+                                {item?.sI?.map((item2) => {
+                                  return (
+                                    <div className="row y-gap-10 mb-3 items-center">
+                                      <div className="col-sm-auto">
+                                        <img
+                                          className="size-30 me-2"
+                                          src={flighticon2}
+                                          alt="image"
+                                        />
+                                        <span className="text-14">
+                                          {item2?.fD?.aI?.name}
+                                          {item2?.fD?.aI?.code}
+                                        </span>
+                                      </div>
+                                      <div className="col p-0">
+                                        <div className="row x-gap-20 items-end">
+                                          <div className="col-auto">
+                                            <div className="lh-13 fw-500 text-13">
+                                              {/* {moment(item2?.dt).format()} */}
+                                              {convertTime(item2?.dt)}
+                                            </div>
+                                            <div className="text-13 lh-15 text-light-1">
+                                              {item2?.da?.code}
+                                            </div>
+                                          </div>
+                                          <div className="col text-center">
+                                            <div className="flightLine">
+                                              <div />
+                                              <div />
+                                            </div>
+                                            <div className="text-13 lh-15 text-light-1 mt-10">
+                                              {item?.sI?.length === 1
+                                                ? "Nonstop"
+                                                : `${
+                                                    item?.sI?.length - 1
+                                                  } stop`}
+                                            </div>
+                                          </div>
+                                          <div className="col-auto">
+                                            <div className="lh-15 text-13 fw-500">
+                                              {convertTime(item2?.at)}
+                                            </div>
+                                            <div className="text-13 lh-15 text-light-1">
+                                              {item2?.aa?.code}
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
-                                      <div className="col text-center">
-                                        <div className="flightLine">
-                                          <div />
-                                          <div />
-                                        </div>
-                                        <div className="text-15 lh-15 text-light-1 mt-10">
-                                          {item?.sI[0]?.stops == 0
-                                            ? "Nonstop"
-                                            : `${item?.sI[0]?.stops} stops`}
-                                        </div>
-                                      </div>
-                                      <div className="col-auto">
-                                        <div className="lh-15 fw-500">
-                                          {convertTime(item?.sI[0]?.at)}
-                                        </div>
-                                        <div className="text-15 lh-15 text-light-1">
-                                          {item?.sI[0]?.aa?.code}
+                                      <div className="col-md-auto p-0">
+                                        <div className="text-13 text-light-1 px-20 md:px-0">
+                                          {handleCalculate(
+                                            item2?.dt,
+                                            item2?.at
+                                          )}
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-md-auto p-0">
-                                    <div className="text-15 text-light-1 px-20 md:px-0">
-                                      {handleCalculate(
-                                        item?.sI[0]?.dt,
-                                        item?.sI[0]?.at
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
+                                  );
+                                })}
+
                                 {/* <div className="row y-gap-10 items-center pt-30">
                                   <div className="col-sm-auto">
                                     <img
@@ -522,12 +563,11 @@ const FlightDetail = (props) => {
                                   </div>
                                 </div> */}
                               </div>
-                              <div className="col-md-auto p-0">
-                                <div className="d-flex items-center h-full">
-                                  <div className="pl-30 border-left-light h-full md:d-none" />
-                                  <div>
-                                    <div className="text-right md:text-left mb-10">
-                                      <div className="text-18 lh-16 fw-500">
+                              <div className="col-12 p-0">
+                                <div className="items-center h-full">
+                                  <div className="d-flex gap-3 justify-between border-top pt-10">
+                                    <div className="text-right md:text-left d-flex my-auto">
+                                      <div className="text-14 lh-16 fw-500">
                                         INR:
                                         {
                                           item?.totalPriceList[0]?.fd?.ADULT?.fC
@@ -538,14 +578,23 @@ const FlightDetail = (props) => {
                                         {/* 16 deals */}
                                       </div>
                                     </div>
+                                    {!LocationDataReturn && (
+                                      <button
+                                        onClick={() => {
+                                          BookOneWayFlight(item);
+                                        }}
+                                        className=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
+                                      >
+                                        Book Flight{" "}
+                                      </button>
+                                    )}
                                     <div className="accordion__button">
                                       <Accordion.Header>
                                         <button
-                                          className="button -dark-1 px-30 h-50 bg-blue-1 text-white"
+                                          className="button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
                                           data-x-click="flight-item-1"
                                         >
                                           View Detail{" "}
-                                          <div className="icon-arrow-top-right ml-15" />
                                         </button>
                                       </Accordion.Header>
                                     </div>
@@ -554,106 +603,115 @@ const FlightDetail = (props) => {
                               </div>
                             </div>
 
-                            <Accordion.Body>
+                            <Accordion.Body className="pt-0">
                               <div className="accordion__contents">
                                 <div className="border-light">
-                                  <div className="py-20 px-30">
-                                    <div className="row justify-between items-center">
-                                      <div className="col-auto">
-                                        <div className="fw-500 text-dark-1">
-                                          Depart • {getDate(item?.sI[0]?.dt)}
-                                        </div>
-                                      </div>
-                                      <div className="col-auto">
-                                        <div className="text-14 text-light-1">
-                                          {handleCalculate(
-                                            item?.sI[0]?.dt,
-                                            item?.sI[0]?.at
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="py-30 px-30 border-top-light">
-                                    <div className="row y-gap-10 justify-between">
-                                      <div className="col-auto">
-                                        <div className="d-flex items-center mb-15">
-                                          <div className="w-28 d-flex justify-center mr-15">
-                                            <img
-                                              src={flighticon3}
-                                              alt="image"
-                                            />
-                                          </div>
-                                          <div className="text-14 text-light-1">
-                                            {item?.sI[0]?.fD?.aI?.name}{" "}
-                                            {item?.sI[0]?.fD?.aI?.code}
-                                          </div>
-                                        </div>
-                                        <div className="relative z-0">
-                                          <div className="border-line-2" />
-                                          <div className="d-flex items-center">
-                                            <div className="w-28 d-flex justify-center mr-15">
-                                              <div className="size-10 border-light rounded-full bg-white" />
-                                            </div>
-                                            <div className="row">
-                                              <div className="col-auto">
-                                                <div className="lh-14 fw-500">
-                                                  {convertTime(item?.sI[0]?.dt)}
-                                                </div>
-                                              </div>
-                                              <div className="col-auto">
-                                                <div className="lh-14 fw-500">
-                                                  {item?.sI[0]?.da?.name}(
-                                                  {item?.sI[0]?.da?.code})
-                                                </div>
+                                  {item?.sI?.map((item2) => {
+                                    return (
+                                      <>
+                                        <div className="py-10 px-10">
+                                          <div className="row justify-between items-center">
+                                            <div className="col-auto">
+                                              <div className="fw-500 text-14 text-dark-1">
+                                                Depart • {getDate(item2?.dt)}
                                               </div>
                                             </div>
-                                          </div>
-                                          <div className="d-flex items-center mt-15">
-                                            <div className="w-28 d-flex justify-center mr-15">
-                                              <img src={plane} alt="image" />
-                                            </div>
-                                            <div className="text-14 text-light-1">
-                                              {handleCalculate(
-                                                item?.sI[0]?.dt,
-                                                item?.sI[0]?.at
-                                              )}
-                                            </div>
-                                          </div>
-                                          <div className="d-flex items-center mt-15">
-                                            <div className="w-28 d-flex justify-center mr-15">
-                                              <div className="size-10 border-light rounded-full bg-border" />
-                                            </div>
-                                            <div className="row">
-                                              <div className="col-auto">
-                                                <div className="lh-14 fw-500">
-                                                  {convertTime(item?.sI[0]?.at)}
-                                                </div>
-                                              </div>
-                                              <div className="col-auto">
-                                                <div className="lh-14 fw-500">
-                                                  {item?.sI[0]?.aa?.name}(
-                                                  {item?.sI[0]?.aa?.code})
-                                                </div>
+                                            <div className="col-auto">
+                                              <div className="text-14 text-light-1">
+                                                {handleCalculate(
+                                                  item2?.dt,
+                                                  item2?.at
+                                                )}
                                               </div>
                                             </div>
                                           </div>
                                         </div>
-                                      </div>
-                                      <div className="col-auto text-right md:text-left">
-                                        <div className="text-14 text-light-1">
-                                          Economy
+                                        <div className="py-10 px-10 border-top-light">
+                                          <div className="rowd y-gap-10 justify-between">
+                                            <div className="col-auto">
+                                              <div className="d-flex items-center mb-15">
+                                                <div className="w-28 d-flex justify-center mr-15">
+                                                  <img
+                                                    src={flighticon3}
+                                                    alt="image"
+                                                  />
+                                                </div>
+                                                <div className="text-13 text-light-1">
+                                                  {item2?.fD?.aI?.name}{" "}
+                                                  {item2?.fD?.aI?.code}
+                                                </div>
+                                              </div>
+                                              <div className="relative z-0">
+                                                <div className="border-line-2" />
+                                                <div className="d-flex items-center">
+                                                  <div className="w-28 d-flex justify-center mr-15">
+                                                    <div className="size-10 border-light rounded-full bg-white" />
+                                                  </div>
+                                                  <div className="row">
+                                                    <div className="col-auto">
+                                                      <div className="lh-14 text-14 fw-500">
+                                                        {convertTime(item2?.dt)}
+                                                      </div>
+                                                    </div>
+                                                    <div className="col-auto">
+                                                      <div className="lh-14 text-14 fw-500">
+                                                        {item2?.da?.name}(
+                                                        {item2?.da?.code})
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div className="d-flex items-center mt-15">
+                                                  <div className="w-28 d-flex justify-center mr-15">
+                                                    <img
+                                                      src={plane}
+                                                      alt="image"
+                                                    />
+                                                  </div>
+                                                  <div className="text-14 text-light-1">
+                                                    {handleCalculate(
+                                                      item2?.dt,
+                                                      item2?.at
+                                                    )}
+                                                  </div>
+                                                </div>
+                                                <div className="d-flex items-center mt-15">
+                                                  <div className="w-28 d-flex justify-center mr-15">
+                                                    <div className="size-10 border-light rounded-full bg-border" />
+                                                  </div>
+                                                  <div className="row">
+                                                    <div className="col-auto">
+                                                      <div className="lh-14 text-14 fw-500">
+                                                        {convertTime(item2?.at)}
+                                                      </div>
+                                                    </div>
+                                                    <div className="col-auto">
+                                                      <div className="lh-14 text-14 fw-500">
+                                                        {item2?.aa?.name}(
+                                                        {item2?.aa?.code})
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            {/* <div className="col-auto text-right md:text-left">
+                                              <div className="text-14 text-light-1">
+                                                Economy
+                                              </div>
+                                              <div className="text-14 mt-15 md:mt-5">
+                                                Airbus A320neo (Narrow-body jet)
+                                                <br />
+                                                Wi-Fi available
+                                                <br />
+                                                USB outlet
+                                              </div>
+                                            </div> */}
+                                          </div>
                                         </div>
-                                        <div className="text-14 mt-15 md:mt-5">
-                                          Airbus A320neo (Narrow-body jet)
-                                          <br />
-                                          Wi-Fi available
-                                          <br />
-                                          USB outlet
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                                      </>
+                                    );
+                                  })}
                                 </div>
                               </div>
                             </Accordion.Body>
@@ -661,66 +719,83 @@ const FlightDetail = (props) => {
                         </Accordion>
                       );
                     })}
+                  </div>
+
+                  <div className="accordion__item base-tr">
                     {LocationDataReturn?.map((item) => {
                       return (
-                        <Accordion defaultKey="0">
+                        <Accordion
+                          defaultKey="0"
+                          onClick={() => {
+                            selectReturnFlight(item);
+                          }}
+                        >
                           <Accordion.Item
                             eventKey="0"
                             className="accordion-hide border-0"
                           >
-                            <div className="row y-gap-30 px-30 py-30 justify-between">
-                              <div className="col my-auto p-0 gap-2">
-                                <div className="row y-gap-10 items-center">
-                                  <div className="col-sm-auto">
-                                    <img
-                                      className="size-40 me-2"
-                                      src={flighticon}
-                                      alt="image"
-                                    />
-                                    {item?.sI[0]?.fD?.aI?.name}
-                                    {item?.sI[0]?.fD?.aI?.code}
-                                  </div>
-                                  <div className="col p-0">
-                                    <div className="row x-gap-20 items-end">
-                                      <div className="col-auto">
-                                        <div className="lh-15 fw-500">
-                                          {/* {moment(item?.sI[0]?.dt).format()} */}
-                                          {convertTime(item?.sI[0]?.dt)}
-                                        </div>
-                                        <div className="text-15 lh-15 text-light-1">
-                                          {item?.sI[0]?.da?.code}
+                            <div className="px-20 py-20 justify-between">
+                              <div className="col-12 my-auto p-0 gap-2">
+                                {item?.sI?.map((item2) => {
+                                  return (
+                                    <div className="row y-gap-10 mb-3 items-center">
+                                      <div className="col-sm-auto">
+                                        <img
+                                          className="size-30 me-2"
+                                          src={flighticon}
+                                          alt="image"
+                                        />
+                                        <span className="text-14">
+                                          {item2?.fD?.aI?.name}
+                                          {item2?.fD?.aI?.code}
+                                        </span>
+                                      </div>
+                                      <div className="col p-0">
+                                        <div className="row x-gap-20 items-end">
+                                          <div className="col-auto">
+                                            <div className="lh-13 fw-500 text-13">
+                                              {/* {moment(item2?.dt).format()} */}
+                                              {convertTime(item2?.dt)}
+                                            </div>
+                                            <div className="text-13 lh-15 text-light-1">
+                                              {item2?.da?.code}
+                                            </div>
+                                          </div>
+                                          <div className="col text-center">
+                                            <div className="flightLine">
+                                              <div />
+                                              <div />
+                                            </div>
+                                            <div className="text-13 lh-15 text-light-1 mt-10">
+                                              {item?.sI?.length === 1
+                                                ? "Nonstop"
+                                                : `${
+                                                    item?.sI?.length - 1
+                                                  } stop`}
+                                            </div>
+                                          </div>
+                                          <div className="col-auto">
+                                            <div className="lh-15 text-13 fw-500">
+                                              {convertTime(item2?.at)}
+                                            </div>
+                                            <div className="text-13 lh-15 text-light-1">
+                                              {item2?.aa?.code}
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
-                                      <div className="col text-center">
-                                        <div className="flightLine">
-                                          <div />
-                                          <div />
-                                        </div>
-                                        <div className="text-15 lh-15 text-light-1 mt-10">
-                                          {item?.sI[0]?.stops == 0
-                                            ? "Nonstop"
-                                            : `${item?.sI[0]?.stops} stops`}
-                                        </div>
-                                      </div>
-                                      <div className="col-auto">
-                                        <div className="lh-15 fw-500">
-                                          {convertTime(item?.sI[0]?.at)}
-                                        </div>
-                                        <div className="text-15 lh-15 text-light-1">
-                                          {item?.sI[0]?.aa?.code}
+                                      <div className="col-md-auto p-0">
+                                        <div className="text-13 text-light-1 px-20 md:px-0">
+                                          {handleCalculate(
+                                            item2?.dt,
+                                            item2?.at
+                                          )}
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="col-md-auto p-0">
-                                    <div className="text-15 text-light-1 px-20 md:px-0">
-                                      {handleCalculate(
-                                        item?.sI[0]?.dt,
-                                        item?.sI[0]?.at
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
+                                  );
+                                })}
+
                                 {/* <div className="row y-gap-10 items-center pt-30">
                                   <div className="col-sm-auto">
                                     <img
@@ -765,12 +840,11 @@ const FlightDetail = (props) => {
                                   </div>
                                 </div> */}
                               </div>
-                              <div className="col-md-auto p-0">
-                                <div className="d-flex items-center h-full">
-                                  <div className="pl-30 border-left-light h-full md:d-none" />
-                                  <div>
-                                    <div className="text-right md:text-left mb-10">
-                                      <div className="text-18 lh-16 fw-500">
+                              <div className="col-12 p-0">
+                                <div className="items-center h-full">
+                                  <div className="d-flex gap-3 justify-between border-top pt-10">
+                                    <div className="text-right md:text-left d-flex my-auto">
+                                      <div className="text-14 lh-16 fw-500">
                                         INR:
                                         {
                                           item?.totalPriceList[0]?.fd?.ADULT?.fC
@@ -784,11 +858,10 @@ const FlightDetail = (props) => {
                                     <div className="accordion__button">
                                       <Accordion.Header>
                                         <button
-                                          className="button -dark-1 px-30 h-50 bg-blue-1 text-white"
+                                          className="button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
                                           data-x-click="flight-item-1"
                                         >
                                           View Detail{" "}
-                                          <div className="icon-arrow-top-right ml-15" />
                                         </button>
                                       </Accordion.Header>
                                     </div>
@@ -797,106 +870,115 @@ const FlightDetail = (props) => {
                               </div>
                             </div>
 
-                            <Accordion.Body>
+                            <Accordion.Body className="pt-0">
                               <div className="accordion__contents">
                                 <div className="border-light">
-                                  <div className="py-20 px-30">
-                                    <div className="row justify-between items-center">
-                                      <div className="col-auto">
-                                        <div className="fw-500 text-dark-1">
-                                          Depart • {getDate(item?.sI[0]?.dt)}
-                                        </div>
-                                      </div>
-                                      <div className="col-auto">
-                                        <div className="text-14 text-light-1">
-                                          {handleCalculate(
-                                            item?.sI[0]?.dt,
-                                            item?.sI[0]?.at
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="py-30 px-30 border-top-light">
-                                    <div className="row y-gap-10 justify-between">
-                                      <div className="col-auto">
-                                        <div className="d-flex items-center mb-15">
-                                          <div className="w-28 d-flex justify-center mr-15">
-                                            <img
-                                              src={flighticon3}
-                                              alt="image"
-                                            />
-                                          </div>
-                                          <div className="text-14 text-light-1">
-                                            {item?.sI[0]?.fD?.aI?.name}{" "}
-                                            {item?.sI[0]?.fD?.aI?.code}
-                                          </div>
-                                        </div>
-                                        <div className="relative z-0">
-                                          <div className="border-line-2" />
-                                          <div className="d-flex items-center">
-                                            <div className="w-28 d-flex justify-center mr-15">
-                                              <div className="size-10 border-light rounded-full bg-white" />
-                                            </div>
-                                            <div className="row">
-                                              <div className="col-auto">
-                                                <div className="lh-14 fw-500">
-                                                  {convertTime(item?.sI[0]?.dt)}
-                                                </div>
-                                              </div>
-                                              <div className="col-auto">
-                                                <div className="lh-14 fw-500">
-                                                  {item?.sI[0]?.da?.name}(
-                                                  {item?.sI[0]?.da?.code})
-                                                </div>
+                                  {item?.sI?.map((item2) => {
+                                    return (
+                                      <>
+                                        <div className="py-10 px-10">
+                                          <div className="row justify-between items-center">
+                                            <div className="col-auto">
+                                              <div className="fw-500 text-14 text-dark-1">
+                                                Depart • {getDate(item2?.dt)}
                                               </div>
                                             </div>
-                                          </div>
-                                          <div className="d-flex items-center mt-15">
-                                            <div className="w-28 d-flex justify-center mr-15">
-                                              <img src={plane} alt="image" />
-                                            </div>
-                                            <div className="text-14 text-light-1">
-                                              {handleCalculate(
-                                                item?.sI[0]?.dt,
-                                                item?.sI[0]?.at
-                                              )}
-                                            </div>
-                                          </div>
-                                          <div className="d-flex items-center mt-15">
-                                            <div className="w-28 d-flex justify-center mr-15">
-                                              <div className="size-10 border-light rounded-full bg-border" />
-                                            </div>
-                                            <div className="row">
-                                              <div className="col-auto">
-                                                <div className="lh-14 fw-500">
-                                                  {convertTime(item?.sI[0]?.at)}
-                                                </div>
-                                              </div>
-                                              <div className="col-auto">
-                                                <div className="lh-14 fw-500">
-                                                  {item?.sI[0]?.aa?.name}(
-                                                  {item?.sI[0]?.aa?.code})
-                                                </div>
+                                            <div className="col-auto">
+                                              <div className="text-14 text-light-1">
+                                                {handleCalculate(
+                                                  item2?.dt,
+                                                  item2?.at
+                                                )}
                                               </div>
                                             </div>
                                           </div>
                                         </div>
-                                      </div>
-                                      <div className="col-auto text-right md:text-left">
-                                        <div className="text-14 text-light-1">
-                                          Economy
+                                        <div className="py-10 px-10 border-top-light">
+                                          <div className="rowd y-gap-10 justify-between">
+                                            <div className="col-auto">
+                                              <div className="d-flex items-center mb-15">
+                                                <div className="w-28 d-flex justify-center mr-15">
+                                                  <img
+                                                    src={flighticon3}
+                                                    alt="image"
+                                                  />
+                                                </div>
+                                                <div className="text-13 text-light-1">
+                                                  {item2?.fD?.aI?.name}{" "}
+                                                  {item2?.fD?.aI?.code}
+                                                </div>
+                                              </div>
+                                              <div className="relative z-0">
+                                                <div className="border-line-2" />
+                                                <div className="d-flex items-center">
+                                                  <div className="w-28 d-flex justify-center mr-15">
+                                                    <div className="size-10 border-light rounded-full bg-white" />
+                                                  </div>
+                                                  <div className="row">
+                                                    <div className="col-auto">
+                                                      <div className="lh-14 text-14 fw-500">
+                                                        {convertTime(item2?.dt)}
+                                                      </div>
+                                                    </div>
+                                                    <div className="col-auto">
+                                                      <div className="lh-14 text-14 fw-500">
+                                                        {item2?.da?.name}(
+                                                        {item2?.da?.code})
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div className="d-flex items-center mt-15">
+                                                  <div className="w-28 d-flex justify-center mr-15">
+                                                    <img
+                                                      src={plane}
+                                                      alt="image"
+                                                    />
+                                                  </div>
+                                                  <div className="text-14 text-light-1">
+                                                    {handleCalculate(
+                                                      item2?.dt,
+                                                      item2?.at
+                                                    )}
+                                                  </div>
+                                                </div>
+                                                <div className="d-flex items-center mt-15">
+                                                  <div className="w-28 d-flex justify-center mr-15">
+                                                    <div className="size-10 border-light rounded-full bg-border" />
+                                                  </div>
+                                                  <div className="row">
+                                                    <div className="col-auto">
+                                                      <div className="lh-14 text-14 fw-500">
+                                                        {convertTime(item2?.at)}
+                                                      </div>
+                                                    </div>
+                                                    <div className="col-auto">
+                                                      <div className="lh-14 text-14 fw-500">
+                                                        {item2?.aa?.name}(
+                                                        {item2?.aa?.code})
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            {/* <div className="col-auto text-right md:text-left">
+                                              <div className="text-14 text-light-1">
+                                                Economy
+                                              </div>
+                                              <div className="text-14 mt-15 md:mt-5">
+                                                Airbus A320neo (Narrow-body jet)
+                                                <br />
+                                                Wi-Fi available
+                                                <br />
+                                                USB outlet
+                                              </div>
+                                            </div> */}
+                                          </div>
                                         </div>
-                                        <div className="text-14 mt-15 md:mt-5">
-                                          Airbus A320neo (Narrow-body jet)
-                                          <br />
-                                          Wi-Fi available
-                                          <br />
-                                          USB outlet
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                                      </>
+                                    );
+                                  })}
                                 </div>
                               </div>
                             </Accordion.Body>
@@ -905,302 +987,81 @@ const FlightDetail = (props) => {
                       );
                     })}
                   </div>
-                </div>
-                {/* <div className="js-accordion">
-                  <div className="accordion__item py-30 px-30 bg-white base-tr mt-30">
-                    <Accordion defaultKey="0">
-                      <Accordion.Item eventKey="0" className="accordion-hide">
-                        <div className="row y-gap-30 justify-between">
-                          <div className="col">
-                            <div className="row y-gap-10 items-center">
-                              <div className="col-sm-auto">
-                                <img
-                                  className="size-40"
-                                  src={flighticon2}
-                                  alt="image"
-                                />
-                              </div>
-                              <div className="col">
-                                <div className="row x-gap-20 items-end">
-                                  <div className="col-auto">
-                                    <div className="lh-15 fw-500">14:00</div>
-                                    <div className="text-15 lh-15 text-light-1">
-                                      SAW
-                                    </div>
-                                  </div>
-                                  <div className="col text-center">
-                                    <div className="flightLine">
-                                      <div />
-                                      <div />
-                                    </div>
-                                    <div className="text-15 lh-15 text-light-1 mt-10">
-                                      Nonstop
-                                    </div>
-                                  </div>
-                                  <div className="col-auto">
-                                    <div className="lh-15 fw-500">22:00</div>
-                                    <div className="text-15 lh-15 text-light-1">
-                                      STN
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-auto">
-                                <div className="text-15 text-light-1 px-20 md:px-0">
-                                  4h 05m
-                                </div>
-                              </div>
-                            </div>
-                            <div className="row y-gap-10 items-center pt-30">
-                              <div className="col-sm-auto">
-                                <img
-                                  className="size-40"
-                                  src={flighticon}
-                                  alt="image"
-                                />
-                              </div>
-                              <div className="col">
-                                <div className="row x-gap-20 items-end">
-                                  <div className="col-auto">
-                                    <div className="lh-15 fw-500">14:00</div>
-                                    <div className="text-15 lh-15 text-light-1">
-                                      SAW
-                                    </div>
-                                  </div>
-                                  <div className="col text-center">
-                                    <div className="flightLine">
-                                      <div />
-                                      <div />
-                                    </div>
-                                    <div className="text-15 lh-15 text-light-1 mt-10">
-                                      Nonstop
-                                    </div>
-                                  </div>
-                                  <div className="col-auto">
-                                    <div className="lh-15 fw-500">22:00</div>
-                                    <div className="text-15 lh-15 text-light-1">
-                                      STN
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="col-md-auto">
-                                <div className="text-15 text-light-1 px-20 md:px-0">
-                                  4h 05m
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-auto">
-                            <div className="d-flex items-center h-full">
-                              <div className="pl-30 border-left-light h-full md:d-none" />
-                              <div>
-                                <div className="text-right md:text-left mb-10">
-                                  <div className="text-18 lh-16 fw-500">
-                                    US$934
-                                  </div>
-                                  <div className="text-15 lh-16 text-light-1">
-                                    16 deals
-                                  </div>
-                                </div>
-                                <div className="accordion__button">
-                                  <Accordion.Header>
-                                    <button
-                                      className="button -dark-1 px-30 h-50 bg-blue-1 text-white"
-                                      data-x-click="flight-item-1"
-                                    >
-                                      View Deal{" "}
-                                      <div className="icon-arrow-top-right ml-15" />
-                                    </button>
-                                  </Accordion.Header>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
 
-                        <Accordion.Body>
-                          <div className="accordion__contents">
-                            <div className="border-light mt-30">
-                              <div className="py-20 px-30">
-                                <div className="row justify-between items-center">
-                                  <div className="col-auto">
-                                    <div className="fw-500 text-dark-1">
-                                      Depart • Sat, Mar 26
+                  <div className="additional-detail">
+                    {console.log("selectedOnwardFlight", selectedOnwardFlight)}
+                    {selectedOnwardFlight ? (
+                      <div className="col-12 my-auto p-0 gap-2">
+                        kljljkllkl
+                        {selectedReturnFlight &&
+                          selectedReturnFlight?.sI?.map((item2, index) => {
+                            return (
+                              <div
+                                className="row y-gap-10 mb-3 items-center"
+                                key={index}
+                              >
+                                <div className="col-sm-auto">
+                                  sdadsaasasasasasasasasasasasasasasasasasasasasa
+                                  <img
+                                    className="size-30 me-2"
+                                    src={flighticon2}
+                                    alt="image"
+                                  />
+                                  <span className="text-14">
+                                    {item2?.fD?.aI?.name}
+                                    {item2?.fD?.aI?.code}
+                                  </span>
+                                </div>
+                                <div className="col p-0">
+                                  <div className="row x-gap-20 items-end">
+                                    <div className="col-auto">
+                                      <div className="lh-13 fw-500 text-13">
+                                        {/* {moment(item2?.dt).format()} */}
+                                        {convertTime(item2?.dt)}
+                                      </div>
+                                      <div className="text-13 lh-15 text-light-1">
+                                        {item2?.da?.code}
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div className="col-auto">
-                                    <div className="text-14 text-light-1">
-                                      4h 05m
+                                    <div className="col text-center">
+                                      <div className="flightLine">
+                                        <div />
+                                        <div />
+                                      </div>
+                                      {/* <div className="text-13 lh-15 text-light-1 mt-10">
+                                    {item?.sI?.length === 1
+                                      ? "Nonstop"
+                                      : `${item?.sI?.length - 1} stop`}
+                                  </div> */}
+                                    </div>
+                                    <div className="col-auto">
+                                      <div className="lh-15 text-13 fw-500">
+                                        {convertTime(item2?.at)}
+                                      </div>
+                                      <div className="text-13 lh-15 text-light-1">
+                                        {item2?.aa?.code}
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="py-30 px-30 border-top-light">
-                                <div className="row y-gap-10 justify-between">
-                                  <div className="col-auto">
-                                    <div className="d-flex items-center mb-15">
-                                      <div className="w-28 d-flex justify-center mr-15">
-                                        <img src={flighticon3} alt="image" />
-                                      </div>
-                                      <div className="text-14 text-light-1">
-                                        Pegasus Airlines 1169
-                                      </div>
-                                    </div>
-                                    <div className="relative z-0">
-                                      <div className="border-line-2" />
-                                      <div className="d-flex items-center">
-                                        <div className="w-28 d-flex justify-center mr-15">
-                                          <div className="size-10 border-light rounded-full bg-white" />
-                                        </div>
-                                        <div className="row">
-                                          <div className="col-auto">
-                                            <div className="lh-14 fw-500">
-                                              8:25 am
-                                            </div>
-                                          </div>
-                                          <div className="col-auto">
-                                            <div className="lh-14 fw-500">
-                                              Istanbul Sabiha Gokcen (SAW)
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="d-flex items-center mt-15">
-                                        <div className="w-28 d-flex justify-center mr-15">
-                                          <img src={plane} alt="image" />
-                                        </div>
-                                        <div className="text-14 text-light-1">
-                                          4h 05m
-                                        </div>
-                                      </div>
-                                      <div className="d-flex items-center mt-15">
-                                        <div className="w-28 d-flex justify-center mr-15">
-                                          <div className="size-10 border-light rounded-full bg-border" />
-                                        </div>
-                                        <div className="row">
-                                          <div className="col-auto">
-                                            <div className="lh-14 fw-500">
-                                              9:30 am
-                                            </div>
-                                          </div>
-                                          <div className="col-auto">
-                                            <div className="lh-14 fw-500">
-                                              London Stansted (STN)
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="col-auto text-right md:text-left">
-                                    <div className="text-14 text-light-1">
-                                      Economy
-                                    </div>
-                                    <div className="text-14 mt-15 md:mt-5">
-                                      Airbus A320neo (Narrow-body jet)
-                                      <br />
-                                      Wi-Fi available
-                                      <br />
-                                      USB outlet
-                                    </div>
+                                <div className="col-md-auto p-0">
+                                  <div className="text-13 text-light-1 px-20 md:px-0">
+                                    {handleCalculate(item2?.dt, item2?.at)}
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="border-light mt-20">
-                              <div className="py-20 px-30">
-                                <div className="row justify-between items-center">
-                                  <div className="col-auto">
-                                    <div className="fw-500 text-dark-1">
-                                      Depart • Sat, Mar 26
-                                    </div>
-                                  </div>
-                                  <div className="col-auto">
-                                    <div className="text-14 text-light-1">
-                                      4h 05m
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="py-30 px-30 border-top-light">
-                                <div className="row y-gap-10 justify-between">
-                                  <div className="col-auto">
-                                    <div className="d-flex items-center mb-15">
-                                      <div className="w-28 d-flex justify-center mr-15">
-                                        <img src={flighticon3} alt="image" />
-                                      </div>
-                                      <div className="text-14 text-light-1">
-                                        Pegasus Airlines 1169
-                                      </div>
-                                    </div>
-                                    <div className="relative z-0">
-                                      <div className="border-line-2" />
-                                      <div className="d-flex items-center">
-                                        <div className="w-28 d-flex justify-center mr-15">
-                                          <div className="size-10 border-light rounded-full bg-white" />
-                                        </div>
-                                        <div className="row">
-                                          <div className="col-auto">
-                                            <div className="lh-14 fw-500">
-                                              8:25 am
-                                            </div>
-                                          </div>
-                                          <div className="col-auto">
-                                            <div className="lh-14 fw-500">
-                                              Istanbul Sabiha Gokcen (SAW)
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="d-flex items-center mt-15">
-                                        <div className="w-28 d-flex justify-center mr-15">
-                                          <img src={plane} alt="image" />
-                                        </div>
-                                        <div className="text-14 text-light-1">
-                                          4h 05m
-                                        </div>
-                                      </div>
-                                      <div className="d-flex items-center mt-15">
-                                        <div className="w-28 d-flex justify-center mr-15">
-                                          <div className="size-10 border-light rounded-full bg-border" />
-                                        </div>
-                                        <div className="row">
-                                          <div className="col-auto">
-                                            <div className="lh-14 fw-500">
-                                              9:30 am
-                                            </div>
-                                          </div>
-                                          <div className="col-auto">
-                                            <div className="lh-14 fw-500">
-                                              London Stansted (STN)
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="col-auto text-right md:text-left">
-                                    <div className="text-14 text-light-1">
-                                      Economy
-                                    </div>
-                                    <div className="text-14 mt-15 md:mt-5">
-                                      Airbus A320neo (Narrow-body jet)
-                                      <br />
-                                      Wi-Fi available
-                                      <br />
-                                      USB outlet
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </Accordion.Body>
-                      </Accordion.Item>
-                    </Accordion>
+                            );
+                          })}
+                      </div>
+                    ) : (
+                      <div>Departure</div>
+                    )}
                   </div>
-                </div> */}
+                  <div className="additional-detail">
+                    <div>Return</div>
+                    <div>adsadsad</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

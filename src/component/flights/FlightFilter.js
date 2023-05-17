@@ -54,10 +54,6 @@ const FlightFilter = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("directFlight", directFlight);
-  }, [directFlight]);
-
   const handleAdultsDecrement = () => {
     if (adults > 0) {
       setAdults(adults - 1);
@@ -174,7 +170,7 @@ const FlightFilter = () => {
       })
       .then((data) => {
         setLoaderApiRes(false);
-        console.log("air-flight", data?.data?.searchResult?.tripInfos?.ONWARD);
+        // console.log("air-flight", data?.data?.searchResult?.tripInfos?.ONWARD);
         // setFlightFilterData(data);
         navigate("/flight-detail", {
           state: { data: data?.data?.searchResult?.tripInfos },
@@ -223,7 +219,7 @@ const FlightFilter = () => {
 
     setOneWay(onewayRoute);
     setRoundWay(roundRoute);
-    console.log(locationCode, destinationCode, startDate);
+    // console.log(locationCode, destinationCode, startDate);
   }, [locationCode, destinationCode, startDate, endDate]);
 
   //   const handleValueChange = (newValue) => {
