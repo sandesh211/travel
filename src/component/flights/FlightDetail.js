@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Datepicker from "react-tailwindcss-datepicker";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import Accordion from "react-bootstrap/Accordion";
 import flighticon from "../../images/flight-icon.png";
 import flighticon2 from "../../images/flight-icon2.png";
 import flighticon3 from "../../images/flight-icon3.png";
 import plane from "../../images/plane.svg";
-import Header from "../Header";
-import Footer from "../Footer";
-import moment from "moment";
+import axios from "axios";
+import { ApiUrl } from "../../config/Config";
 const FlightDetail = (props) => {
   const [stateData, setStateData] = useState();
+  const [reviewResponse, setReviewResponse] = useState();
+  const [TotalPrice, setTotalPrice] = useState([]);
   const [selectedOnwardFlight, setSelectedOnwardFlight] = useState();
   const [selectedReturnFlight, setSelectedReturnFlight] = useState();
   const { state } = useLocation();
   const LocationData = state?.data?.ONWARD;
   const LocationDataReturn = state?.data?.RETURN;
 
-  console.log("LocationData", state);
+  console.log("LocationData", LocationData);
 
   const convertTime = (data) => {
     const dateString = data;
@@ -57,7 +55,29 @@ const FlightDetail = (props) => {
     setSelectedReturnFlight(data);
   };
 
-  const BookOneWayFlight = (data) => {};
+  const BookOneWayFlight = (data) => {
+    console.log("BookOneWayFlight", data?.totalPriceList);
+    const NewPrice = data?.totalPriceList?.map((price) => {
+      return price.id;
+    });
+
+    setTotalPrice((prev) => [...prev, ...NewPrice]);
+  };
+
+  useEffect(() => {
+    let ApiData = {
+      priceIds: TotalPrice,
+    };
+    axios
+      .post(`https://apitest.tripjack.com/fms/v1/review`, ApiData)
+      .then((res) => {
+        setReviewResponse(res);
+        console.log("setReviewResponse", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [TotalPrice]);
 
   const FlightBookingApi = () => {};
 
@@ -417,7 +437,7 @@ const FlightDetail = (props) => {
                 </aside>
               </div>
               <div className="col-xl-9 col-lg-8">
-                <div className="row y-gap-10 justify-between items-center">
+                <div className="row y-gap-10 justify-between items-center position-relative">
                   <div className="col-auto">
                     <div className="text-18">
                       <span className="fw-500">3,269 Flights</span> in India
@@ -1054,12 +1074,57 @@ const FlightDetail = (props) => {
                           })}
                       </div>
                     ) : (
-                      <div>Departure</div>
+                      <div className="fixedbottom position-fixed bottom-0 rounded">
+                        <div className="grid grid-cols-3 gap-3 bg-dark text-white p-3">
+                          <div className="border-end border-1 pe-3">
+                            <h6 className="mb-2">
+                              parture ・ <span>IndiGo</span>
+                            </h6>
+                            <div className="d-flex justify-content-between">
+                              <div class="col-sm-auto">
+                                <img
+                                  class="size-30 me-2"
+                                  src={flighticon2}
+                                  alt="image"
+                                />
+                                <span class="text-14">20:45 → 00:25</span>
+                              </div>
+                              <div>₹ 4,478</div>
+                            </div>
+                          </div>
+                          <div className="border-end border-1 pe-3">
+                            <h6 className="mb-2">
+                              Return ・ <span>AirAsia</span>
+                            </h6>
+                            <div className="d-flex justify-content-between">
+                              <div class="col-sm-auto">
+                                <img
+                                  class="size-30 me-2"
+                                  src={flighticon}
+                                  alt="image"
+                                />
+                                <span class="text-14">20:45 → 00:25</span>
+                              </div>
+                              <div>₹ 4,478</div>
+                            </div>
+                          </div>
+                          <div className="text-end">
+                            <h6>
+                              ₹ 9,007
+                              <small className="text-10">Per Traveller</small>
+                            </h6>
+                            <div className="d-flex justify-content-end gap-4 mt-3">
+                              <button class=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white">
+                                Book Now
+                              </button>
+                              <button class=" button btn -outline-blue-1 text-sm -dark-1 px-10 h-40  text-blue-1">
+                                Lock Price
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     )}
-                  </div>
-                  <div className="additional-detail">
-                    <div>Return</div>
-                    <div>adsadsad</div>
                   </div>
                 </div>
               </div>

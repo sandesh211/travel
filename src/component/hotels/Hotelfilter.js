@@ -203,9 +203,9 @@ const Hotelfilter = () => {
 
   return (
     <div class="tabs__pane -tab-item-1 is-tab-el-active">
-      <div class="mainSearch bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 rounded-4 shadow-1">
-        <div class="button-grid items-center grid-colams hotelscols">
-          <div class="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
+      <div class="mainSearch bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 shadow-1">
+        <div class="button-grid items-center grid-colamss hotelscols">
+          <div class="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
             <div data-x-dd-click="searchMenu-loc">
               <h4 class="text-15 fw-500 ls-2 lh-16">Location</h4>
 
@@ -228,14 +228,14 @@ const Hotelfilter = () => {
                   data-x-dd="searchMenu-loc"
                   data-x-dd-toggle="-is-active"
                 >
-                  <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                  <div class="bg-white px-20 py-30 sm:px-0 sm:py-15">
                     <div class="y-gap-5 js-results">
                       <div className="cityDataScroll">
                         {cityFilterValue?.map((data) => {
                           return (
                             <button
                               key={data.cityName}
-                              class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option"
+                              class="-link d-block col-12 text-left px-20 py-15 js-search-option"
                             >
                               <div
                                 class="d-flex"
@@ -266,7 +266,7 @@ const Hotelfilter = () => {
             </div>
           </div>
 
-          <div class="searchMenu-date px-30 lg:py-20 lg:px-0 js-form-dd js-calendar">
+          <div class="searchMenu-date px-20 lg:py-20 lg:px-0 js-form-dd js-calendar">
             <div data-x-dd-click="searchMenu-date">
               <h4 class="text-15 fw-500 ls-2 lh-16">Check in - Check out</h4>
               <div>
@@ -307,7 +307,7 @@ const Hotelfilter = () => {
             </div>
           </div> */}
 
-          <div class="searchMenu-guests px-30 lg:py-20 lg:px-0 js-form-dd js-form-counters">
+          <div class="searchMenu-guests px-20 lg:py-20 lg:px-0 js-form-dd js-form-counters">
             <div data-x-dd-click="searchMenu-guests">
               <h4 class="text-15 fw-500 ls-2 lh-16">Guest</h4>
 
@@ -323,7 +323,7 @@ const Hotelfilter = () => {
                 data-x-dd="searchMenu-guests"
                 data-x-dd-toggle="-is-active"
               >
-                <div class="bg-white px-30 py-30 rounded-4">
+                <div class="bg-white px-30 py-30">
                   <div class="row y-gap-10 justify-between items-center">
                     <div class="col-auto">
                       <div class="text-15 fw-500">Adults</div>
@@ -335,7 +335,7 @@ const Hotelfilter = () => {
                         data-value-change=".js-count-adult"
                       >
                         <button
-                          className="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
+                          className="button -outline-blue-1 text-blue-1 size-38 js-down"
                           onClick={handleAdultsDecrement}
                         >
                           <i class="icon-minus text-12"></i>
@@ -346,7 +346,7 @@ const Hotelfilter = () => {
                         </div>
 
                         <button
-                          className="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
+                          className="button -outline-blue-1 text-blue-1 size-38 js-up"
                           onClick={handleAdultsIncrement}
                         >
                           <i class="icon-plus text-12"></i>
@@ -368,7 +368,7 @@ const Hotelfilter = () => {
                         data-value-change=".js-count-child"
                       >
                         <button
-                          class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
+                          class="button -outline-blue-1 text-blue-1 size-38 js-down"
                           onClick={handleChildrenDecrement}
                         >
                           <i class="icon-minus text-12"></i>
@@ -379,7 +379,7 @@ const Hotelfilter = () => {
                         </div>
 
                         <button
-                          class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
+                          class="button -outline-blue-1 text-blue-1 size-38 js-up"
                           onClick={handleChildrenIncrement}
                         >
                           <i class="icon-plus text-12"></i>
@@ -399,7 +399,6 @@ const Hotelfilter = () => {
                   </div>
 
                   <div class="border-top-light mt-24 mb-24"></div>
-
                   <div class="row y-gap-10 justify-between items-center">
                     <div class="col-auto">
                       <div class="text-15 fw-500">Rooms</div>
@@ -411,7 +410,7 @@ const Hotelfilter = () => {
                         data-value-change=".js-count-room"
                       >
                         <button
-                          class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down"
+                          class="button -outline-blue-1 text-blue-1 size-38 js-down"
                           onClick={handleRoomsDecrement}
                         >
                           <i class="icon-minus text-12"></i>
@@ -422,7 +421,7 @@ const Hotelfilter = () => {
                         </div>
 
                         <button
-                          class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up"
+                          class="button -outline-blue-1 text-blue-1 size-38 js-up"
                           onClick={handleRoomsIncrement}
                         >
                           <i class="icon-plus text-12"></i>
@@ -437,22 +436,16 @@ const Hotelfilter = () => {
 
           <div class="button-item">
             <button
-              class="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
+              class="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 bg-blue-1 text-white"
               onClick={() => {
                 Searchlist();
               }}
             >
               <i class="icon-search text-20 mr-10"></i>
               {loaderApiRes ? (
-                <img
-                  src={loadingImg}
-                  style={{
-                    width: "40px",
-                    height: "30px",
-                    borderRadius: "50px",
-                  }}
-                  alt="loading..."
-                />
+                <div className="spinner-border" role="status">
+                  <span className="sr-only"></span>
+                </div>
               ) : (
                 "Search"
               )}
@@ -464,7 +457,7 @@ const Hotelfilter = () => {
         <div className="selextbox">
           <DropdownButton
             id="dropdown-basic-button"
-            className="bg-arrowndown dropdown-basic-button2"
+            className="bg-arrowndown dropdown-basic-button2 border-none"
             title="Rating"
           >
             <i class="fa fa-angle-down" aria-hidden="true"></i>
@@ -534,7 +527,7 @@ const Hotelfilter = () => {
         </div>
         <div className="selextbox">
           <select
-            className="bg-arrowndown dropdown-basic-button2"
+            className="bg-arrowndown dropdown-basic-button2 border-none"
             value={selectedCityObject?.countryName?.toLowerCase()}
             onChange={handleCountryChange}
           >
@@ -549,7 +542,7 @@ const Hotelfilter = () => {
         <div className="selextbox">
           <select
             value={selectedCityObject?.countryName?.toLowerCase()}
-            className="bg-arrowndown dropdown-basic-button2"
+            className="bg-arrowndown dropdown-basic-button2 border-none"
             onChange={handleChangeNationlity}
           >
             <option>Country</option>

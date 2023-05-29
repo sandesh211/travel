@@ -43,11 +43,15 @@ const Header = () => {
                     <li>
                       <Link to="/Hotel"> Hotel</Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link to="/Destination"> Destination</Link>
                     </li>
                     <li>
                       <Link to="/Tour"> Tour</Link>
+                    </li> */}
+
+                    <li>
+                      <Link to="/"> About us</Link>
                     </li>
                     <li>
                       <Link to="/contact-us">Contact</Link>

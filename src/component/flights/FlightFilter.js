@@ -272,7 +272,7 @@ const FlightFilter = () => {
           </div>
 
           <div class="button-grid items-center grid-colams">
-            <div class="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
+            <div class="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
               <div data-x-dd-click="searchMenu-loc">
                 <h4 class="text-15 fw-500 ls-2 lh-16">From</h4>
                 <div class="text-15 text-light-1 ls-2 lh-16">
@@ -333,7 +333,7 @@ const FlightFilter = () => {
                   </div>
                 )}
             </div>
-            <div class="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
+            <div class="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
               <div data-x-dd-click="searchMenu-loc">
                 <h4 class="text-15 fw-500 ls-2 lh-16">To</h4>
 
@@ -423,7 +423,7 @@ const FlightFilter = () => {
                 </div>
               </div>
             </div>
-            <div class="searchMenu-guests px-30 lg:py-20 lg:px-0 js-form-dd js-form-counters">
+            <div class="searchMenu-guests px-20 lg:py-20 lg:px-0 js-form-dd js-form-counters">
               <div data-x-dd-click="searchMenu-guests">
                 <h4 class="text-15 fw-500 ls-2 lh-16">Guest</h4>
 

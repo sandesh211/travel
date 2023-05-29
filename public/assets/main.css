@@ -14809,3 +14809,9 @@ select {
   overflow-y: scroll !important;
   height: 246px !important;
 }
+
+.fixedbottom.position-fixed {
+  width: 820px;
+  border: 5px;
+  overflow: hidden;
+}

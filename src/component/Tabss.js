@@ -114,7 +114,7 @@ const Tabss = () => {
                     >
                       Flights
                     </button>
-                    <button
+                    {/* <button
                       className={
                         activeTab === 2
                           ? "active tabs__button px-30 py-20 fw-600 text-white js-tabs-button"
@@ -123,7 +123,7 @@ const Tabss = () => {
                       onClick={() => handleTabClick(2)}
                     >
                       Tour
-                    </button>
+                    </button> */}
                     <button
                       className={
                         activeTab === 3
