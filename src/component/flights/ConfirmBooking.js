@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import "https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp";
+import PaymentForm from "../payment/PaymentForm";
+import { loadScript } from "../../config/Utils";
 
 const ConfirmBooking = () => {
   const { state } = useLocation();
@@ -23,15 +26,52 @@ const ConfirmBooking = () => {
     // prints the difference in days
     return `${diffInDays} hr`;
   };
+
+  useEffect(() => {
+    loadScript("https://checkout.razorpay.com/v1/checkout.js", "razorpayScript")
+      .then(() => {
+        console.log("Razorpay script loaded.");
+      })
+      .catch((error) => {
+        console.log("Failed to load Razorpay script:", error);
+      });
+  }, []);
+
+  const handlePayment = () => {
+    if (!window.Razorpay) {
+      console.log("Razorpay script not loaded.");
+      return;
+    }
+    const options = {
+      key: "rzp_test_YeQYaEfvpWfjLn",
+      amount: TotalPriceFare?.fC?.TF * 100, // amount in paise
+      currency: "INR",
+      name: "Delightfull Holidays",
+      description: "Payment for your product",
+      handler: (response) => {
+        // Handle success callback
+        console.log("payment", response);
+      },
+      prefill: {
+        name: "Delightfull Holidays",
+        email: "info.delightfulholidays@gmail.com",
+        contact: "9636952821",
+      },
+    };
+
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
+  };
+
   return (
     <div className="bg-stone-100">
-      <section className="lg:max-w-7xl mx-auto layout-pb-md bg-light-2 py-20">
-        <div className="text-2xl font-bold">Complete your booking</div>
+      <section className="container layout-pb-md bg-light-2 py-20">
+        <div className="text-xl font-bold">Complete your booking</div>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 md:gap-3 lg:gap-4 mt-6">
           <div className="col-span-2">
             {bookingData?.data?.sI?.map((bookingDetail) => {
               return (
-                <div class=" bg-white p-3 md:p-4 lg:p-5 shadow-lg rounded">
+                <div class=" bg-white p-3 md:p-4 lg:p-5 shadow-lg rounded mb-3">
                   <div className="shadow-md p-2">
                     <div className="md:flex lg:flex justify-between">
                       <div className="border-l-4 border-green-600 ps-3">
@@ -210,8 +250,8 @@ const ConfirmBooking = () => {
                 </div>
               </div>
             </div> */}
-            <div class=" bg-white shadow-lg rounded">
-              <div className="p-5">
+            <div class="bg-white shadow-lg rounded mt-3">
+              <div className="p-4">
                 <h5 className="text-xl font-bold">Traveller Details</h5>
                 <div className="md:flex lg:flex justify-between bg-gray-100 p-2 mt-3">
                   <p>
@@ -223,7 +263,7 @@ const ConfirmBooking = () => {
                   </button>
                 </div>
               </div>
-              <div className="border-t p-5">
+              <div className="border-t p-4">
                 <div className="text-gray-900 font-medium text-lg mb-3">
                   Booking details will be sent to
                 </div>
@@ -239,7 +279,7 @@ const ConfirmBooking = () => {
                         <option>India(91)</option>
                       </select>
                     </div>
-                    <div className="my-3 lg:my-0 md:my-0">
+                    <div className="lg:my-0 md:my-0">
                       <label
                         htmlFor="Mobile-number"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -275,15 +315,17 @@ const ConfirmBooking = () => {
                   <button
                     type="submit"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    onClick={handlePayment}
                   >
                     CONTINUE
                   </button>
                 </form>
+                {/* <PaymentForm /> */}
               </div>
             </div>
           </div>
           <div class="box mt-4 md:mt-0 lg:mt-0">
-            <div class="bg-white p-5 shadow-lg rounded">
+            <div class="bg-white p-4 shadow-lg rounded">
               <div className="font-bold text-gray-900">Fare Summary</div>
               <h6 className="text-base font-medium text-gray-900 mt-3 mb-1">
                 Base Fare

@@ -22,9 +22,9 @@ const FlightDetail = (props) => {
 
   // console.log("LocationData", LocationData);
 
-  // useEffect(() => {
-  //   setShowConfirmPage(false);
-  // }, []);
+  useEffect(() => {
+    setShowConfirmPage(false);
+  }, []);
 
   const convertTime = (data) => {
     const dateString = data;
@@ -97,7 +97,7 @@ const FlightDetail = (props) => {
 
   const BookNow = () => {
     if (reviewResponse) {
-      // setShowConfirmPage(true);
+      setShowConfirmPage(true);
       navigate("/confirm-booking", {
         state: { data: reviewResponse?.data?.tripInfos[0] },
       });
