@@ -733,7 +733,7 @@ const FlightFilter = () => {
               />
               <label
                 className="form-check-label text-15 ml-5"
-                For="Direct-Flight"
+                htmlFor="Direct-Flight"
               >
                 Direct Flight
               </label>
@@ -749,7 +749,7 @@ const FlightFilter = () => {
               />
               <label
                 className="form-check-label text-15 ml-5"
-                For="Credit-Shell"
+                htmlFor="Credit-Shell"
               >
                 Credit Shell
               </label>
@@ -776,7 +776,7 @@ const FlightFilter = () => {
                   <div className="radio__icon" />
                 </div>
               </div>
-              <label className="ml-10" For="regular-fares">
+              <label className="ml-10" htmlFor="regular-fares">
                 Regular Fares
               </label>
             </div>
@@ -796,7 +796,7 @@ const FlightFilter = () => {
                   <div className="radio__icon" />
                 </div>
               </div>
-              <label className="ml-10" For="Student-Fares">
+              <label className="ml-10" htmlFor="Student-Fares">
                 Student Fares
               </label>
             </div>
@@ -816,7 +816,7 @@ const FlightFilter = () => {
                   <div className="radio__icon" />
                 </div>
               </div>
-              <label className="ml-10" For="seniar-citizen">
+              <label className="ml-10" htmlFor="seniar-citizen">
                 Senior Citizen Fares
               </label>
             </div>
