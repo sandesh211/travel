@@ -6,9 +6,6 @@ import "react-bootstrap";
 import axios from "axios";
 import Country from "../Country.json";
 import { ApiKey, ApiUrlHotel } from "../../config/Config";
-import loadingImg from "../../images/loaderApi.gif";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 const Hotelfilter = () => {
   const navigate = useNavigate();
@@ -277,6 +274,7 @@ const Hotelfilter = () => {
                     endDate: selectedDates.endDate,
                   }}
                   onChange={handleDateValue}
+                  minDate={new Date()}
                 />
               </div>
             </div>

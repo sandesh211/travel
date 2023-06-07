@@ -405,6 +405,7 @@ const FlightFilter = () => {
                       placeholderText={"dd-mm-yyyy"}
                       selected={startDate}
                       onChange={(date) => setStartDate(date)}
+                      filterDate={(date) => date > new Date()}
                     />
                   </div>
                   <div>
