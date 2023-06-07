@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import "https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp";
 import PaymentForm from "../payment/PaymentForm";
 import { loadScript } from "../../config/Utils";
 
