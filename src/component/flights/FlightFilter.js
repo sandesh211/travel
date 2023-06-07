@@ -228,8 +228,8 @@ const FlightFilter = () => {
   //   };
   return (
     <>
-      <div class="tabs__pane -tab-item-1 is-tab-el-active">
-        <div class="mainSearch bg-transparent bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 shadow-1">
+      <div className="tabs__pane -tab-item-1 is-tab-el-active">
+        <div className="mainSearch bg-transparent bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 shadow-1">
           <div className="toggle_radio onewaycity">
             <input
               onClick={() => {
@@ -271,11 +271,11 @@ const FlightFilter = () => {
             <div className="toggle_option_slider"></div>
           </div>
 
-          <div class="button-grid items-center grid-colams">
-            <div class="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
+          <div className="button-grid items-center grid-colams">
+            <div className="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
               <div data-x-dd-click="searchMenu-loc">
-                <h4 class="text-15 fw-500 ls-2 lh-16">From</h4>
-                <div class="text-15 text-light-1 ls-2 lh-16">
+                <h4 className="text-15 fw-500 ls-2 lh-16">From</h4>
+                <div className="text-15 text-light-1 ls-2 lh-16">
                   <input
                     type="text"
                     value={airportLocation}
@@ -287,7 +287,7 @@ const FlightFilter = () => {
                       setDestinationListFlag(false);
                     }}
                     placeholder="Where are you going?"
-                    class="js-search js-dd-focus"
+                    className="js-search js-dd-focus"
                   />
                 </div>
               </div>
@@ -295,31 +295,31 @@ const FlightFilter = () => {
                 airportFilterValue &&
                 airportFilterValue.length > 0 && (
                   <div
-                    class="searchMenu-loc__field shadow-2 js-popup-window -is-active"
+                    className="searchMenu-loc__field shadow-2 js-popup-window -is-active"
                     data-x-dd="searchMenu-loc"
                     data-x-dd-toggle="-is-active"
                   >
-                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15">
-                      <div class="y-gap-5 js-results">
+                    <div className="bg-white px-30 py-30 sm:px-0 sm:py-15">
+                      <div className="y-gap-5 js-results">
                         <div className="cityDataScroll">
                           {airportFilterValue?.map((data) => {
                             return (
                               <button
                                 key={data.code}
-                                class="-link d-block col-12 text-left px-20 py-15 js-search-option"
+                                className="-link d-block col-12 text-left px-20 py-15 js-search-option"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleAirportSelect(data);
                                   setAirportFilterValue(null);
                                 }}
                               >
-                                <div class="d-flex">
-                                  <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
-                                  <div class="ml-10">
-                                    <div class="text-15 lh-12 fw-500 js-search-option-target">
+                                <div className="d-flex">
+                                  <div className="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                  <div className="ml-10">
+                                    <div className="text-15 lh-12 fw-500 js-search-option-target">
                                       {data.city} ({data.code})
                                     </div>
-                                    <div class="text-14 lh-12 text-light-1 mt-5">
+                                    <div className="text-14 lh-12 text-light-1 mt-5">
                                       {data.name}
                                     </div>
                                   </div>
@@ -333,11 +333,11 @@ const FlightFilter = () => {
                   </div>
                 )}
             </div>
-            <div class="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
+            <div className="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
               <div data-x-dd-click="searchMenu-loc">
-                <h4 class="text-15 fw-500 ls-2 lh-16">To</h4>
+                <h4 className="text-15 fw-500 ls-2 lh-16">To</h4>
 
-                <div class="text-15 text-light-1 ls-2 lh-16">
+                <div className="text-15 text-light-1 ls-2 lh-16">
                   <input
                     type="text"
                     value={airportLocationDest}
@@ -349,7 +349,7 @@ const FlightFilter = () => {
                       setCityListFlag(false);
                     }}
                     placeholder="Where are you going?"
-                    class="js-search js-dd-focus"
+                    className="js-search js-dd-focus"
                   />
                 </div>
               </div>
@@ -357,31 +357,31 @@ const FlightFilter = () => {
                 airportFilterValueDest &&
                 airportFilterValueDest.length > 0 && (
                   <div
-                    class="searchMenu-loc__field shadow-2 js-popup-window -is-active"
+                    className="searchMenu-loc__field shadow-2 js-popup-window -is-active"
                     data-x-dd="searchMenu-loc"
                     data-x-dd-toggle="-is-active"
                   >
-                    <div class="bg-white px-30 py-30 sm:px-0 sm:py-15">
-                      <div class="y-gap-5 js-results">
+                    <div className="bg-white px-30 py-30 sm:px-0 sm:py-15">
+                      <div className="y-gap-5 js-results">
                         <div className="cityDataScroll">
                           {airportFilterValueDest?.map((data) => {
                             return (
                               <button
                                 key={data.code}
-                                class="-link d-block col-12 text-left px-20 py-15 js-search-option"
+                                className="-link d-block col-12 text-left px-20 py-15 js-search-option"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleAirportSelectDest(data);
                                   setAirportFilterValueDest(null);
                                 }}
                               >
-                                <div class="d-flex">
-                                  <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
-                                  <div class="ml-10">
-                                    <div class="text-15 lh-12 fw-500 js-search-option-target">
+                                <div className="d-flex">
+                                  <div className="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                  <div className="ml-10">
+                                    <div className="text-15 lh-12 fw-500 js-search-option-target">
                                       {data.city} ({data.code})
                                     </div>
-                                    <div class="text-14 lh-12 text-light-1 mt-5">
+                                    <div className="text-14 lh-12 text-light-1 mt-5">
                                       {data.name}
                                     </div>
                                   </div>
@@ -395,11 +395,11 @@ const FlightFilter = () => {
                   </div>
                 )}
             </div>
-            <div class="searchMenu-date px-10 lg:py-20 lg:px-0 js-form-dd js-calendar">
+            <div className="searchMenu-date px-10 lg:py-20 lg:px-0 js-form-dd js-calendar">
               <div data-x-dd-click="searchMenu-date">
                 <div className="d-flex justify-content-between">
                   <div>
-                    <h4 class="text-15 fw-500 ls-2 lh-16">Departure</h4>
+                    <h4 className="text-15 fw-500 ls-2 lh-16">Departure</h4>
 
                     <DatePicker
                       placeholderText={"dd-mm-yyyy"}
@@ -411,7 +411,7 @@ const FlightFilter = () => {
                   <div>
                     {tripType === "round" ? (
                       <>
-                        <h4 class="text-15 fw-500 ls-2 lh-16">Return</h4>
+                        <h4 className="text-15 fw-500 ls-2 lh-16">Return</h4>
 
                         <DatePicker
                           placeholderText={"dd-mm-yyyy"}
@@ -424,12 +424,12 @@ const FlightFilter = () => {
                 </div>
               </div>
             </div>
-            <div class="searchMenu-guests px-20 lg:py-20 lg:px-0 js-form-dd js-form-counters">
+            <div className="searchMenu-guests px-20 lg:py-20 lg:px-0 js-form-dd js-form-counters">
               <div data-x-dd-click="searchMenu-guests">
-                <h4 class="text-15 fw-500 ls-2 lh-16">Guest</h4>
+                <h4 className="text-15 fw-500 ls-2 lh-16">Guest</h4>
 
                 <div
-                  class="text-15 text-light-1 ls-2 lh-16"
+                  className="text-15 text-light-1 ls-2 lh-16"
                   onClick={handleshow}
                   onFocus={() => {
                     setIsShown(true);
@@ -438,125 +438,125 @@ const FlightFilter = () => {
                     setIsShown(false);
                   }}
                 >
-                  <span class="js-count-adult">{adults}</span> adults{" "}
-                  <span class="js-count-child">{children}</span> children{" "}
+                  <span className="js-count-adult">{adults}</span> adults{" "}
+                  <span className="js-count-child">{children}</span> children{" "}
                 </div>
               </div>
               {isShown ? (
                 <div
-                  class="searchMenu-guests__field shadow-2 -is-active"
+                  className="searchMenu-guests__field shadow-2 -is-active"
                   data-x-dd="searchMenu-guests"
                   data-x-dd-toggle="-is-active"
                 >
-                  <div class="bg-white px-30 py-30">
-                    <div class="row y-gap-10 justify-between items-center">
-                      <div class="col-auto">
-                        <div class="text-15 fw-500">Adults(12y +)</div>
+                  <div className="bg-white px-30 py-30">
+                    <div className="row y-gap-10 justify-between items-center">
+                      <div className="col-auto">
+                        <div className="text-15 fw-500">Adults(12y +)</div>
                         <p>on the day of travel</p>
                       </div>
 
-                      <div class="col-auto">
+                      <div className="col-auto">
                         <div
-                          class="d-flex items-center js-counter"
+                          className="d-flex items-center js-counter"
                           data-value-change=".js-count-adult"
                         >
                           <button
                             className="button -outline-blue-1 text-blue-1 size-38 js-down"
                             onClick={handleAdultsDecrement}
                           >
-                            <i class="icon-minus text-12"></i>
+                            <i className="icon-minus text-12"></i>
                           </button>
 
-                          <div class="flex-center size-20 ml-15 mr-15">
-                            <div class="text-15 js-count">{adults}</div>
+                          <div className="flex-center size-20 ml-15 mr-15">
+                            <div className="text-15 js-count">{adults}</div>
                           </div>
 
                           <button
                             className="button -outline-blue-1 text-blue-1 size-38 js-up"
                             onClick={handleAdultsIncrement}
                           >
-                            <i class="icon-plus text-12"></i>
+                            <i className="icon-plus text-12"></i>
                           </button>
                         </div>
                       </div>
                     </div>
 
-                    <div class="border-top-light mt-24 mb-24"></div>
+                    <div className="border-top-light mt-24 mb-24"></div>
 
-                    <div class="row y-gap-10 justify-between items-center">
-                      <div class="col-auto">
-                        <div class="text-15 lh-12 fw-500">
+                    <div className="row y-gap-10 justify-between items-center">
+                      <div className="col-auto">
+                        <div className="text-15 lh-12 fw-500">
                           Children(2y - 12y )
                         </div>
                         <p>on the day of travel</p>
                       </div>
 
-                      <div class="col-auto">
+                      <div className="col-auto">
                         <div
-                          class="d-flex items-center js-counter"
+                          className="d-flex items-center js-counter"
                           data-value-change=".js-count-child"
                         >
                           <button
-                            class="button -outline-blue-1 text-blue-1 size-38 js-down"
+                            className="button -outline-blue-1 text-blue-1 size-38 js-down"
                             onClick={handleChildrenDecrement}
                           >
-                            <i class="icon-minus text-12"></i>
+                            <i className="icon-minus text-12"></i>
                           </button>
 
-                          <div class="flex-center size-20 ml-15 mr-15">
-                            <div class="text-15 js-count">{children}</div>
+                          <div className="flex-center size-20 ml-15 mr-15">
+                            <div className="text-15 js-count">{children}</div>
                           </div>
 
                           <button
-                            class="button -outline-blue-1 text-blue-1 size-38 js-up"
+                            className="button -outline-blue-1 text-blue-1 size-38 js-up"
                             onClick={handleChildrenIncrement}
                           >
-                            <i class="icon-plus text-12"></i>
+                            <i className="icon-plus text-12"></i>
                           </button>
                         </div>
                       </div>
                     </div>
 
-                    <div class="border-top-light mt-24 mb-24"></div>
+                    <div className="border-top-light mt-24 mb-24"></div>
 
-                    <div class="row y-gap-10 justify-between items-center">
-                      <div class="col-auto">
-                        <div class="text-15 lh-12 fw-500">
+                    <div className="row y-gap-10 justify-between items-center">
+                      <div className="col-auto">
+                        <div className="text-15 lh-12 fw-500">
                           INFANTS (below 2y)
                         </div>
                         <p>on the day of travel</p>
                       </div>
 
-                      <div class="col-auto">
+                      <div className="col-auto">
                         <div
-                          class="d-flex items-center js-counter"
+                          className="d-flex items-center js-counter"
                           data-value-change=".js-count-child"
                         >
                           <button
-                            class="button -outline-blue-1 text-blue-1 size-38 js-down"
+                            className="button -outline-blue-1 text-blue-1 size-38 js-down"
                             onClick={handleInfantsDecrement}
                           >
-                            <i class="icon-minus text-12"></i>
+                            <i className="icon-minus text-12"></i>
                           </button>
 
-                          <div class="flex-center size-20 ml-15 mr-15">
-                            <div class="text-15 js-count">{infants}</div>
+                          <div className="flex-center size-20 ml-15 mr-15">
+                            <div className="text-15 js-count">{infants}</div>
                           </div>
 
                           <button
-                            class="button -outline-blue-1 text-blue-1 size-38 js-up"
+                            className="button -outline-blue-1 text-blue-1 size-38 js-up"
                             onClick={handleInfantsIncrement}
                           >
-                            <i class="icon-plus text-12"></i>
+                            <i className="icon-plus text-12"></i>
                           </button>
                         </div>
                       </div>
                     </div>
 
-                    <div class="border-top-light mt-24 mb-24"></div>
-                    <div class="row y-gap-10 justify-between items-center">
-                      <div class="col-auto">
-                        <div class="text-15 lh-12 fw-500">
+                    <div className="border-top-light mt-24 mb-24"></div>
+                    <div className="row y-gap-10 justify-between items-center">
+                      <div className="col-auto">
+                        <div className="text-15 lh-12 fw-500">
                           CHOOSE TRAVEL CLASS
                         </div>
                         <p>
@@ -595,13 +595,15 @@ const FlightFilter = () => {
                         </p>
                       </div>
 
-                      <div class="col-auto col-12">
+                      <div className="col-auto col-12">
                         <div
-                          class="js-counter"
+                          className="js-counter"
                           data-value-change=".js-count-child"
                         >
-                          <div class="">
-                            <div class="text-15 js-count">{travelClass}</div>
+                          <div className="">
+                            <div className="text-15 js-count">
+                              {travelClass}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -610,14 +612,14 @@ const FlightFilter = () => {
                 </div>
               ) : null}
             </div>
-            <div class="button-item">
+            <div className="button-item">
               <button
-                class="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 bg-blue-1 text-white"
+                className="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 bg-blue-1 text-white"
                 onClick={() => {
                   FlightApiCall();
                 }}
               >
-                <i class="icon-search text-20 mr-10"></i>
+                <i className="icon-search text-20 mr-10"></i>
                 {loaderApiRes ? (
                   <div className="spinner-border" role="status">
                     <span className="sr-only"></span>
@@ -636,7 +638,7 @@ const FlightFilter = () => {
               className="bg-arrowndown dropdown-basic-button2"
               title="Select Preferred Airline"
             >
-              <i class="fa fa-angle-down" aria-hidden="true"></i>
+              <i className="fa fa-angle-down" aria-hidden="true"></i>
               <div className="form-check">
                 <input
                   onClick={handleCheckboxChange}

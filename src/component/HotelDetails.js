@@ -92,7 +92,7 @@ const HotelDetails = () => {
   return (
     <div>
       {" "}
-      <div class="header-margin"></div>
+      <div className="header-margin"></div>
       <main>
         <section className="py-10 d-flex items-center bg-light-2">
           <div className="container">

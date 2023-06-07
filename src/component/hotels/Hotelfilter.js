@@ -199,14 +199,14 @@ const Hotelfilter = () => {
   };
 
   return (
-    <div class="tabs__pane -tab-item-1 is-tab-el-active">
-      <div class="mainSearch bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 shadow-1">
-        <div class="button-grid items-center grid-colamss hotelscols">
-          <div class="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
+    <div className="tabs__pane -tab-item-1 is-tab-el-active">
+      <div className="mainSearch bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 shadow-1">
+        <div className="button-grid items-center grid-colamss hotelscols">
+          <div className="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
             <div data-x-dd-click="searchMenu-loc">
-              <h4 class="text-15 fw-500 ls-2 lh-16">Location</h4>
+              <h4 className="text-15 fw-500 ls-2 lh-16">Location</h4>
 
-              <div class="text-15 text-light-1 ls-2 lh-16">
+              <div className="text-15 text-light-1 ls-2 lh-16">
                 <input
                   autocomplete="off"
                   type="text"
@@ -215,39 +215,39 @@ const Hotelfilter = () => {
                     handleChangeCity(e.target.value);
                   }}
                   placeholder="Where are you going?"
-                  class="js-search js-dd-focus"
+                  className="js-search js-dd-focus"
                 />
               </div>
 
               {cityFilterValue && cityFilterValue.length > 0 && (
                 <div
-                  class="searchMenu-loc__field shadow-2 js-popup-window -is-active"
+                  className="searchMenu-loc__field shadow-2 js-popup-window -is-active"
                   data-x-dd="searchMenu-loc"
                   data-x-dd-toggle="-is-active"
                 >
-                  <div class="bg-white px-20 py-30 sm:px-0 sm:py-15">
-                    <div class="y-gap-5 js-results">
+                  <div className="bg-white px-20 py-30 sm:px-0 sm:py-15">
+                    <div className="y-gap-5 js-results">
                       <div className="cityDataScroll">
                         {cityFilterValue?.map((data) => {
                           return (
                             <button
                               key={data.cityName}
-                              class="-link d-block col-12 text-left px-20 py-15 js-search-option"
+                              className="-link d-block col-12 text-left px-20 py-15 js-search-option"
                             >
                               <div
-                                class="d-flex"
+                                className="d-flex"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleCitySelect(data);
                                   setCityFilterValue(null);
                                 }}
                               >
-                                <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
-                                <div class="ml-10">
-                                  <div class="text-15 lh-12 fw-500 js-search-option-target">
+                                <div className="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                <div className="ml-10">
+                                  <div className="text-15 lh-12 fw-500 js-search-option-target">
                                     {data.cityName}
                                   </div>
-                                  <div class="text-14 lh-12 text-light-1 mt-5">
+                                  <div className="text-14 lh-12 text-light-1 mt-5">
                                     {data.countryName}
                                   </div>
                                 </div>
@@ -263,9 +263,11 @@ const Hotelfilter = () => {
             </div>
           </div>
 
-          <div class="searchMenu-date px-20 lg:py-20 lg:px-0 js-form-dd js-calendar">
+          <div className="searchMenu-date px-20 lg:py-20 lg:px-0 js-form-dd js-calendar">
             <div data-x-dd-click="searchMenu-date">
-              <h4 class="text-15 fw-500 ls-2 lh-16">Check in - Check out</h4>
+              <h4 className="text-15 fw-500 ls-2 lh-16">
+                Check in - Check out
+              </h4>
               <div>
                 <Datepicker
                   classNames="date_width"
@@ -280,11 +282,11 @@ const Hotelfilter = () => {
             </div>
           </div>
 
-          {/* <div class="searchMenu-date px-10 lg:py-20 lg:px-0 js-form-dd js-calendar">
+          {/* <div className="searchMenu-date px-10 lg:py-20 lg:px-0 js-form-dd js-calendar">
             <div data-x-dd-click="searchMenu-date">
               <div className="d-flex justify-content-between">
                 <div>
-                  <h4 class="text-15 fw-500 ls-2 lh-16">Check in</h4>
+                  <h4 className="text-15 fw-500 ls-2 lh-16">Check in</h4>
 
                   <DatePicker
                     placeholderText={"dd-mm-yyyy"}
@@ -293,7 +295,7 @@ const Hotelfilter = () => {
                   />
                 </div>
                 <div>
-                  <h4 class="text-15 fw-500 ls-2 lh-16">Check out</h4>
+                  <h4 className="text-15 fw-500 ls-2 lh-16">Check out</h4>
 
                   <DatePicker
                     placeholderText={"dd-mm-yyyy"}
@@ -305,85 +307,88 @@ const Hotelfilter = () => {
             </div>
           </div> */}
 
-          <div class="searchMenu-guests px-20 lg:py-20 lg:px-0 js-form-dd js-form-counters">
+          <div className="searchMenu-guests px-20 lg:py-20 lg:px-0 js-form-dd js-form-counters">
             <div data-x-dd-click="searchMenu-guests">
-              <h4 class="text-15 fw-500 ls-2 lh-16">Guest</h4>
+              <h4 className="text-15 fw-500 ls-2 lh-16">Guest</h4>
 
-              <div class="text-15 text-light-1 ls-2 lh-16" onClick={handleshow}>
-                <span class="js-count-adult">{adults}</span> adults{" "}
-                <span class="js-count-child">{children}</span> children{" "}
-                <span class="js-count-room">{rooms}</span> rooms
+              <div
+                className="text-15 text-light-1 ls-2 lh-16"
+                onClick={handleshow}
+              >
+                <span className="js-count-adult">{adults}</span> adults{" "}
+                <span className="js-count-child">{children}</span> children{" "}
+                <span className="js-count-room">{rooms}</span> rooms
               </div>
             </div>
             {isShown ? (
               <div
-                class="searchMenu-guests__field shadow-2 -is-active"
+                className="searchMenu-guests__field shadow-2 -is-active"
                 data-x-dd="searchMenu-guests"
                 data-x-dd-toggle="-is-active"
               >
-                <div class="bg-white px-30 py-30">
-                  <div class="row y-gap-10 justify-between items-center">
-                    <div class="col-auto">
-                      <div class="text-15 fw-500">Adults</div>
+                <div className="bg-white px-30 py-30">
+                  <div className="row y-gap-10 justify-between items-center">
+                    <div className="col-auto">
+                      <div className="text-15 fw-500">Adults</div>
                     </div>
 
-                    <div class="col-auto">
+                    <div className="col-auto">
                       <div
-                        class="d-flex items-center js-counter"
+                        className="d-flex items-center js-counter"
                         data-value-change=".js-count-adult"
                       >
                         <button
                           className="button -outline-blue-1 text-blue-1 size-38 js-down"
                           onClick={handleAdultsDecrement}
                         >
-                          <i class="icon-minus text-12"></i>
+                          <i className="icon-minus text-12"></i>
                         </button>
 
-                        <div class="flex-center size-20 ml-15 mr-15">
-                          <div class="text-15 js-count">{adults}</div>
+                        <div className="flex-center size-20 ml-15 mr-15">
+                          <div className="text-15 js-count">{adults}</div>
                         </div>
 
                         <button
                           className="button -outline-blue-1 text-blue-1 size-38 js-up"
                           onClick={handleAdultsIncrement}
                         >
-                          <i class="icon-plus text-12"></i>
+                          <i className="icon-plus text-12"></i>
                         </button>
                       </div>
                     </div>
                   </div>
 
-                  <div class="border-top-light mt-24 mb-24"></div>
+                  <div className="border-top-light mt-24 mb-24"></div>
 
-                  <div class="row y-gap-10 justify-between items-center">
-                    <div class="col-auto">
-                      <div class="text-15 lh-12 fw-500">Children</div>
+                  <div className="row y-gap-10 justify-between items-center">
+                    <div className="col-auto">
+                      <div className="text-15 lh-12 fw-500">Children</div>
                     </div>
 
-                    <div class="col-auto">
+                    <div className="col-auto">
                       <div
-                        class="d-flex items-center js-counter"
+                        className="d-flex items-center js-counter"
                         data-value-change=".js-count-child"
                       >
                         <button
-                          class="button -outline-blue-1 text-blue-1 size-38 js-down"
+                          className="button -outline-blue-1 text-blue-1 size-38 js-down"
                           onClick={handleChildrenDecrement}
                         >
-                          <i class="icon-minus text-12"></i>
+                          <i className="icon-minus text-12"></i>
                         </button>
 
-                        <div class="flex-center size-20 ml-15 mr-15">
-                          <div class="text-15 js-count">{children}</div>
+                        <div className="flex-center size-20 ml-15 mr-15">
+                          <div className="text-15 js-count">{children}</div>
                         </div>
 
                         <button
-                          class="button -outline-blue-1 text-blue-1 size-38 js-up"
+                          className="button -outline-blue-1 text-blue-1 size-38 js-up"
                           onClick={handleChildrenIncrement}
                         >
-                          <i class="icon-plus text-12"></i>
+                          <i className="icon-plus text-12"></i>
                         </button>
                       </div>
-                      {/* <div class="col-auto">
+                      {/* <div className="col-auto">
                         <lable>age</lable>
                         <input
                           type="number"
@@ -396,33 +401,33 @@ const Hotelfilter = () => {
                     </div>
                   </div>
 
-                  <div class="border-top-light mt-24 mb-24"></div>
-                  <div class="row y-gap-10 justify-between items-center">
-                    <div class="col-auto">
-                      <div class="text-15 fw-500">Rooms</div>
+                  <div className="border-top-light mt-24 mb-24"></div>
+                  <div className="row y-gap-10 justify-between items-center">
+                    <div className="col-auto">
+                      <div className="text-15 fw-500">Rooms</div>
                     </div>
 
-                    <div class="col-auto">
+                    <div className="col-auto">
                       <div
-                        class="d-flex items-center js-counter"
+                        className="d-flex items-center js-counter"
                         data-value-change=".js-count-room"
                       >
                         <button
-                          class="button -outline-blue-1 text-blue-1 size-38 js-down"
+                          className="button -outline-blue-1 text-blue-1 size-38 js-down"
                           onClick={handleRoomsDecrement}
                         >
-                          <i class="icon-minus text-12"></i>
+                          <i className="icon-minus text-12"></i>
                         </button>
 
-                        <div class="flex-center size-20 ml-15 mr-15">
-                          <div class="text-15 js-count">{rooms}</div>
+                        <div className="flex-center size-20 ml-15 mr-15">
+                          <div className="text-15 js-count">{rooms}</div>
                         </div>
 
                         <button
-                          class="button -outline-blue-1 text-blue-1 size-38 js-up"
+                          className="button -outline-blue-1 text-blue-1 size-38 js-up"
                           onClick={handleRoomsIncrement}
                         >
-                          <i class="icon-plus text-12"></i>
+                          <i className="icon-plus text-12"></i>
                         </button>
                       </div>
                     </div>
@@ -432,14 +437,14 @@ const Hotelfilter = () => {
             ) : null}
           </div>
 
-          <div class="button-item">
+          <div className="button-item">
             <button
-              class="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 bg-blue-1 text-white"
+              className="mainSearch__submit button -dark-1 py-15 px-35 h-60 col-12 bg-blue-1 text-white"
               onClick={() => {
                 Searchlist();
               }}
             >
-              <i class="icon-search text-20 mr-10"></i>
+              <i className="icon-search text-20 mr-10"></i>
               {loaderApiRes ? (
                 <div className="spinner-border" role="status">
                   <span className="sr-only"></span>
@@ -458,7 +463,7 @@ const Hotelfilter = () => {
             className="bg-arrowndown dropdown-basic-button2 border-none"
             title="Rating"
           >
-            <i class="fa fa-angle-down" aria-hidden="true"></i>
+            <i className="fa fa-angle-down" aria-hidden="true"></i>
             <div className="form-check">
               <input
                 className="form-check-input"

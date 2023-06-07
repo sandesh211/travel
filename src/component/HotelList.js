@@ -33,7 +33,7 @@ const HotelList = () => {
 
   return (
     <div>
-      <div class="header-margin"></div>
+      <div className="header-margin"></div>
       <header
         className="header bg-white shadow-3 js-header"
         data-x="header"
@@ -164,7 +164,7 @@ const HotelList = () => {
                           <div className="selextbox">
 
                               <DropdownButton id="dropdown-basic-button" className="bg-arrowndown dropdown-basic-button2" title="Rating">
-                                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                  <i className="fa fa-angle-down" aria-hidden="true"></i>
                                   <div className="form-check">
                                       <input className="form-check-input" type="checkbox" defaultValue id="onestar5" />
                                       <label className="form-check-label" htmlFor="onestar5">
@@ -481,12 +481,12 @@ const HotelList = () => {
                       <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="text">
-                            <div class="d-inline-block">
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
+                            <div className="d-inline-block">
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
                             </div>
                           </div>
                         </div>
@@ -504,11 +504,11 @@ const HotelList = () => {
                       <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="text">
-                            <div class="d-inline-block">
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
+                            <div className="d-inline-block">
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
                             </div>
                           </div>
                         </div>
@@ -526,10 +526,10 @@ const HotelList = () => {
                       <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="text">
-                            <div class="d-inline-block">
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
+                            <div className="d-inline-block">
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
                             </div>
                           </div>
                         </div>
@@ -547,9 +547,9 @@ const HotelList = () => {
                       <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="text">
-                            <div class="d-inline-block">
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
+                            <div className="d-inline-block">
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
                             </div>
                           </div>
                         </div>
@@ -567,8 +567,8 @@ const HotelList = () => {
                       <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="text">
-                            <div class="d-inline-block">
-                              <i class="icon-star text-15 mr-3 text-yellow-1"></i>
+                            <div className="d-inline-block">
+                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
                             </div>
                           </div>
                         </div>

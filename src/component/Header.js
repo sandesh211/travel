@@ -63,8 +63,8 @@ const Header = () => {
             </div>
             <div className="col-auto">
               <div className="d-flex items-center">
-                <div class="d-flex">
-                  <div class="button -outline-blue-1 px-30 fw-400 text-14 h-50 text-blue-1 ml-20">
+                <div className="d-flex">
+                  <div className="button -outline-blue-1 px-30 fw-400 text-14 h-50 text-blue-1 ml-20">
                     <Link to="/Login"> Sign In &nbsp;</Link>{" "}
                     <Link to="/Register"> / Register</Link>
                   </div>

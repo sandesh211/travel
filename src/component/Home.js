@@ -7,7 +7,7 @@ let Home = () => {
   return (
     <div>
       <Header />
-      <div class="header-margin"></div>
+      <div className="header-margin"></div>
       <section
         className="masthead -type-3 flight-space relative z-5"
         style={{ backgroundImage: `url(${homebanner})` }}

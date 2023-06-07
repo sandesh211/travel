@@ -6,7 +6,7 @@ import Footer from "../Footer";
 const TermsConditions = () => {
   return (
     <div>
-      <div class="header-margin"></div>
+      <div className="header-margin"></div>
       <Header />
       <main>
         <section className="layout-pb-md layout-pt-md">

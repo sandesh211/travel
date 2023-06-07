@@ -1100,14 +1100,14 @@ const FlightDetail = (props) => {
                             Departure ・ <span>IndiGo</span>
                           </h6>
                           <div className="d-flex justify-content-between">
-                            <div class="col-sm-auto">
+                            <div className="col-sm-auto">
                               <img
-                                class="size-30 me-2"
+                                className="size-30 me-2"
                                 src={flighticon2}
                                 alt="image"
                               />
-                              <span class="text-14">{`${selectedRouteInfo?.fromCityOrAirport.city} → ${selectedRouteInfo?.toCityOrAirport.city} `}</span>
-                              <span class="text-14">20:45 → 00:25</span>
+                              <span className="text-14">{`${selectedRouteInfo?.fromCityOrAirport.city} → ${selectedRouteInfo?.toCityOrAirport.city} `}</span>
+                              <span className="text-14">20:45 → 00:25</span>
                             </div>
                             <div>₹ 4,478</div>
                           </div>
@@ -1117,13 +1117,13 @@ const FlightDetail = (props) => {
                             Return ・ <span>AirAsia</span>
                           </h6>
                           <div className="d-flex justify-content-between">
-                            <div class="col-sm-auto">
+                            <div className="col-sm-auto">
                               <img
-                                class="size-30 me-2"
+                                className="size-30 me-2"
                                 src={flighticon}
                                 alt="image"
                               />
-                              <span class="text-14">20:45 → 00:25</span>
+                              <span className="text-14">20:45 → 00:25</span>
                             </div>
                             <div>₹ 4,478</div>
                           </div>
@@ -1139,7 +1139,7 @@ const FlightDetail = (props) => {
                             </h6>
                             <div className="d-flex justify-content-end gap-4 mt-3">
                               <button
-                                class=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
+                                className=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   BookNow();
@@ -1147,7 +1147,7 @@ const FlightDetail = (props) => {
                               >
                                 Book Now
                               </button>
-                              <button class=" button btn -outline-blue-1 text-sm -dark-1 px-10 h-40  text-blue-1">
+                              <button className=" button btn -outline-blue-1 text-sm -dark-1 px-10 h-40  text-blue-1">
                                 Lock Price
                               </button>
                             </div>

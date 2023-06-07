@@ -65,11 +65,11 @@ const ConfirmBooking = () => {
     <div className="bg-stone-100">
       <section className="container layout-pb-md bg-light-2 py-20">
         <div className="text-xl font-bold">Complete your booking</div>
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 md:gap-3 lg:gap-4 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 md:gap-3 lg:gap-4 mt-6">
           <div className="col-span-2">
             {bookingData?.data?.sI?.map((bookingDetail) => {
               return (
-                <div class=" bg-white p-3 md:p-4 lg:p-5 shadow-lg rounded mb-3">
+                <div className=" bg-white p-3 md:p-4 lg:p-5 shadow-lg rounded mb-3">
                   <div className="shadow-md p-2">
                     <div className="md:flex lg:flex justify-between">
                       <div className="border-l-4 border-green-600 ps-3">
@@ -169,7 +169,7 @@ const ConfirmBooking = () => {
               );
             })}
 
-            {/* <div class="my-4 bg-white p-3 md:p-4 lg:p-5 shadow-lg rounded">
+            {/* <div className="my-4 bg-white p-3 md:p-4 lg:p-5 shadow-lg rounded">
               <div className="shadow-md p-2">
                 <div className="md:flex lg:flex justify-between">
                   <div className="border-l-4 border-green-600 ps-3">
@@ -248,15 +248,15 @@ const ConfirmBooking = () => {
                 </div>
               </div>
             </div> */}
-            <div class="bg-white shadow-lg rounded mt-3">
+            <div className="bg-white shadow-lg rounded mt-3">
               <div className="p-4">
                 <h5 className="text-xl font-bold">Traveller Details</h5>
                 <div className="md:flex lg:flex justify-between bg-gray-100 p-2 mt-3">
                   <p>
-                    <i class="fa-solid fa-user-lock"></i> Log in to view your
-                    saved traveller list, unlock amazing deals & much more!
+                    <i className="fa-solid fa-user-lock"></i> Log in to view
+                    your saved traveller list, unlock amazing deals & much more!
                   </p>
-                  <button class="text-sm rounded-full font-bold text-cyan-600">
+                  <button className="text-sm rounded-full font-bold text-cyan-600">
                     LOGIN NOW
                   </button>
                 </div>
@@ -312,7 +312,7 @@ const ConfirmBooking = () => {
                   </div>
                   <button
                     type="submit"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     onClick={handlePayment}
                   >
                     CONTINUE
@@ -322,8 +322,8 @@ const ConfirmBooking = () => {
               </div>
             </div>
           </div>
-          <div class="box mt-4 md:mt-0 lg:mt-0">
-            <div class="bg-white p-4 shadow-lg rounded">
+          <div className="box mt-4 md:mt-0 lg:mt-0">
+            <div className="bg-white p-4 shadow-lg rounded">
               <div className="font-bold text-gray-900">Fare Summary</div>
               <h6 className="text-base font-medium text-gray-900 mt-3 mb-1">
                 Base Fare

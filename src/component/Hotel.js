@@ -5,7 +5,7 @@ import Hotelfilter from "./hotels/Hotelfilter";
 const Hotel = () => {
   return (
     <div>
-      <div class="header-margin"></div>
+      <div className="header-margin"></div>
       <main>
         <section
           className="masthead -type-3 flight-space relative z-5"

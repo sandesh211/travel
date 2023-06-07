@@ -5,7 +5,7 @@ import map from "../../images/map.png";
 const Contact = () => {
   return (
     <div>
-      {/* <div class="header-margin"></div> */}
+      {/* <div className="header-margin"></div> */}
 
       <main>
         <div>
