@@ -79,7 +79,7 @@ const HotelList = () => {
                 <div className="d-flex ">
                   <a
                     href="#"
-                    className="button -outline-blue-1 px-30 fw-400 text-14 h-50 text-blue-1 ml-20"
+                    className="button -outline-blue-1 px-30 fw-400 text-14 h-50 text-blue-1"
                   >
                     Sign In / Register
                   </a>

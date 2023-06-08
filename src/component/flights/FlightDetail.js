@@ -485,12 +485,12 @@ const FlightDetail = (props) => {
                     className={
                       LocationDataReturn
                         ? `js-accordion  base-tr`
-                        : `js-accordion grid grid-cols-2 gap-4  base-tr`
+                        : `js-accordion base-tr row`
                     }
                   >
                     {LocationData?.map((item) => {
                       return (
-                        <Accordion
+                        <Accordion className="col-12 col-md-12 col-lg-6 mb-3"
                           defaultKey="0"
                           onClick={() => {
                             selectOnwardFlight(item);
@@ -1034,11 +1034,11 @@ const FlightDetail = (props) => {
                   {reviewResponse && (
                     <div className="additional-detail">
                       <div className="fixedbottom position-fixed bottom-0 rounded">
-                        <div className="grid grid-cols-3 gap-3 bg-dark text-white p-3">
+                        <div className="row w-100 bg-dark text-white p-3">
                           {reviewResponse?.data?.tripInfos[0]?.sI?.map(
                             (item2) => {
                               return (
-                                <div className="row y-gap-10 mb-3 items-center">
+                                <div className="col-6 col-md-4 col-lg-4 y-gap-10 items-center">
                                   <div className="col-sm-auto">
                                     <img
                                       className="size-30 me-2"
@@ -1128,7 +1128,7 @@ const FlightDetail = (props) => {
                             <div>₹ 4,478</div>
                           </div>
                         </div> */}
-                          <div className="text-end">
+                          <div className="text-end col-12 col-md-4 col-lg-4">
                             <h6>
                               ₹{" "}
                               {

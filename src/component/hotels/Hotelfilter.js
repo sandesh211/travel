@@ -225,7 +225,7 @@ const Hotelfilter = () => {
                   data-x-dd="searchMenu-loc"
                   data-x-dd-toggle="-is-active"
                 >
-                  <div className="bg-white px-20 py-30 sm:px-0 sm:py-15">
+                  <div className="bg-white sm:px-0 sm:py-15">
                     <div className="y-gap-5 js-results">
                       <div className="cityDataScroll">
                         {cityFilterValue?.map((data) => {
@@ -326,7 +326,7 @@ const Hotelfilter = () => {
                 data-x-dd="searchMenu-guests"
                 data-x-dd-toggle="-is-active"
               >
-                <div className="bg-white px-30 py-30">
+                <div className="bg-white px-20 py-20">
                   <div className="row y-gap-10 justify-between items-center">
                     <div className="col-auto">
                       <div className="text-15 fw-500">Adults</div>

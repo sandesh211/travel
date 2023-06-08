@@ -16,7 +16,7 @@ import FlightDetail from "./component/flights/FlightDetail";
 import Contact from "./component/contacts/Contact";
 import PrivacyPolicy from "./component/PrivacyPolicy/PrivacyPolicy";
 import TermsConditions from "./component/TermsAndCondition/TermsConditions";
-import "../src/main.css";
+import "../src/main.css"
 import ConfirmBooking from "./component/flights/ConfirmBooking";
 
 function App() {

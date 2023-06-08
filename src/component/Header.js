@@ -10,7 +10,7 @@ const Header = () => {
         data-x="header"
         data-x-toggle="is-menu-opened"
       >
-        <div className="container px-30 sm:px-20">
+        <div className="container">
           <div className="row d-flex justify-between items-center">
             <div className="col-auto">
               <div className="d-flex items-center">
@@ -64,7 +64,7 @@ const Header = () => {
             <div className="col-auto">
               <div className="d-flex items-center">
                 <div className="d-flex">
-                  <div className="button -outline-blue-1 px-30 fw-400 text-14 h-50 text-blue-1 ml-20">
+                  <div className="button -outline-blue-1 px-20 md:px-20 lg:px-30 fw-400 text-14 h-50 text-blue-1 m-0">
                     <Link to="/Login"> Sign In &nbsp;</Link>{" "}
                     <Link to="/Register"> / Register</Link>
                   </div>
@@ -75,12 +75,7 @@ const Header = () => {
                   data-x="header-mobile-icons"
                   data-x-toggle="text-white"
                 >
-                  <div>
-                    <a
-                      href="login.html"
-                      className="d-flex items-center icon-user text-inherit text-22"
-                    />
-                  </div>
+                  
                   <div>
                     <button
                       className="d-flex items-center icon-menu text-inherit text-20"
