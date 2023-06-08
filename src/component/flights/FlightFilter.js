@@ -265,9 +265,9 @@ const FlightFilter = () => {
             <label htmlFor="second_toggle">
               <p>ROUND TRIP</p>
             </label>
-            <label htmlFor="third_toggle">
+            {/* <label htmlFor="third_toggle">
               <p>MULTI CITY</p>
-            </label>
+            </label> */}
             <div className="toggle_option_slider"></div>
           </div>
 
@@ -417,6 +417,7 @@ const FlightFilter = () => {
                           placeholderText={"dd-mm-yyyy"}
                           selected={endDate}
                           onChange={(date) => setEndDate(date)}
+                          filterDate={(date) => date > new Date()}
                         />
                       </>
                     ) : null}
