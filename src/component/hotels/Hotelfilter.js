@@ -159,13 +159,7 @@ const Hotelfilter = () => {
     setCityListFlag(true);
     setDestinationListFlag(false);
     setCityValue(val);
-    // const newData = allCities?.filter((data) =>
-    //   data.cityName.toLowerCase().includes(val.toLowerCase())
-    // );
-    // setCityFilterValue(newData);
     handleSearchCity(val);
-    // const debouncedSave = debounce(() => handleSearchCity(val), 1000);
-    // debouncedSave();
   };
 
   const handleSearchCity = (val) => {
@@ -182,19 +176,12 @@ const Hotelfilter = () => {
   };
 
   const handleCitySelect = (val) => {
-    console.log("selected city", val);
     setSelectedCityObject(val);
     const selectedCountry = Country.find(
       (country) =>
         country?.name?.toLowerCase() === val?.countryName?.toLowerCase()
     );
     setSelectnationlity(selectedCountry?.countryid);
-    //   {
-    //     "id": 180144,
-    //     "cityName": "BIJAIPUR",
-    //     "countryName": "INDIA",
-    //     "type": "CITY"
-    // }
     setCityValue(val?.cityName);
   };
 
@@ -208,7 +195,7 @@ const Hotelfilter = () => {
 
               <div className="text-15 text-light-1 ls-2 lh-16">
                 <input
-                  autocomplete="off"
+                  autoComplete="off"
                   type="text"
                   value={cityvalue}
                   onChange={(e) => {
@@ -281,31 +268,6 @@ const Hotelfilter = () => {
               </div>
             </div>
           </div>
-
-          {/* <div className="searchMenu-date px-10 lg:py-20 lg:px-0 js-form-dd js-calendar">
-            <div data-x-dd-click="searchMenu-date">
-              <div className="d-flex justify-content-between">
-                <div>
-                  <h4 className="text-15 fw-500 ls-2 lh-16">Check in</h4>
-
-                  <DatePicker
-                    placeholderText={"dd-mm-yyyy"}
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                  />
-                </div>
-                <div>
-                  <h4 className="text-15 fw-500 ls-2 lh-16">Check out</h4>
-
-                  <DatePicker
-                    placeholderText={"dd-mm-yyyy"}
-                    selected={endDate}
-                    onChange={(date) => setEndDate(date)}
-                  />
-                </div>
-              </div>
-            </div>
-          </div> */}
 
           <div className="searchMenu-guests px-20 lg:py-20 lg:px-0 js-form-dd js-form-counters">
             <div data-x-dd-click="searchMenu-guests">

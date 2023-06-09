@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Datepicker from "react-tailwindcss-datepicker";
 import "react-bootstrap";
 import axios from "axios";
-import Country from "./Country.json";
-import { ApiUrl, ApiKey, ApiUrlHotel } from "../config/Config";
-import Airport from "../json/AirportAirline.json";
 import FlightFilter from "./flights/FlightFilter";
 import Hotelfilter from "./hotels/Hotelfilter";
-import debounce from "lodash.debounce";
-import loadingImg from "../images/loaderApi.gif";
 
 const Tabss = () => {
   const navigate = useNavigate();
@@ -22,27 +15,6 @@ const Tabss = () => {
   const [destinationListFlag, setDestinationListFlag] = useState(false);
   const [cityFilterValue, setCityFilterValue] = useState([]);
   const [cityFilterValueDest, setCityFilterValueDest] = useState([]);
-  const [airportFilterValue, setAirportFilterValue] = useState([]);
-  const [airportFilterValueDest, setAirportFilterValueDest] = useState([]);
-  const [airportLocation, setAirportLocation] = useState("");
-  const [airportLocationDest, setAirportLocationDest] = useState("");
-  const [locationCode, setLocationCode] = useState("");
-  const [destinationCode, setDestinationCode] = useState("");
-  const [selectnationlity, setSelectnationlity] = useState("");
-  const [selectedRatings, setSelectedRatings] = useState([]);
-  const [isShown, setIsShown] = useState(false);
-  const [adults, setAdults] = useState(1);
-  const [children, setChildren] = useState(0);
-  const [rooms, setRooms] = useState(0);
-  const [error, setError] = useState();
-  const [startDate, setStartDate] = useState("");
-  const [loaderApiRes, setLoaderApiRes] = useState(false);
-  const [endDate, setEndDate] = useState("");
-  const [selectedCityObject, setSelectedCityObject] = useState({});
-  const [selectedDates, setSelectedDates] = useState({
-    startDate: null,
-    endDate: null,
-  });
 
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
@@ -77,13 +49,6 @@ const Tabss = () => {
 
   const handleCitySelect = (val) => {
     console.log("selected city", val);
-    setSelectedCityObject(val);
-    //   {
-    //     "id": 180144,
-    //     "cityName": "BIJAIPUR",
-    //     "countryName": "INDIA",
-    //     "type": "CITY"
-    // }
     setCityValue(val?.cityName);
   };
 
@@ -153,7 +118,7 @@ const Tabss = () => {
 
                                     <div className="text-15 text-light-1 ls-2 lh-16">
                                       <input
-                                        autocomplete="off"
+                                        autoComplete="off"
                                         type="search"
                                         // value={cityvalD}
                                         // onChange={(e) => { handleChangeCity(e.target.value) }}
@@ -208,7 +173,7 @@ const Tabss = () => {
 
                                     <div className="text-15 text-light-1 ls-2 lh-16">
                                       <input
-                                        autocomplete="off"
+                                        autoComplete="off"
                                         // value={cityvalueD}
                                         // onChange={(e) => { handleChangeCityDest(e.target.value) }}
                                         type="search"

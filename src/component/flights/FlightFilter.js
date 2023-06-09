@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { useNavigate } from "react-router-dom";
 import "react-bootstrap";
-import axios from "axios";
-import { ApiUrl, ApiKey } from "../../config/Config";
 import Airport from "../../json/AirportAirline.json";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
+import { FlightService } from "../../services/flight";
 
 const FlightFilter = () => {
   const navigate = useNavigate();
@@ -18,7 +16,7 @@ const FlightFilter = () => {
   const [airportFilterValueDest, setAirportFilterValueDest] = useState([]);
   const [airportLocation, setAirportLocation] = useState("");
   const [airportLocationDest, setAirportLocationDest] = useState("");
-  const [locationCode, setLocationCode] = useState("");
+  const [originCode, setOriginCode] = useState("");
   const [destinationCode, setDestinationCode] = useState("");
   const [isShown, setIsShown] = useState(false);
   const [adults, setAdults] = useState(1);
@@ -98,7 +96,7 @@ const FlightFilter = () => {
 
   const handleAirportSelect = (val) => {
     setAirportLocation(val?.city);
-    setLocationCode(val?.code);
+    setOriginCode(val?.code);
     setCountryCode(val?.countrycode);
   };
 
@@ -116,110 +114,33 @@ const FlightFilter = () => {
     }
   };
 
-  //   const [value, setValue] = useState({
-  //     startDate: new Date(),
-  //     endDate: new Date().setMonth(11),
-  //   });
-
-  // called in tripjack
-  // https://apitest.tripjack.com/fms/v1/air-searchquery-list
-
-  const FlightApiCall = () => {
+  const FlightApiCall = async () => {
     setLoaderApiRes(true);
-    const newConfig = {
-      "Content-Type": "application/json ",
-      apikey: ApiKey,
-    };
-
-    let staticData = {
-      searchQuery: {
-        cabinClass: travelClass,
-        preferredAirline: preferdAirLine,
-        searchModifiers: {
-          isDirectFlight: directFlight,
-          isConnectingFlight: directFlight ? false : true,
-          //   sourceId: 0,
-          //   pnrCreditInfo: {
-          //     pnr: "",
-          //   },
-          //   iiss: false,
-          pft: pft,
-        },
-        routeInfos: tripType === "oneway" ? onewayRoute : roundRoute,
-        paxInfo: {
-          ADULT: adults,
-          CHILD: children,
-          INFANT: infants,
-        },
-      },
-      //   isNewFlow: true,
-    };
-    axios
-      .post(`${ApiUrl}air-search-all`, JSON.stringify(staticData), {
-        headers: newConfig,
-      })
-      .then((data) => {
-        setLoaderApiRes(false);
-        // console.log("air-flight", data?.data?.searchResult?.tripInfos?.ONWARD);
-        // setFlightFilterData(data);
-        navigate("/flight-detail", {
-          state: { data: data?.data?.searchResult?.tripInfos },
-        });
-      })
-      .catch((err) => {
-        setLoaderApiRes(false);
-      });
+    const response = await FlightService.airSearchAll(
+      originCode,
+      destinationCode,
+      startDate,
+      endDate,
+      travelClass,
+      preferdAirLine,
+      tripType,
+      directFlight,
+      pft,
+      adults,
+      children,
+      infants
+    );
+    setLoaderApiRes(false);
+    navigate("/flight-detail", {
+      state: { data: response?.data?.searchResult?.tripInfos },
+    });
   };
 
-  useEffect(() => {
-    let routeArr = [];
-
-    let onewayRoute = [
-      {
-        fromCityOrAirport: {
-          code: locationCode,
-        },
-        toCityOrAirport: {
-          code: destinationCode,
-        },
-        travelDate: moment(startDate).format("YYYY-MM-DD"),
-      },
-    ];
-
-    let roundRoute = [
-      {
-        fromCityOrAirport: {
-          code: locationCode,
-        },
-        toCityOrAirport: {
-          code: destinationCode,
-        },
-        travelDate: moment(startDate).format("YYYY-MM-DD"),
-      },
-      {
-        fromCityOrAirport: {
-          code: destinationCode,
-        },
-        toCityOrAirport: {
-          code: locationCode,
-        },
-        travelDate: moment(endDate).format("YYYY-MM-DD"),
-      },
-    ];
-
-    setOneWay(onewayRoute);
-    setRoundWay(roundRoute);
-    // console.log(locationCode, destinationCode, startDate);
-  }, [locationCode, destinationCode, startDate, endDate]);
-
-  //   const handleValueChange = (newValue) => {
-  //     console.log("newValue:", newValue);
-  //     setValue(newValue);
-  //   };
   return (
     <>
       <div className="tabs__pane -tab-item-1 is-tab-el-active">
         <div className="mainSearch bg-transparent bg-white pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 shadow-1">
+          {/* One Way, Round Trip Filter */}
           <div className="toggle_radio onewaycity">
             <input
               onClick={() => {
@@ -261,6 +182,7 @@ const FlightFilter = () => {
             <div className="toggle_option_slider"></div>
           </div>
 
+          {/* Inputs - From, To, Departure, Return, Guest */}
           <div className="button-grid items-center grid-colams">
             <div className="searchMenu-loc px-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch -is-dd-wrap-active">
               <div data-x-dd-click="searchMenu-loc">
@@ -628,6 +550,9 @@ const FlightFilter = () => {
             </div>
           </div>
         </div>
+
+        {/* Filters */}
+
         <div className="moreOption text-white">
           <div className="selextbox">
             <DropdownButton
