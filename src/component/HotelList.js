@@ -107,130 +107,6 @@ const HotelList = () => {
           </div>
         </div>
       </header>
-      {/* <section className="pt-40 pb-40 bg-light-2">
-          <div className="container">
-              <div className="row">
-                  <div className="col-12">
-                      <div className="text-center">
-                          <h1 className="text-30 fw-600">Find Your Dream Luxury Hotel</h1>
-                      </div>
-                      <div className="mainSearch bg-white px-10 py-10 lg:px-20 lg:pt-5 lg:pb-20 rounded-4 mt-30">
-                          <div className="button-grid items-center">
-                              <div className="searchMenu-loc pr-30 pl-20 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
-                                  <div data-x-dd-click="searchMenu-loc">
-                                      <h4 className="text-15 fw-500 ls-2 lh-16">Location</h4>
-                                      <div className="text-15 text-light-1 ls-2 lh-16">
-                                          <input autoComplete="off" type="search" placeholder="London" className="js-search js-dd-focus" />
-                                      </div>
-                                  </div>
-
-                              </div>
-                              <div className="searchMenu-date px-30 lg:py-20 lg:px-0 js-form-dd js-calendar">
-                                  <div data-x-dd-click="searchMenu-date">
-                                      <h4 className="text-15 fw-500 ls-2 lh-16">Check in - Check out</h4>
-                                      <div className="text-15 text-light-1 ls-2 lh-16">
-                                          <span className="js-first-date">Wed 2 Mar</span>
-                                          -
-                                          <span className="js-last-date">Fri 11 Apr</span>
-                                      </div>
-                                  </div>
-
-                              </div>
-                              <div className="searchMenu-guests px-30 lg:py-20 lg:px-0 js-form-dd js-form-counters">
-                                  <div data-x-dd-click="searchMenu-guests">
-                                      <h4 className="text-15 fw-500 ls-2 lh-16">Guest</h4>
-                                      <div className="text-15 text-light-1 ls-2 lh-16">
-                                          <span className="js-count-adult">2</span> adults
-                                          -
-                                          <span className="js-count-child">1</span> childeren
-                                          -
-                                          <span className="js-count-room">1</span> room
-                                      </div>
-                                  </div>
-                                  <div className="searchMenu-guests__field shadow-2" data-x-dd="searchMenu-guests" data-x-dd-toggle="-is-active">
-
-                                  </div>
-                              </div>
-                              <div className="button-item">
-                                  <button className="mainSearch__submit button -dark-1 py-15 px-40 col-12 rounded-4 bg-blue-1 text-white">
-                                      <i className="icon-search text-20 mr-10" />
-                                      Search
-                                  </button>
-                              </div>
-                          </div>
-
-                      </div>
-                      <div className="moreOption hotelsearch text-white">
-                          <div className="selextbox">
-
-                              <DropdownButton id="dropdown-basic-button" className="bg-arrowndown dropdown-basic-button2" title="Rating">
-                                  <i className="fa fa-angle-down" aria-hidden="true"></i>
-                                  <div className="form-check">
-                                      <input className="form-check-input" type="checkbox" defaultValue id="onestar5" />
-                                      <label className="form-check-label" htmlFor="onestar5">
-                                          5 Star
-                                      </label>
-                                  </div>
-                                  <div className="form-check">
-                                      <input className="form-check-input" type="checkbox" defaultValue id="onestar4" />
-                                      <label className="form-check-label" htmlFor="onestar4">
-                                          4 Star
-                                      </label>
-                                  </div>
-                                  <div className="form-check">
-                                      <input className="form-check-input" type="checkbox" defaultValue id="onestar3" />
-                                      <label className="form-check-label" htmlFor="onestar3">
-                                          3 Star
-                                      </label>
-                                  </div>
-                                  <div className="form-check">
-                                      <input className="form-check-input" type="checkbox" defaultValue id="onestar2" />
-                                      <label className="form-check-label" htmlFor="onestar2">
-                                          2 Star
-                                      </label>
-                                  </div>
-                                  <div className="form-check">
-                                      <input className="form-check-input" type="checkbox" defaultValue id="onestar" />
-                                      <label className="form-check-label" htmlFor="onestar">
-                                          1 Star
-                                      </label>
-                                  </div>
-                              </DropdownButton>
-                          </div>
-                          <div className="selextbox">
-
-                              <select className="bg-arrowndown dropdown-basic-button2">
-                                  <option>Nationality: India</option>
-                                  <option>Nationality: India</option>
-                                  <option>Nationality: India</option>
-                                  <option>Nationality: India</option>
-                              </select>
-                          </div>
-                          <div className="selextbox">
-
-                              <select className="bg-arrowndown dropdown-basic-button2 -outline-dark-1">
-                                  <option>Nationality: India</option>
-                                  <option>Nationality: India</option>
-                                  <option>Nationality: India</option>
-                                  <option>Nationality: India</option>
-                              </select>
-                          </div>
-                          <div className="selextbox selectcheck">
-                              <div className="form-check">
-                                  <input className="form-check-input" type="checkbox" id="onestar" />
-                                  <label className="form-check-label" for="onestar">
-                                      Special Category
-                                  </label>
-
-                              </div>
-
-                          </div>
-
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section> */}
 
       <section className="layout-pt-md layout-pb-lg">
         <div className="container">
@@ -315,9 +191,6 @@ const HotelList = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">92</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -330,9 +203,6 @@ const HotelList = () => {
                           </div>
                           <div className="text-15 ml-10">Romantic</div>
                         </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">45</div>
                       </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
@@ -347,9 +217,6 @@ const HotelList = () => {
                           <div className="text-15 ml-10">Airport Transfer</div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">21</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -363,9 +230,6 @@ const HotelList = () => {
                           <div className="text-15 ml-10">WiFi Included </div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">78</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -378,9 +242,6 @@ const HotelList = () => {
                           </div>
                           <div className="text-15 ml-10">5 Star</div>
                         </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">679</div>
                       </div>
                     </div>
                   </div>
@@ -403,9 +264,6 @@ const HotelList = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">92</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -418,9 +276,6 @@ const HotelList = () => {
                           </div>
                           <div className="text-15 ml-10">WiFi Included </div>
                         </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">45</div>
                       </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
@@ -435,9 +290,6 @@ const HotelList = () => {
                           <div className="text-15 ml-10">Pool</div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">21</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -451,9 +303,6 @@ const HotelList = () => {
                           <div className="text-15 ml-10">Restaurant </div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">78</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -465,120 +314,6 @@ const HotelList = () => {
                             </div>
                           </div>
                           <div className="text-15 ml-10">Air conditioning </div>
-                        </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">679</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="sidebar__item">
-                  <h5 className="text-18 fw-500 mb-10">Star Rating</h5>
-                  <div className="sidebar-checkbox">
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="text">
-                            <div className="d-inline-block">
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="form-checkbox ">
-                          <input type="checkbox" name="name" />
-                          <div className="form-checkbox__mark">
-                            <div className="form-checkbox__icon icon-check" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="text">
-                            <div className="d-inline-block">
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="form-checkbox ">
-                          <input type="checkbox" name="name" />
-                          <div className="form-checkbox__mark">
-                            <div className="form-checkbox__icon icon-check" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="text">
-                            <div className="d-inline-block">
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="form-checkbox ">
-                          <input type="checkbox" name="name" />
-                          <div className="form-checkbox__mark">
-                            <div className="form-checkbox__icon icon-check" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="text">
-                            <div className="d-inline-block">
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="form-checkbox ">
-                          <input type="checkbox" name="name" />
-                          <div className="form-checkbox__mark">
-                            <div className="form-checkbox__icon icon-check" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="text">
-                            <div className="d-inline-block">
-                              <i className="icon-star text-15 mr-3 text-yellow-1"></i>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="form-checkbox ">
-                          <input type="checkbox" name="name" />
-                          <div className="form-checkbox__mark">
-                            <div className="form-checkbox__icon icon-check" />
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -599,9 +334,6 @@ const HotelList = () => {
                           <div className="ml-10">Any</div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">92</div>
-                      </div>
                     </div>
 
                     <div className="row y-gap-10 items-center justify-between">
@@ -616,9 +348,6 @@ const HotelList = () => {
                           <div className="ml-10">Wonderful 4.5+</div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">45</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -632,9 +361,6 @@ const HotelList = () => {
                           <div className="ml-10">Very good 4+</div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">21</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -647,9 +373,6 @@ const HotelList = () => {
                           </div>
                           <div className="ml-10">Good 3.5+ </div>
                         </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">78</div>
                       </div>
                     </div>
                   </div>
@@ -669,9 +392,6 @@ const HotelList = () => {
                           <div className="text-15 ml-10">Budget</div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">92</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -684,9 +404,6 @@ const HotelList = () => {
                           </div>
                           <div className="text-15 ml-10">Mid-range </div>
                         </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">45</div>
                       </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
@@ -701,9 +418,6 @@ const HotelList = () => {
                           <div className="text-15 ml-10">Luxury</div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">21</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -717,9 +431,6 @@ const HotelList = () => {
                           <div className="text-15 ml-10">Family-friendly </div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">78</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -732,9 +443,6 @@ const HotelList = () => {
                           </div>
                           <div className="text-15 ml-10">Business </div>
                         </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">679</div>
                       </div>
                     </div>
                   </div>
@@ -754,9 +462,6 @@ const HotelList = () => {
                           <div className="text-15 ml-10">Central London</div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">92</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -771,9 +476,6 @@ const HotelList = () => {
                             Guests' favourite area{" "}
                           </div>
                         </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">45</div>
                       </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
@@ -790,9 +492,6 @@ const HotelList = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">21</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -808,9 +507,6 @@ const HotelList = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">78</div>
-                      </div>
                     </div>
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
@@ -823,9 +519,6 @@ const HotelList = () => {
                           </div>
                           <div className="text-15 ml-10">Oxford Street </div>
                         </div>
-                      </div>
-                      <div className="col-auto">
-                        <div className="text-15 text-light-1">679</div>
                       </div>
                     </div>
                   </div>

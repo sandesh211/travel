@@ -104,6 +104,10 @@ const FlightDetail = (props) => {
     }
   };
 
+  React.useEffect(() => {
+    console.log("LocationData", LocationData);
+  });
+
   return (
     <div>
       <main>
@@ -113,6 +117,7 @@ const FlightDetail = (props) => {
               <div className="col-xl-3 col-lg-4">
                 <aside className="sidebar py-20 px-20 bg-white">
                   <div className="row y-gap-40">
+                    {/* Stops Filter */}
                     <div className="sidebar__item -no-border">
                       <h5 className="text-18 fw-500 mb-10">Stops</h5>
                       <div className="sidebar-checkbox">
@@ -128,9 +133,6 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">Nonstop</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
-                          </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
                           <div className="col-auto">
@@ -143,9 +145,6 @@ const FlightDetail = (props) => {
                               </div>
                               <div className="text-15 ml-10">1 Stop</div>
                             </div>
-                          </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
                           </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
@@ -160,12 +159,10 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">2+ Stops</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
-                          </div>
                         </div>
                       </div>
                     </div>
+                    {/* Cabin Filter */}
                     <div className="sidebar__item">
                       <h5 className="text-18 fw-500 mb-10">Cabin</h5>
                       <div className="sidebar-checkbox">
@@ -181,9 +178,6 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">Basic Economy</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
-                          </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
                           <div className="col-auto">
@@ -197,9 +191,6 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">Economy</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
-                          </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
                           <div className="col-auto">
@@ -212,9 +203,6 @@ const FlightDetail = (props) => {
                               </div>
                               <div className="text-15 ml-10">Mixed</div>
                             </div>
-                          </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
                           </div>
                         </div>
                       </div>
@@ -235,9 +223,6 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">Air France</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
-                          </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
                           <div className="col-auto">
@@ -250,9 +235,6 @@ const FlightDetail = (props) => {
                               </div>
                               <div className="text-15 ml-10">Aer Lingus</div>
                             </div>
-                          </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$45</div>
                           </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
@@ -267,9 +249,6 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">Air Canada</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$21</div>
-                          </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
                           <div className="col-auto">
@@ -282,9 +261,6 @@ const FlightDetail = (props) => {
                               </div>
                               <div className="text-15 ml-10">Air Europa</div>
                             </div>
-                          </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$79</div>
                           </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
@@ -300,9 +276,6 @@ const FlightDetail = (props) => {
                                 Turkish Airlines
                               </div>
                             </div>
-                          </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$900</div>
                           </div>
                         </div>
                       </div>
@@ -322,9 +295,6 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">oneworld</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
-                          </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
                           <div className="col-auto">
@@ -338,9 +308,6 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">SkyTeam</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$45</div>
-                          </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
                           <div className="col-auto">
@@ -353,9 +320,6 @@ const FlightDetail = (props) => {
                               </div>
                               <div className="text-15 ml-10">Star Alliance</div>
                             </div>
-                          </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$21</div>
                           </div>
                         </div>
                       </div>
@@ -375,9 +339,6 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">BOS Boston</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
-                          </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
                           <div className="col-auto">
@@ -392,9 +353,6 @@ const FlightDetail = (props) => {
                                 PVD Providence
                               </div>
                             </div>
-                          </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$45</div>
                           </div>
                         </div>
                       </div>
@@ -414,9 +372,6 @@ const FlightDetail = (props) => {
                               <div className="text-15 ml-10">LCY London</div>
                             </div>
                           </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$92</div>
-                          </div>
                         </div>
                         <div className="row y-gap-10 items-center justify-between">
                           <div className="col-auto">
@@ -429,9 +384,6 @@ const FlightDetail = (props) => {
                               </div>
                               <div className="text-15 ml-10">LGW London</div>
                             </div>
-                          </div>
-                          <div className="col-auto">
-                            <div className="text-15 text-light-1">$45</div>
                           </div>
                         </div>
                       </div>
@@ -466,12 +418,12 @@ const FlightDetail = (props) => {
                       <span className="fw-500">3,269 Flights</span> in India
                     </div>
                   </div>
-                  <div className="col-auto">
+                  {/* <div className="col-auto">
                     <button className="button -blue-1 h-40 px-30 rounded-100 bg-blue-1-05 text-15 text-blue-1">
                       <i className="icon-up-down text-14 mr-10" />
                       Sort
                     </button>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div
@@ -490,7 +442,8 @@ const FlightDetail = (props) => {
                   >
                     {LocationData?.map((item) => {
                       return (
-                        <Accordion className="col-12 col-md-12 col-lg-6 mb-3"
+                        <Accordion
+                          className="col-12 col-md-12 col-lg-6 mb-3"
                           defaultKey="0"
                           onClick={() => {
                             selectOnwardFlight(item);

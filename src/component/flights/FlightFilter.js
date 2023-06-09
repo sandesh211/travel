@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-// import Datepicker from "react-tailwindcss-datepicker";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { useNavigate } from "react-router-dom";
 import "react-bootstrap";
 import axios from "axios";
-import Country from "../Country.json";
-import { ApiUrl, ApiKey, ApiUrlHotel } from "../../config/Config";
+import { ApiUrl, ApiKey } from "../../config/Config";
 import Airport from "../../json/AirportAirline.json";
-import FlightDetail from "./FlightDetail";
-import loadingImg from "../../images/loaderApi.gif";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
@@ -37,14 +33,8 @@ const FlightFilter = () => {
   const [preferdAirLine, setPreferdAirLine] = useState([]);
   const [directFlight, setDirectFlight] = useState(false);
   const [pft, setPft] = useState("REGULAR");
-  const [routeInfo, setRouteInfo] = useState([]);
   const [onewayRoute, setOneWay] = useState([]);
   const [roundRoute, setRoundWay] = useState([]);
-
-  const [selectedDates, setSelectedDates] = useState({
-    startDate: null,
-    endDate: null,
-  });
 
   const handleshow = (event) => {
     if (isShown == false) {
@@ -285,6 +275,7 @@ const FlightFilter = () => {
                     onClick={() => {
                       setCityListFlag(true);
                       setDestinationListFlag(false);
+                      setIsShown(false);
                     }}
                     placeholder="Where are you going?"
                     className="js-search js-dd-focus"
@@ -347,6 +338,8 @@ const FlightFilter = () => {
                     onClick={() => {
                       setDestinationListFlag(true);
                       setCityListFlag(false);
+                      setIsShown(false);
+                      setCityListFlag(false);
                     }}
                     placeholder="Where are you going?"
                     className="js-search js-dd-focus"
@@ -406,6 +399,11 @@ const FlightFilter = () => {
                       selected={startDate}
                       onChange={(date) => setStartDate(date)}
                       filterDate={(date) => date > new Date()}
+                      onFocus={() => {
+                        setIsShown(false);
+                        setDestinationListFlag(false);
+                        setCityListFlag(false);
+                      }}
                     />
                   </div>
                   <div>
@@ -431,12 +429,10 @@ const FlightFilter = () => {
 
                 <div
                   className="text-15 text-light-1 ls-2 lh-16"
-                  onClick={handleshow}
-                  onFocus={() => {
-                    setIsShown(true);
-                  }}
-                  onBlur={() => {
-                    setIsShown(false);
+                  onClick={() => {
+                    handleshow();
+                    setDestinationListFlag(false);
+                    setCityListFlag(false);
                   }}
                 >
                   <span className="js-count-adult">{adults}</span> adults{" "}

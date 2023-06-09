@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import darklogo from "../../src/images/logo-dark.svg";
 
 const Header = () => {
+  const [opacity, setOpacity] = React.useState(0);
   return (
     <div className="flightcontainer">
       <header
@@ -28,6 +29,7 @@ const Header = () => {
               className="header-menu col-auto"
               data-x="mobile-menu"
               data-x-toggle="is-menu-active"
+              style={{ opacity: opacity }}
             >
               <div className="mobile-overlay" />
               <div className="header-menu__content">
@@ -75,11 +77,19 @@ const Header = () => {
                   data-x="header-mobile-icons"
                   data-x-toggle="text-white"
                 >
-                  
                   <div>
                     <button
                       className="d-flex items-center icon-menu text-inherit text-20"
                       data-x-click="html, header, header-logo, header-mobile-icons, mobile-menu"
+                      onClick={() =>
+                        setOpacity((val) => {
+                          if (val) {
+                            return 0;
+                          } else {
+                            return 1;
+                          }
+                        })
+                      }
                     />
                   </div>
                 </div>
