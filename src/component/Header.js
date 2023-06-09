@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import darklogo from "../../src/images/logo-dark.svg";
 
 const Header = () => {
-  const [opacity, setOpacity] = React.useState(0);
+  const [opacity, setOpacity] = React.useState(
+    window.innerWidth > 1115 ? 1 : 0
+  );
   return (
     <div className="flightcontainer">
       <header
