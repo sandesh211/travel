@@ -47,26 +47,26 @@ const FlightDetail = (props) => {
     setTotalPriceID(data?.totalPriceList[0]?.id);
   };
 
-  // useEffect(() => {
-  //   let ApiData = {
-  //     priceIds: [TotalPriceId],
-  //   };
+  useEffect(() => {
+    let ApiData = {
+      priceIds: [TotalPriceId],
+    };
 
-  //   const headers = {
-  //     "Content-Type": "application/json ",
-  //     apikey: ApiKey,
-  //   };
-  //   axios
-  //     .post(`${ApiUrl}review`, ApiData, {
-  //       headers: headers,
-  //     })
-  //     .then((res) => {
-  //       setReviewResponse(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [TotalPriceId]);
+    const headers = {
+      "Content-Type": "application/json ",
+      apikey: ApiKey,
+    };
+    axios
+      .post(`${ApiUrl}review`, ApiData, {
+        headers: headers,
+      })
+      .then((res) => {
+        setReviewResponse(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [TotalPriceId]);
 
   const BookNow = () => {
     if (reviewResponse) {
@@ -394,215 +394,199 @@ const FlightDetail = (props) => {
                   </div>
                 </div>
 
-                <div
-                  className={
-                    LocationDataReturn
-                      ? `js-accordion grid grid-cols-2 gap-4 `
-                      : `js-accordion grid grid-cols-1 gap-4 gap-3`
-                  }
-                >
-                  <div
-                    className={
-                      LocationDataReturn
-                        ? `js-accordion  base-tr`
-                        : `js-accordion base-tr row`
-                    }
-                  >
-                    {LocationData?.map((item) => {
-                      return (
-                        <Accordion
-                          className="col-12 col-md-12 col-lg-6 mb-3"
-                          defaultKey="0"
+                <div className="row">
+                  {LocationData?.map((item) => {
+                    return (
+                      <Accordion
+                        className="col-12 col-md-12 col-lg-6 mb-3"
+                        defaultKey="0"
+                      >
+                        <Accordion.Item
+                          eventKey="0"
+                          className="accordion-hide border-0"
                         >
-                          <Accordion.Item
-                            eventKey="0"
-                            className="accordion-hide border-0"
-                          >
-                            <div className="px-20 py-20 justify-between">
-                              <div className="col-12 my-auto p-0 gap-2">
-                                {item?.sI?.map((item2) => {
-                                  return (
-                                    <div className="row y-gap-10 mb-3 items-center">
-                                      <div className="col-sm-auto">
-                                        <img
-                                          className="size-30 me-2"
-                                          src={flighticon2}
-                                          alt=""
-                                        />
-                                        <span className="text-14">
-                                          {item2?.fD?.aI?.name}
-                                          {item2?.fD?.aI?.code}
-                                        </span>
-                                      </div>
-                                      <div className="col p-0">
-                                        <div className="row x-gap-20 items-end">
-                                          <div className="col-auto">
-                                            <div className="lh-13 fw-500 text-13">
-                                              {convertTime(item2?.dt)}
-                                            </div>
-                                            <div className="text-13 lh-15 text-light-1">
-                                              {item2?.da?.code}
-                                            </div>
+                          <div className="px-20 py-20 justify-between">
+                            <div className="col-12 my-auto p-0 gap-2">
+                              {item?.sI?.map((item2) => {
+                                return (
+                                  <div className="row y-gap-10 mb-3 items-center">
+                                    <div className="col-sm-auto">
+                                      <img
+                                        className="size-30 me-2"
+                                        src={flighticon2}
+                                        alt=""
+                                      />
+                                      <span className="text-14">
+                                        {item2?.fD?.aI?.name}
+                                        {item2?.fD?.aI?.code}
+                                      </span>
+                                    </div>
+                                    <div className="col p-0">
+                                      <div className="row x-gap-20 items-end">
+                                        <div className="col-auto">
+                                          <div className="lh-13 fw-500 text-13">
+                                            {convertTime(item2?.dt)}
                                           </div>
-                                          <div className="col text-center">
-                                            <div className="flightLine">
-                                              <div />
-                                              <div />
-                                            </div>
-                                            <div className="text-13 lh-15 text-light-1 mt-10">
-                                              {item?.sI?.length === 1
-                                                ? "Nonstop"
-                                                : `${
-                                                    item?.sI?.length - 1
-                                                  } stop`}
-                                            </div>
+                                          <div className="text-13 lh-15 text-light-1">
+                                            {item2?.da?.code}
                                           </div>
-                                          <div className="col-auto">
-                                            <div className="lh-15 text-13 fw-500">
-                                              {convertTime(item2?.at)}
-                                            </div>
-                                            <div className="text-13 lh-15 text-light-1">
-                                              {item2?.aa?.code}
-                                            </div>
+                                        </div>
+                                        <div className="col text-center">
+                                          <div className="flightLine">
+                                            <div />
+                                            <div />
+                                          </div>
+                                          <div className="text-13 lh-15 text-light-1 mt-10">
+                                            {item?.sI?.length === 1
+                                              ? "Nonstop"
+                                              : `${item?.sI?.length - 1} stop`}
+                                          </div>
+                                        </div>
+                                        <div className="col-auto">
+                                          <div className="lh-15 text-13 fw-500">
+                                            {convertTime(item2?.at)}
+                                          </div>
+                                          <div className="text-13 lh-15 text-light-1">
+                                            {item2?.aa?.code}
                                           </div>
                                         </div>
                                       </div>
-                                      <div className="col-md-auto p-0">
-                                        <div className="text-13 text-light-1 px-20 md:px-0">
-                                          {calculateTimeDifference(
-                                            item2?.dt,
-                                            item2?.at
-                                          )}
-                                        </div>
+                                    </div>
+                                    <div className="col-md-auto p-0">
+                                      <div className="text-13 text-light-1 px-20 md:px-0">
+                                        {calculateTimeDifference(
+                                          item2?.dt,
+                                          item2?.at
+                                        )}
                                       </div>
                                     </div>
-                                  );
-                                })}
-                              </div>
-                              <div className="col-12 p-0">
-                                <div className="items-center h-full">
-                                  <div className="d-flex gap-3 justify-between border-top pt-10">
-                                    <div className="text-right md:text-left d-flex my-auto">
-                                      <div className="text-14 lh-16 fw-500">
-                                        INR:
-                                        {
-                                          item?.totalPriceList[0]?.fd?.ADULT?.fC
-                                            ?.TF
-                                        }
-                                      </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                            <div className="col-12 p-0">
+                              <div className="items-center h-full">
+                                <div className="d-flex gap-3 justify-between border-top pt-10">
+                                  <div className="text-right md:text-left d-flex my-auto">
+                                    <div className="text-14 lh-16 fw-500">
+                                      INR:
+                                      {
+                                        item?.totalPriceList[0]?.fd?.ADULT?.fC
+                                          ?.TF
+                                      }
                                     </div>
-                                    {!LocationDataReturn && (
+                                  </div>
+                                  {!LocationDataReturn && (
+                                    <button
+                                      onClick={() => {
+                                        BookOneWayFlight(item);
+                                      }}
+                                      className=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
+                                    >
+                                      Book Flight{" "}
+                                    </button>
+                                  )}
+                                  <div className="accordion__button">
+                                    <Accordion.Header>
                                       <button
-                                        onClick={() => {
-                                          BookOneWayFlight(item);
-                                        }}
-                                        className=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
+                                        className="button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
+                                        data-x-click="flight-item-1"
                                       >
-                                        Book Flight{" "}
+                                        View Detail{" "}
                                       </button>
-                                    )}
-                                    <div className="accordion__button">
-                                      <Accordion.Header>
-                                        <button
-                                          className="button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
-                                          data-x-click="flight-item-1"
-                                        >
-                                          View Detail{" "}
-                                        </button>
-                                      </Accordion.Header>
-                                    </div>
+                                    </Accordion.Header>
                                   </div>
                                 </div>
                               </div>
                             </div>
+                          </div>
 
-                            <Accordion.Body className="pt-0">
-                              <div className="accordion__contents">
-                                <div className="border-light">
-                                  {item?.sI?.map((item2) => {
-                                    return (
-                                      <>
-                                        <div className="py-10 px-10">
-                                          <div className="row justify-between items-center">
-                                            <div className="col-auto">
-                                              <div className="fw-500 text-14 text-dark-1">
-                                                Depart • {getDate(item2?.dt)}
-                                              </div>
+                          <Accordion.Body className="pt-0">
+                            <div className="accordion__contents">
+                              <div className="border-light">
+                                {item?.sI?.map((item2) => {
+                                  return (
+                                    <>
+                                      <div className="py-10 px-10">
+                                        <div className="row justify-between items-center">
+                                          <div className="col-auto">
+                                            <div className="fw-500 text-14 text-dark-1">
+                                              Depart • {getDate(item2?.dt)}
                                             </div>
-                                            <div className="col-auto">
-                                              <div className="text-14 text-light-1">
-                                                {calculateTimeDifference(
-                                                  item2?.dt,
-                                                  item2?.at
-                                                )}
-                                              </div>
+                                          </div>
+                                          <div className="col-auto">
+                                            <div className="text-14 text-light-1">
+                                              {calculateTimeDifference(
+                                                item2?.dt,
+                                                item2?.at
+                                              )}
                                             </div>
                                           </div>
                                         </div>
-                                        <div className="py-10 px-10 border-top-light">
-                                          <div className="rowd y-gap-10 justify-between">
-                                            <div className="col-auto">
-                                              <div className="d-flex items-center mb-15">
+                                      </div>
+                                      <div className="py-10 px-10 border-top-light">
+                                        <div className="rowd y-gap-10 justify-between">
+                                          <div className="col-auto">
+                                            <div className="d-flex items-center mb-15">
+                                              <div className="w-28 d-flex justify-center mr-15">
+                                                <img
+                                                  src={flighticon3}
+                                                  alt="image"
+                                                />
+                                              </div>
+                                              <div className="text-13 text-light-1">
+                                                {item2?.fD?.aI?.name}{" "}
+                                                {item2?.fD?.aI?.code}
+                                              </div>
+                                            </div>
+                                            <div className="relative z-0">
+                                              <div className="border-line-2" />
+                                              <div className="d-flex items-center">
+                                                <div className="w-28 d-flex justify-center mr-15">
+                                                  <div className="size-10 border-light rounded-full bg-white" />
+                                                </div>
+                                                <div className="row">
+                                                  <div className="col-auto">
+                                                    <div className="lh-14 text-14 fw-500">
+                                                      {convertTime(item2?.dt)}
+                                                    </div>
+                                                  </div>
+                                                  <div className="col-auto">
+                                                    <div className="lh-14 text-14 fw-500">
+                                                      {item2?.da?.name}(
+                                                      {item2?.da?.code})
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div className="d-flex items-center mt-15">
                                                 <div className="w-28 d-flex justify-center mr-15">
                                                   <img
-                                                    src={flighticon3}
+                                                    src={plane}
                                                     alt="image"
                                                   />
                                                 </div>
-                                                <div className="text-13 text-light-1">
-                                                  {item2?.fD?.aI?.name}{" "}
-                                                  {item2?.fD?.aI?.code}
+                                                <div className="text-14 text-light-1">
+                                                  {calculateTimeDifference(
+                                                    item2?.dt,
+                                                    item2?.at
+                                                  )}
                                                 </div>
                                               </div>
-                                              <div className="relative z-0">
-                                                <div className="border-line-2" />
-                                                <div className="d-flex items-center">
-                                                  <div className="w-28 d-flex justify-center mr-15">
-                                                    <div className="size-10 border-light rounded-full bg-white" />
-                                                  </div>
-                                                  <div className="row">
-                                                    <div className="col-auto">
-                                                      <div className="lh-14 text-14 fw-500">
-                                                        {convertTime(item2?.dt)}
-                                                      </div>
-                                                    </div>
-                                                    <div className="col-auto">
-                                                      <div className="lh-14 text-14 fw-500">
-                                                        {item2?.da?.name}(
-                                                        {item2?.da?.code})
-                                                      </div>
-                                                    </div>
-                                                  </div>
+                                              <div className="d-flex items-center mt-15">
+                                                <div className="w-28 d-flex justify-center mr-15">
+                                                  <div className="size-10 border-light rounded-full bg-border" />
                                                 </div>
-                                                <div className="d-flex items-center mt-15">
-                                                  <div className="w-28 d-flex justify-center mr-15">
-                                                    <img
-                                                      src={plane}
-                                                      alt="image"
-                                                    />
-                                                  </div>
-                                                  <div className="text-14 text-light-1">
-                                                    {calculateTimeDifference(
-                                                      item2?.dt,
-                                                      item2?.at
-                                                    )}
-                                                  </div>
-                                                </div>
-                                                <div className="d-flex items-center mt-15">
-                                                  <div className="w-28 d-flex justify-center mr-15">
-                                                    <div className="size-10 border-light rounded-full bg-border" />
-                                                  </div>
-                                                  <div className="row">
-                                                    <div className="col-auto">
-                                                      <div className="lh-14 text-14 fw-500">
-                                                        {convertTime(item2?.at)}
-                                                      </div>
+                                                <div className="row">
+                                                  <div className="col-auto">
+                                                    <div className="lh-14 text-14 fw-500">
+                                                      {convertTime(item2?.at)}
                                                     </div>
-                                                    <div className="col-auto">
-                                                      <div className="lh-14 text-14 fw-500">
-                                                        {item2?.aa?.name}(
-                                                        {item2?.aa?.code})
-                                                      </div>
+                                                  </div>
+                                                  <div className="col-auto">
+                                                    <div className="lh-14 text-14 fw-500">
+                                                      {item2?.aa?.name}(
+                                                      {item2?.aa?.code})
                                                     </div>
                                                   </div>
                                                 </div>
@@ -610,17 +594,17 @@ const FlightDetail = (props) => {
                                             </div>
                                           </div>
                                         </div>
-                                      </>
-                                    );
-                                  })}
-                                </div>
+                                      </div>
+                                    </>
+                                  );
+                                })}
                               </div>
-                            </Accordion.Body>
-                          </Accordion.Item>
-                        </Accordion>
-                      );
-                    })}
-                  </div>
+                            </div>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      </Accordion>
+                    );
+                  })}
 
                   <div className="accordion__item base-tr">
                     {LocationDataReturn?.map((item) => {
@@ -909,9 +893,9 @@ const FlightDetail = (props) => {
                               >
                                 Book Now
                               </button>
-                              <button className=" button btn -outline-blue-1 text-sm -dark-1 px-10 h-40  text-blue-1">
+                              {/* <button className=" button btn -outline-blue-1 text-sm -dark-1 px-10 h-40  text-blue-1">
                                 Lock Price
-                              </button>
+                              </button> */}
                             </div>
                           </div>
                         </div>
