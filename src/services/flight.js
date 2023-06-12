@@ -82,4 +82,13 @@ export const FlightService = {
     );
     return response;
   },
+  review: async function (priceIds) {
+    return await axios.post(
+      "https://rasatva.apponedemo.top/travel/api/request-send",
+      {
+        data: "fms/v1/review",
+        priceIds,
+      }
+    );
+  },
 };

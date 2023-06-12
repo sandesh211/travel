@@ -7,6 +7,8 @@ import flighticon2 from "../../images/flight-icon2.png";
 import flighticon3 from "../../images/flight-icon3.png";
 import plane from "../../images/plane.svg";
 import { ApiUrl, ApiKey } from "../../config/Config";
+import ReturnPriceBar from "./PriceBar";
+import { FlightService } from "../../services/flight";
 
 const FlightDetail = (props) => {
   const navigate = useNavigate();
@@ -17,6 +19,21 @@ const FlightDetail = (props) => {
   const { state } = useLocation();
   const LocationData = state?.data?.ONWARD;
   const LocationDataReturn = state?.data?.RETURN;
+
+  const [selectedFlight, setSelectedFlight] = useState({
+    flight: LocationData[0],
+    fare: LocationData[0].totalPriceList[0]?.fd?.ADULT?.fC?.TF,
+    index: 0,
+  });
+  const [selectedReturnFlight, setSelectedReturnFlight] = useState(
+    LocationDataReturn
+      ? {
+          flight: LocationDataReturn[0],
+          fare: LocationDataReturn[0].totalPriceList[0]?.fd?.ADULT?.fC?.TF,
+          index: 0,
+        }
+      : undefined
+  );
 
   const convertTime = (data) => {
     const dateString = data;
@@ -44,12 +61,29 @@ const FlightDetail = (props) => {
   };
 
   const BookOneWayFlight = (data) => {
-    setTotalPriceID(data?.totalPriceList[0]?.id);
+    setTotalPriceID([data?.totalPriceList[0]?.id]);
+  };
+
+  const SelectTwoWayFlight = (flight, index, isReturnFlight) => {
+    if (!isReturnFlight) {
+      setSelectedFlight({
+        flight,
+        fare: flight?.totalPriceList[0]?.fd?.ADULT?.fC?.TF,
+        index,
+      });
+    }
+    if (isReturnFlight) {
+      setSelectedReturnFlight({
+        flight,
+        fare: flight?.totalPriceList[0]?.fd?.ADULT?.fC?.TF,
+        index,
+      });
+    }
   };
 
   useEffect(() => {
     let ApiData = {
-      priceIds: [TotalPriceId],
+      priceIds: TotalPriceId,
     };
 
     const headers = {
@@ -68,10 +102,26 @@ const FlightDetail = (props) => {
       });
   }, [TotalPriceId]);
 
+  const BookNowReturn = async () => {
+    const response = await FlightService.review([
+      selectedFlight?.flight?.totalPriceList[0]?.id,
+      selectedReturnFlight?.flight?.totalPriceList[0]?.id,
+    ]);
+
+    if (response.status === 200) {
+      navigate("/confirm-booking", {
+        state: { data: response?.data?.tripInfos[0], review: response.data },
+      });
+    }
+  };
+
   const BookNow = () => {
     if (reviewResponse) {
       navigate("/confirm-booking", {
-        state: { data: reviewResponse?.data?.tripInfos[0] },
+        state: {
+          data: reviewResponse?.data?.tripInfos[0],
+          review: reviewResponse.data,
+        },
       });
     }
   };
@@ -395,7 +445,7 @@ const FlightDetail = (props) => {
                 </div>
 
                 <div className="row">
-                  {LocationData?.map((item) => {
+                  {LocationData?.map((item, idx) => {
                     return (
                       <Accordion
                         className="col-12 col-md-12 col-lg-6 mb-3"
@@ -403,7 +453,12 @@ const FlightDetail = (props) => {
                       >
                         <Accordion.Item
                           eventKey="0"
-                          className="accordion-hide border-0"
+                          className="accordion-hide"
+                          style={
+                            LocationDataReturn && selectedFlight?.index === idx
+                              ? { border: "solid blue" }
+                              : {}
+                          }
                         >
                           <div className="px-20 py-20 justify-between">
                             <div className="col-12 my-auto p-0 gap-2">
@@ -484,6 +539,17 @@ const FlightDetail = (props) => {
                                       className=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
                                     >
                                       Book Flight{" "}
+                                    </button>
+                                  )}
+                                  {LocationDataReturn && (
+                                    <button
+                                      onClick={() => {
+                                        // BookOneWayFlight(item);
+                                        SelectTwoWayFlight(item, idx);
+                                      }}
+                                      className=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
+                                    >
+                                      Select Flight{" "}
                                     </button>
                                   )}
                                   <div className="accordion__button">
@@ -607,12 +673,17 @@ const FlightDetail = (props) => {
                   })}
 
                   <div className="accordion__item base-tr">
-                    {LocationDataReturn?.map((item) => {
+                    {LocationDataReturn?.map((item, idx) => {
                       return (
                         <Accordion defaultKey="0">
                           <Accordion.Item
                             eventKey="0"
-                            className="accordion-hide border-0"
+                            className="accordion-hide"
+                            style={
+                              selectedReturnFlight?.index === idx
+                                ? { border: "solid blue" }
+                                : {}
+                            }
                           >
                             <div className="px-20 py-20 justify-between">
                               <div className="col-12 my-auto p-0 gap-2">
@@ -687,6 +758,17 @@ const FlightDetail = (props) => {
                                         }
                                       </div>
                                     </div>
+                                    {LocationDataReturn && (
+                                      <button
+                                        onClick={() => {
+                                          // BookOneWayFlight(item);
+                                          SelectTwoWayFlight(item, idx, true);
+                                        }}
+                                        className=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
+                                      >
+                                        Select Flight{" "}
+                                      </button>
+                                    )}
                                     <div className="accordion__button">
                                       <Accordion.Header>
                                         <button
@@ -901,6 +983,35 @@ const FlightDetail = (props) => {
                         </div>
                       </div>
                     </div>
+                  )}
+
+                  {LocationDataReturn && (
+                    <ReturnPriceBar
+                      airlineDeparture={
+                        selectedFlight.flight?.sI[0]?.fD?.aI?.name
+                      }
+                      startTimeDeparture={
+                        selectedFlight.flight?.sI[0]?.dt?.split("T")[1]
+                      }
+                      endTimeDeparture={
+                        selectedFlight.flight?.sI[
+                          selectedFlight.flight?.sI.length - 1
+                        ]?.at?.split("T")[1]
+                      }
+                      airlineReturn={
+                        selectedReturnFlight.flight?.sI[0]?.fD?.aI?.name
+                      }
+                      startTimeReturn={
+                        selectedReturnFlight.flight?.sI[0]?.dt?.split("T")[1]
+                      }
+                      endTimeReturn={
+                        selectedReturnFlight.flight?.sI[
+                          selectedReturnFlight.flight?.sI.length - 1
+                        ]?.at?.split("T")[1]
+                      }
+                      price={selectedFlight.fare + selectedReturnFlight.fare}
+                      onAction={BookNowReturn}
+                    />
                   )}
                 </div>
               </div>
