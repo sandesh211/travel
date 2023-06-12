@@ -8,6 +8,7 @@ import darklogo from "../../src/images/logo-dark.svg";
 import Footer from "./Footer";
 import axios from "axios";
 import { ApiUrl, ApiUrlHotel, ApiKey } from "../config/Config";
+import { AuthService } from "../services/auth";
 
 const HotelList = () => {
   const { state } = useLocation();
@@ -76,14 +77,16 @@ const HotelList = () => {
                   </div> */}
             <div className="col-auto">
               <div className="d-flex items-center">
-                <div className="d-flex ">
-                  <a
-                    href="#"
-                    className="button -outline-blue-1 px-30 fw-400 text-14 h-50 text-blue-1"
-                  >
-                    Sign In / Register
-                  </a>
-                </div>
+                {AuthService.isUserLoggedIn() && (
+                  <div className="d-flex ">
+                    <a
+                      href="#"
+                      className="button -outline-blue-1 px-30 fw-400 text-14 h-50 text-blue-1"
+                    >
+                      Sign In / Register
+                    </a>
+                  </div>
+                )}
                 <div
                   className="d-none xl:d-flex x-gap-20 items-center pl-30"
                   data-x="header-mobile-icons"

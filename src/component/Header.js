@@ -6,6 +6,7 @@ const Header = () => {
   const [opacity, setOpacity] = React.useState(
     window.innerWidth > 1115 ? 1 : 0
   );
+  const isUserLoggedIn = localStorage.getItem("access_token");
   return (
     <div className="flightcontainer">
       <header
@@ -67,12 +68,14 @@ const Header = () => {
             </div>
             <div className="col-auto">
               <div className="d-flex items-center">
-                <div className="d-flex">
-                  <div className="button -outline-blue-1 px-20 md:px-20 lg:px-30 fw-400 text-14 h-50 text-blue-1 m-0">
-                    <Link to="/Login"> Sign In &nbsp;</Link>{" "}
-                    <Link to="/Register"> / Register</Link>
+                {!isUserLoggedIn && (
+                  <div className="d-flex">
+                    <div className="button -outline-blue-1 px-20 md:px-20 lg:px-30 fw-400 text-14 h-50 text-blue-1 m-0">
+                      <Link to="/Login"> Sign In &nbsp;</Link>{" "}
+                      <Link to="/Register"> / Register</Link>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div
                   className="d-none xl:d-flex x-gap-20 items-center pl-30"

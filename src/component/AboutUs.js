@@ -7,6 +7,7 @@ import team2 from "../../src/images/2.png";
 import team3 from "../../src/images/3.png";
 import team4 from "../../src/images/4.png";
 import Footer from "./Footer";
+import { AuthService } from "../services/auth";
 
 const AboutUs = () => {
   const [destinations, setDestinations] = useState(0);
@@ -110,14 +111,16 @@ const AboutUs = () => {
             </div>
             <div className="col-auto">
               <div className="d-flex items-center">
-                <div className="d-flex ">
-                  <a
-                    href="#"
-                    className="button -outline-blue-1 px-30 fw-400 text-14 h-50 text-blue-1"
-                  >
-                    Sign In / Register
-                  </a>
-                </div>
+                {AuthService.isUserLoggedIn() && (
+                  <div className="d-flex ">
+                    <a
+                      href="#"
+                      className="button -outline-blue-1 px-30 fw-400 text-14 h-50 text-blue-1"
+                    >
+                      Sign In / Register
+                    </a>
+                  </div>
+                )}
                 <div
                   className="d-none xl:d-flex x-gap-20 items-center pl-30"
                   data-x="header-mobile-icons"
