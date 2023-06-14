@@ -7,6 +7,12 @@ const headers = {
   apikey: ApiKey,
 };
 
+const phpConfig = {
+  headers: {
+    authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  },
+};
+
 export const FlightService = {
   airSearchAll: async function (
     originCode,
@@ -88,7 +94,35 @@ export const FlightService = {
       {
         data: "fms/v1/review",
         priceIds,
-      }
+      },
+      phpConfig
+    );
+  },
+  flightBooking: async function (data) {
+    return axios.post(
+      "https://rasatva.apponedemo.top/travel/api/request-send",
+      {
+        data: "oms/v1/air/book",
+        ...data,
+      },
+      phpConfig
+    );
+  },
+  flightBookingPHP: async function (data) {
+    return axios.post(
+      "https://rasatva.apponedemo.top/travel/api/flight-booking",
+      data,
+      phpConfig
+    );
+  },
+  getBookingDetail: async function (bookingId) {
+    return axios.post(
+      "https://rasatva.apponedemo.top/travel/api/request-send",
+      {
+        data: "oms/v1/booking-details",
+        bookingId,
+      },
+      phpConfig
     );
   },
 };

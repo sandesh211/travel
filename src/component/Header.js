@@ -1,12 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import darklogo from "../../src/images/logo-dark.svg";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [opacity, setOpacity] = React.useState(
     window.innerWidth > 1115 ? 1 : 0
   );
   const isUserLoggedIn = localStorage.getItem("access_token");
+
+  const logOut = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <div className="flightcontainer">
       <header
@@ -68,11 +76,17 @@ const Header = () => {
             </div>
             <div className="col-auto">
               <div className="d-flex items-center">
-                {!isUserLoggedIn && (
+                {!isUserLoggedIn ? (
                   <div className="d-flex">
                     <div className="button -outline-blue-1 px-20 md:px-20 lg:px-30 fw-400 text-14 h-50 text-blue-1 m-0">
                       <Link to="/Login"> Sign In &nbsp;</Link>{" "}
                       <Link to="/Register"> / Register</Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="d-flex">
+                    <div className="button -outline-blue-1 px-20 md:px-20 lg:px-30 fw-400 text-14 h-50 text-blue-1 m-0">
+                      <div onClick={logOut}>Log out&nbsp;</div>
                     </div>
                   </div>
                 )}

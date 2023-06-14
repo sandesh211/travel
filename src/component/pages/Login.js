@@ -19,6 +19,7 @@ const Login = () => {
       localStorage.setItem("token_type", res.data.token_type);
       localStorage.setItem("email", res.data.data.email);
       localStorage.setItem("id", res.data.data.id);
+      localStorage.setItem("name", res.data.name);
     } else {
       setError(res.data.message);
     }

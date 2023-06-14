@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loadScript } from "../../config/Utils";
 import { AuthService } from "../../services/auth";
+import { FlightService } from "../../services/flight";
 
 const ConfirmBooking = () => {
   const { state } = useLocation();
@@ -37,6 +38,8 @@ const ConfirmBooking = () => {
       });
   }, []);
 
+  const navigate = useNavigate();
+
   const handlePayment = () => {
     if (!window.Razorpay) {
       console.log("Razorpay script not loaded.");
@@ -44,16 +47,79 @@ const ConfirmBooking = () => {
     }
     const options = {
       key: "rzp_test_YeQYaEfvpWfjLn",
-      amount: TotalPriceFare?.fC?.TF * 100, // amount in paise
+      amount: review.totalPriceInfo.totalFareDetail.fC.TF * 100, // amount in paise
       currency: "INR",
       name: "Delightfull Holidays",
       description: "Payment for your product",
-      handler: (response) => {
+      handler: async (response) => {
         // Handle success callback
         console.log("payment", response);
+        if (response.razorpay_payment_id) {
+          const bookResponse = await FlightService.flightBooking({
+            bookingId: review.bookingId,
+            paymentInfos: [
+              {
+                amount: review.totalPriceInfo.totalFareDetail.fC.TF,
+              },
+            ],
+            travellerInfo: [
+              {
+                ti: "Mr",
+                fN: "Test",
+                lN: "AdultA",
+                pt: "ADULT",
+              },
+            ],
+
+            gstInfo: {
+              gstNumber: "09AABCU9603R1ZL",
+              email: "apitest@apitest.com ",
+              registeredName: "XYZ Pvt Ltd",
+              mobile: "9728408906",
+              address: "Delhi",
+            },
+            deliveryInfo: {
+              emails: [travelEmail],
+              contacts: [mobile],
+            },
+          });
+          if (bookResponse?.data?.status?.success === true) {
+            const bookingDetailResponse = await FlightService.getBookingDetail(
+              bookResponse.data.bookingId
+            );
+            const PNR = Object.values(
+              bookingDetailResponse.data.itemInfos.AIR.travellerInfos[0]
+                .pnrDetails
+            )[0];
+            const { amount, bookingId, deliveryInfo, status } =
+              bookingDetailResponse.data.order;
+            const formData = new FormData();
+            formData.append("pnr_number", PNR);
+            formData.append("booking_id", bookingId);
+            formData.append("amount", amount);
+            formData.append("email", deliveryInfo.emails[0]);
+            formData.append("mobile", deliveryInfo.contacts[0]);
+            formData.append("status", status);
+            formData.append(
+              "full_detail",
+              JSON.stringify(bookingDetailResponse.data)
+            );
+            formData.append("user_id", localStorage.getItem("id"));
+            const phpBookResponse = await FlightService.flightBookingPHP(
+              formData
+            );
+
+            if (!phpBookResponse?.data?.status) {
+              console.log("phpError");
+              return;
+            }
+
+            navigate("/flight-booking-success");
+          }
+        }
       },
       prefill: {
-        name: "Delightfull Holidays",
+        name: "Delightful Holidays",
         email: "info.delightfulholidays@gmail.com",
         contact: "9636952821",
       },
@@ -62,6 +128,38 @@ const ConfirmBooking = () => {
     const razorpay = new window.Razorpay(options);
     razorpay.open();
   };
+
+  // const navigate = useNavigate();
+  const [email, setEmail] = React.useState();
+  const [password, setPassword] = React.useState();
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState();
+  const [token, setToken] = React.useState(
+    localStorage.getItem("access_token")
+  );
+
+  const onSignIn = async () => {
+    setLoading(true);
+    setError();
+    const res = await AuthService.login(email, password);
+    if (res.data.status !== false) {
+      // navigate("/");
+      localStorage.setItem("access_token", res.data.access_token);
+      localStorage.setItem("token_type", res.data.token_type);
+      localStorage.setItem("email", res.data.data.email);
+      localStorage.setItem("id", res.data.data.id);
+      localStorage.setItem("name", res.data.name);
+      setToken(res.data.access_token);
+    } else {
+      setError(res.data.message);
+    }
+    setLoading(false);
+  };
+
+  const [mobile, setMobile] = React.useState();
+  const [travelEmail, setTravelEmail] = React.useState(
+    localStorage.getItem("email")
+  );
 
   return (
     <div className="bg-stone-100">
@@ -174,10 +272,11 @@ const ConfirmBooking = () => {
               });
             })}
 
-            <div className="bg-white shadow-lg rounded mt-3">
-              <div className="p-4">
-                <h5 className="text-xl font-bold">Traveller Details</h5>
-                {/* {!AuthService.isUserLoggedIn() && (
+            {token ? (
+              <div className="bg-white shadow-lg rounded mt-3">
+                <div className="p-4">
+                  <h5 className="text-xl font-bold">Traveller Details</h5>
+                  {/* {!AuthService.isUserLoggedIn() && (
                   <div className="md:flex lg:flex justify-between bg-gray-100 p-2 mt-3">
                     <p>
                       <i className="fa-solid fa-user-lock"></i> Log in to view
@@ -189,14 +288,14 @@ const ConfirmBooking = () => {
                     </button>
                   </div>
                 )} */}
-              </div>
-              <div className="border-t p-4">
-                <div className="text-gray-900 font-medium text-lg mb-3">
-                  Booking details will be sent to
                 </div>
-                <form className="space-y-4 md:space-y-6" action="#">
-                  <div className="md:grid lg:grid grid-cols-3 gap-4">
-                    <div>
+                <div className="border-t p-4">
+                  {/* <div className="text-gray-900 font-medium text-lg mb-3">
+                    Booking details will be sent to
+                  </div> */}
+                  <div className="space-y-4 md:space-y-6" action="#">
+                    <div className="md:grid lg:grid grid-cols-3 gap-4">
+                      {/* <div>
                       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Country Code
                       </label>
@@ -205,52 +304,119 @@ const ConfirmBooking = () => {
                         <option>India(91)</option>
                         <option>India(91)</option>
                       </select>
+                    </div> */}
+                      <div className="lg:my-0 md:my-0">
+                        <label
+                          htmlFor="Mobile-number"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Mobile No
+                        </label>
+                        <input
+                          type="number"
+                          name="name"
+                          id="Mobile-number"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="Mobile No."
+                          required
+                          value={mobile}
+                          onChange={(e) => setMobile(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Your email
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          id="email"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="Email ID"
+                          required
+                          value={travelEmail}
+                          onChange={(e) => setTravelEmail(e.target.value)}
+                        />
+                      </div>
                     </div>
-                    <div className="lg:my-0 md:my-0">
-                      <label
-                        htmlFor="Mobile-number"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Mobile No
-                      </label>
-                      <input
-                        type="number"
-                        name="name"
-                        id="Mobile-number"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Mobile No."
-                        required
-                      />
+                    <button
+                      // type="submit"
+                      // className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="btn btn-primary"
+                      onClick={handlePayment}
+                    >
+                      CONTINUE
+                    </button>
+                  </div>
+                  {/* <PaymentForm /> */}
+                </div>
+              </div>
+            ) : (
+              <div className="bg-white shadow-lg rounded mt-3">
+                <div className="p-4">
+                  <h5 className="text-xl font-bold">Traveller Details</h5>
+                </div>
+                <div className="border-t p-4">
+                  <div className="row y-gap-20">
+                    <div className="col-12">
+                      {/* <h1 className="text-22 fw-500">Welcome back</h1> */}
+                      <p className="mt-10">
+                        Please login to continue flight booking
+                      </p>
                     </div>
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    {error && <div className="alert alert-danger">{error}</div>}
+                    <div className="col-12">
+                      <div className="form-input ">
+                        <input
+                          type="text"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <label className="lh-1 text-14 text-light-1">
+                          Email
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <div className="form-input ">
+                        <input
+                          type="password"
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <label className="lh-1 text-14 text-light-1">
+                          Password
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <a
+                        href="#"
+                        className="text-14 fw-500 text-blue-1 underline"
                       >
-                        Your email
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Email ID"
-                        required
-                      />
+                        Forgot your password?
+                      </a>
+                    </div>
+                    <div to="/Register" className="text-blue-1">
+                      Or sign up for a free
+                    </div>
+                    <div className="col-12">
+                      <div
+                        className="button py-20 -dark-1 bg-blue-1 text-white"
+                        onClick={onSignIn}
+                      >
+                        Sign In
+                      </div>
                     </div>
                   </div>
-                  <button
-                    type="submit"
-                    // className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    className="btn btn-primary"
-                    onClick={handlePayment}
-                  >
-                    CONTINUE
-                  </button>
-                </form>
-                {/* <PaymentForm /> */}
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="box mt-4 md:mt-0 lg:mt-0">
             <div className="bg-white p-4 shadow-lg rounded">
@@ -259,7 +425,7 @@ const ConfirmBooking = () => {
                 Base Fare
               </h6>
               <div className="flex justify-between text-gray-600 text-sm">
-                <p>Adult(s) (1 X ₹ 3,400)</p>
+                <p></p>
                 <p>₹ {TotalPriceFare?.fC?.BF}</p>
               </div>
               <div className="border-t py-2.5 mt-3">

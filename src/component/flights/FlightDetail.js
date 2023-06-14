@@ -16,6 +16,9 @@ const FlightDetail = (props) => {
   const [reviewResponse, setReviewResponse] = useState();
   const [TotalPriceId, setTotalPriceID] = useState([]);
 
+  const [nonStopFilter, setNonStopFilter] = useState(false);
+  const [cabinClassFilter, setCabinClassFilter] = useState();
+
   const { state } = useLocation();
   const LocationData = state?.data?.ONWARD;
   const LocationDataReturn = state?.data?.RETURN;

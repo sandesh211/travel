@@ -16,8 +16,9 @@ import FlightDetail from "./component/flights/FlightDetail";
 import Contact from "./component/contacts/Contact";
 import PrivacyPolicy from "./component/PrivacyPolicy/PrivacyPolicy";
 import TermsConditions from "./component/TermsAndCondition/TermsConditions";
-import "../src/main.css"
+import "../src/main.css";
 import ConfirmBooking from "./component/flights/ConfirmBooking";
+import { FlightBookingSuccess } from "./component/flights/FlightBookingSuccess";
 
 function App() {
   return (
@@ -37,6 +38,10 @@ function App() {
           <Route path="/HotelDetails/:id" element={<HotelDetails />} />
           <Route path="/flight-detail" element={<FlightDetail />} />
           <Route path="/confirm-booking" element={<ConfirmBooking />} />
+          <Route
+            path="/flight-booking-success"
+            element={<FlightBookingSuccess />}
+          />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-conditions" element={<TermsConditions />} />
