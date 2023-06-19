@@ -55,6 +55,14 @@ const ConfirmBooking = () => {
         // Handle success callback
         console.log("payment", response);
         if (response.razorpay_payment_id) {
+          const paymentResponse = await FlightService.paymentPHP(
+            review.bookingId,
+            1,
+            response.razorpay_payment_id,
+            "SUCCESS",
+            review.totalPriceInfo.totalFareDetail.fC.TF
+          );
+          // if()
           const bookResponse = await FlightService.flightBooking({
             bookingId: review.bookingId,
             paymentInfos: [
@@ -276,18 +284,6 @@ const ConfirmBooking = () => {
               <div className="bg-white shadow-lg rounded mt-3">
                 <div className="p-4">
                   <h5 className="text-xl font-bold">Traveller Details</h5>
-                  {/* {!AuthService.isUserLoggedIn() && (
-                  <div className="md:flex lg:flex justify-between bg-gray-100 p-2 mt-3">
-                    <p>
-                      <i className="fa-solid fa-user-lock"></i> Log in to view
-                      your saved traveller list, unlock amazing deals & much
-                      more!
-                    </p>
-                    <button className="text-sm rounded-full font-bold text-cyan-600">
-                      LOGIN NOW
-                    </button>
-                  </div>
-                )} */}
                 </div>
                 <div className="border-t p-4">
                   {/* <div className="text-gray-900 font-medium text-lg mb-3">

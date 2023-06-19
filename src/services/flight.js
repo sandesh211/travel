@@ -125,4 +125,18 @@ export const FlightService = {
       phpConfig
     );
   },
+  paymentPHP: async function (booking_id, type, pay_id, status, amount) {
+    return axios.post(
+      "https://rasatva.apponedemo.top/travel/api/payment-store",
+      {
+        booking_id,
+        type,
+        pay_id,
+        currency: "INR",
+        status,
+        amount,
+      },
+      phpConfig
+    );
+  },
 };

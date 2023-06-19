@@ -16,16 +16,21 @@ const FlightDetail = (props) => {
   const [reviewResponse, setReviewResponse] = useState();
   const [TotalPriceId, setTotalPriceID] = useState([]);
 
-  const [nonStopFilter, setNonStopFilter] = useState(false);
-  const [cabinClassFilter, setCabinClassFilter] = useState();
-
   const { state } = useLocation();
-  const LocationData = state?.data?.ONWARD;
-  const LocationDataReturn = state?.data?.RETURN;
+  const [travelClass, setTravelClass] = useState(state?.info?.travelClass);
+  const [preferdAirLine, setPreferdAirLine] = useState(
+    state?.info?.preferdAirLine
+  );
+  const [directFlight, setDirectFlight] = useState(state?.info?.directFlight);
+
+  const [LocationData, setLocationData] = useState(state?.data?.ONWARD);
+  const [LocationDataReturn, setLocationDataReturn] = useState(
+    state?.data?.RETURN
+  );
 
   const [selectedFlight, setSelectedFlight] = useState({
-    flight: LocationData[0],
-    fare: LocationData[0].totalPriceList[0]?.fd?.ADULT?.fC?.TF,
+    flight: LocationData && LocationData[0],
+    fare: LocationData && LocationData[0].totalPriceList[0]?.fd?.ADULT?.fC?.TF,
     index: 0,
   });
   const [selectedReturnFlight, setSelectedReturnFlight] = useState(
@@ -129,9 +134,28 @@ const FlightDetail = (props) => {
     }
   };
 
-  React.useEffect(() => {
-    console.log("LocationData", LocationData);
-  });
+  const searchFlights = async () => {
+    const response = await FlightService.airSearchAll(
+      state?.info?.originCode,
+      state?.info?.destinationCode,
+      state?.info?.startDate,
+      state?.info?.endDate,
+      travelClass,
+      preferdAirLine,
+      state?.info?.tripType,
+      directFlight,
+      state?.info?.pft,
+      state?.info?.adults,
+      state?.info?.children,
+      state?.info?.infants
+    );
+    setLocationData(response?.data?.searchResult?.tripInfos?.ONWARD);
+    setLocationDataReturn(response?.data?.searchResult?.tripInfos?.RETURN);
+  };
+
+  useEffect(() => {
+    searchFlights();
+  }, [directFlight, travelClass]);
 
   return (
     <div>
@@ -151,38 +175,19 @@ const FlightDetail = (props) => {
                           <div className="col-auto">
                             <div className="d-flex items-center">
                               <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={directFlight}
+                                  onChange={(e) => {
+                                    setDirectFlight(e.target.checked);
+                                  }}
+                                />
                                 <div className="form-checkbox__mark">
                                   <div className="form-checkbox__icon icon-check" />
                                 </div>
                               </div>
                               <div className="text-15 ml-10">Nonstop</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">1 Stop</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">2+ Stops</div>
                             </div>
                           </div>
                         </div>
@@ -196,20 +201,18 @@ const FlightDetail = (props) => {
                           <div className="col-auto">
                             <div className="d-flex items-center">
                               <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">Basic Economy</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={travelClass === "ECONOMY"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setTravelClass("ECONOMY");
+                                    } else {
+                                      setTravelClass("");
+                                    }
+                                  }}
+                                />
                                 <div className="form-checkbox__mark">
                                   <div className="form-checkbox__icon icon-check" />
                                 </div>
@@ -222,103 +225,25 @@ const FlightDetail = (props) => {
                           <div className="col-auto">
                             <div className="d-flex items-center">
                               <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">Mixed</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="sidebar__item">
-                      <h5 className="text-18 fw-500 mb-10">Airlines</h5>
-                      <div className="sidebar-checkbox">
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">Air France</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">Aer Lingus</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">Air Canada</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">Air Europa</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={travelClass === "PREMIUM_ECONOMY"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setTravelClass("PREMIUM_ECONOMY");
+                                    } else {
+                                      setTravelClass("");
+                                    }
+                                  }}
+                                />
                                 <div className="form-checkbox__mark">
                                   <div className="form-checkbox__icon icon-check" />
                                 </div>
                               </div>
                               <div className="text-15 ml-10">
-                                Turkish Airlines
+                                Premium Economy
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="sidebar__item">
-                      <h5 className="text-18 fw-500 mb-10">Alliance</h5>
-                      <div className="sidebar-checkbox">
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">oneworld</div>
                             </div>
                           </div>
                         </div>
@@ -326,12 +251,23 @@ const FlightDetail = (props) => {
                           <div className="col-auto">
                             <div className="d-flex items-center">
                               <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={travelClass === "BUSINESS"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setTravelClass("BUSINESS");
+                                    } else {
+                                      setTravelClass("");
+                                    }
+                                  }}
+                                />
                                 <div className="form-checkbox__mark">
                                   <div className="form-checkbox__icon icon-check" />
                                 </div>
                               </div>
-                              <div className="text-15 ml-10">SkyTeam</div>
+                              <div className="text-15 ml-10">Business</div>
                             </div>
                           </div>
                         </div>
@@ -339,96 +275,23 @@ const FlightDetail = (props) => {
                           <div className="col-auto">
                             <div className="d-flex items-center">
                               <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={travelClass === "FIRST"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setTravelClass("FIRST");
+                                    } else {
+                                      setTravelClass("");
+                                    }
+                                  }}
+                                />
                                 <div className="form-checkbox__mark">
                                   <div className="form-checkbox__icon icon-check" />
                                 </div>
                               </div>
-                              <div className="text-15 ml-10">Star Alliance</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="sidebar__item">
-                      <h5 className="text-18 fw-500 mb-10">Departing from</h5>
-                      <div className="sidebar-checkbox">
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">BOS Boston</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">
-                                PVD Providence
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="sidebar__item">
-                      <h5 className="text-18 fw-500 mb-10">Arriving at</h5>
-                      <div className="sidebar-checkbox">
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">LCY London</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row y-gap-10 items-center justify-between">
-                          <div className="col-auto">
-                            <div className="d-flex items-center">
-                              <div className="form-checkbox ">
-                                <input type="checkbox" name="name" />
-                                <div className="form-checkbox__mark">
-                                  <div className="form-checkbox__icon icon-check" />
-                                </div>
-                              </div>
-                              <div className="text-15 ml-10">LGW London</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="sidebar__item pb-30">
-                      <h5 className="text-18 fw-500 mb-10">Price</h5>
-                      <div className="row x-gap-10 y-gap-30">
-                        <div className="col-12">
-                          <div className="js-price-rangeSlider">
-                            <div className="text-14 fw-500" />
-                            <div className="d-flex justify-between mb-20">
-                              <div className="text-15 text-dark-1">
-                                <span className="js-lower" />
-                                -
-                                <span className="js-upper" />
-                              </div>
-                            </div>
-                            <div className="px-5">
-                              <div className="js-slider" />
+                              <div className="text-15 ml-10">First</div>
                             </div>
                           </div>
                         </div>

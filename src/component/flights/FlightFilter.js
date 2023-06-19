@@ -42,6 +42,10 @@ const FlightFilter = () => {
     }
   };
 
+  const validateMaxBooking = () => {
+    return adults + children < 9;
+  };
+
   const handleAdultsDecrement = () => {
     if (adults > 0) {
       setAdults(adults - 1);
@@ -49,6 +53,9 @@ const FlightFilter = () => {
   };
 
   const handleAdultsIncrement = () => {
+    if (!validateMaxBooking()) {
+      return;
+    }
     setAdults(adults + 1);
   };
 
@@ -60,6 +67,9 @@ const FlightFilter = () => {
   };
 
   const handleChildrenIncrement = () => {
+    if (!validateMaxBooking()) {
+      return;
+    }
     setChildren(children + 1);
     childrenAge.push("5");
   };
@@ -132,7 +142,23 @@ const FlightFilter = () => {
     );
     setLoaderApiRes(false);
     navigate("/flight-detail", {
-      state: { data: response?.data?.searchResult?.tripInfos },
+      state: {
+        data: response?.data?.searchResult?.tripInfos,
+        info: {
+          originCode,
+          destinationCode,
+          startDate,
+          endDate,
+          travelClass,
+          preferdAirLine,
+          tripType,
+          directFlight,
+          pft,
+          adults,
+          children,
+          infants,
+        },
+      },
     });
   };
 
