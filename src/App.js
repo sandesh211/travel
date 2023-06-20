@@ -19,6 +19,7 @@ import TermsConditions from "./component/TermsAndCondition/TermsConditions";
 import "../src/main.css";
 import ConfirmBooking from "./component/flights/ConfirmBooking";
 import { FlightBookingSuccess } from "./component/flights/FlightBookingSuccess";
+import ConfirmHotelBooking from "./component/hotels/ConfirmHotelBooking";
 
 function App() {
   return (
@@ -38,6 +39,10 @@ function App() {
           <Route path="/HotelDetails/:id" element={<HotelDetails />} />
           <Route path="/flight-detail" element={<FlightDetail />} />
           <Route path="/confirm-booking" element={<ConfirmBooking />} />
+          <Route
+            path="/confirm-hotel-booking"
+            element={<ConfirmHotelBooking />}
+          />
           <Route
             path="/flight-booking-success"
             element={<FlightBookingSuccess />}

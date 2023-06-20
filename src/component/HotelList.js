@@ -627,13 +627,13 @@ const HotelList = () => {
                                 {item?.ad.adr}
                               </div>
                             </div>
-                            <div className="text-14 text-green-2 lh-15 mt-10">
+                            {/* <div className="text-14 text-green-2 lh-15 mt-10">
                               <div className="fw-500">Free cancellation</div>
                               <div className>
                                 You can cancel later, so lock in this great
                                 price today.
                               </div>
-                            </div>
+                            </div> */}
                             <div className="row x-gap-10 y-gap-10 pt-20">
                               <div className="col-auto">
                                 <div className="border-light rounded-100 py-5 px-20 text-14 lh-14">

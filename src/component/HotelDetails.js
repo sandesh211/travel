@@ -10,6 +10,7 @@ import { ApiUrl, ApiUrlHotel, ApiKey } from "../config/Config";
 import "./hotels/Hotel.css";
 
 const HotelDetails = () => {
+  const navigate = useNavigate();
   const { state } = useLocation();
   // const data = state?.data?.hotel;
   const [hotelDetail, setHotelDetail] = useState();
@@ -87,6 +88,13 @@ const HotelDetails = () => {
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  const selectRoom = (option) => {
+    console.log("room selected", hotelDetail, option);
+    navigate("/confirm-hotel-booking", {
+      state: { hotelDetail, option },
+    });
   };
 
   return (
@@ -182,12 +190,12 @@ const HotelDetails = () => {
                         {hotelDetail?.ops[0]?.ris[0]?.tp}
                       </span>
                     </div>
-                    <Link
-                      to=""
+                    {/* <div
                       className="button h-50 px-24 -dark-1 bg-blue-1 text-white mt-5"
+                      // onClick={selectRoom}
                     >
                       Select Room <div className="icon-arrow-top-right ml-15" />
-                    </Link>
+                    </div> */}
                   </div>
                 </div>
                 <div id="overview" className="row y-gap-40 pt-40">
@@ -224,429 +232,42 @@ const HotelDetails = () => {
                   lng={hotelDetail?.gl?.ln}
                 />
               </div>
-              <div>
-                {/* <div className="px-30 py-30 border-light rounded-4">
-                  <div className="border-top-light mt-15 mb-15" />
-                  <div className="text-15 fw-500">Popular landmarks</div>
-                  <div className="d-flex justify-between pt-10">
-                    <div className="text-14">Royal Pump Room Museum</div>
-                    <div className="text-14 text-light-1">0.1 km</div>
-                  </div>
-                  <div className="d-flex justify-between pt-5">
-                    <div className="text-14">Harrogate Turkish Baths</div>
-                    <div className="text-14 text-light-1">0.1 km</div>
-                  </div>
-                  <Link
-                    to="#"
-                    className="d-block text-14 fw-500 underline text-blue-1 mt-10"
-                  >
-                    Show More
-                  </Link>
-                </div> */}
-                <div className="px-30 py-30 border-light rounded-4 mt-30">
-                  <div className="d-flex items-center">
-                    <div className="size-40 flex-center bg-blue-1 rounded-4">
-                      <div className="text-14 fw-600 text-white">4.8</div>
-                    </div>
-                    <div className="text-14 ml-10">
-                      <div className="lh-15 fw-500">Exceptional</div>
-                      <div className="lh-15 text-light-1">3,014 reviews</div>
-                    </div>
-                  </div>
-                  <div className="d-flex mt-20">
-                    <i className="icon-group text-16 mr-10 pt-5" />
-                    <div className="text-15">
-                      Highly rated by guests – 86% would recommend
-                    </div>
-                  </div>
-                  <div className="border-top-light mt-20 mb-20" />
-                  <div className="row x-gap-10 y-gap-10">
-                    <div className="col-auto">
-                      <div className="d-flex items-center py-5 px-20 rounded-100 border-light">
-                        <i className="icon-like text-12 text-blue-1 mr-10" />
-                        <div className="text-14 lh-15">
-                          Breakfast{" "}
-                          <span className="fw-500 text-blue-1">25</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <div className="d-flex items-center py-5 px-20 rounded-100 border-light">
-                        <i className="icon-like text-12 text-blue-1 mr-10" />
-                        <div className="text-14 lh-15">
-                          WiFi <span className="fw-500 text-blue-1">14</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-auto">
-                      <div className="d-flex items-center py-5 px-20 rounded-100 border-light">
-                        <i className="icon-like text-12 text-blue-1 mr-10" />
-                        <div className="text-14 lh-15">
-                          Food &amp; Dining{" "}
-                          <span className="fw-500 text-blue-1">67</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="px-30 py-30 border-light rounded-4 mt-30">
-                  <div className="text-18 fw-500">Property highlights</div>
-                  <div className="row x-gap-20 y-gap-20 pt-20">
-                    <div className="col-auto">
-                      <i className="icon-city text-24 text-blue-1" />
-                    </div>
-                    <div className="col-auto">
-                      <div className="text-15">In London City Centre</div>
-                    </div>
-                  </div>
-                  <div className="row x-gap-20 y-gap-20 pt-5">
-                    <div className="col-auto">
-                      <i className="icon-airplane text-24 text-blue-1" />
-                    </div>
-                    <div className="col-auto">
-                      <div className="text-15">Airport transfer</div>
-                    </div>
-                  </div>
-                  <div className="row x-gap-20 y-gap-20 pt-5">
-                    <div className="col-auto">
-                      <i className="icon-bell-ring text-24 text-blue-1" />
-                    </div>
-                    <div className="col-auto">
-                      <div className="text-15">Front desk [24-hour]</div>
-                    </div>
-                  </div>
-                  <div className="row x-gap-20 y-gap-20 pt-5">
-                    <div className="col-auto">
-                      <i className="icon-tv text-24 text-blue-1" />
-                    </div>
-                    <div className="col-auto">
-                      <div className="text-15">Premium TV channels</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
 
-        <section className="bg-light-2 py-3 mt-6">
-          <div className="container mt-50">
-            <div className="row y-gap-40 justify-between">
-              <div className="col-xl-3">
-                <h3 className="text-22 fw-500">Guest reviews</h3>
-                <div className="d-flex items-center mt-20">
-                  <div className="flex-center bg-blue-1 rounded-4 size-70 text-22 fw-600 text-white">
-                    4.8
-                  </div>
-                  <div className="ml-20">
-                    <div className="text-16 text-dark-1 fw-500 lh-14">
-                      Exceptional
-                    </div>
-                    <div className="text-15 text-light-1 lh-14 mt-4">
-                      3,014 reviews
-                    </div>
-                  </div>
-                </div>
-                <div className="row y-gap-20 pt-20">
-                  <div className="col-12">
-                    <div className>
-                      <div className="d-flex items-center justify-between">
-                        <div className="text-15 fw-500">Location</div>
-                        <div className="text-15 text-light-1">9.4</div>
-                      </div>
-                      <div className="progressBar mt-10">
-                        <div className="progressBar__bg bg-blue-2" />
-                        <div
-                          className="progressBar__bar bg-blue-1"
-                          style={{ width: "90%" }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className>
-                      <div className="d-flex items-center justify-between">
-                        <div className="text-15 fw-500">Staff</div>
-                        <div className="text-15 text-light-1">9.4</div>
-                      </div>
-                      <div className="progressBar mt-10">
-                        <div className="progressBar__bg bg-blue-2" />
-                        <div
-                          className="progressBar__bar bg-blue-1"
-                          style={{ width: "90%" }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className>
-                      <div className="d-flex items-center justify-between">
-                        <div className="text-15 fw-500">Cleanliness</div>
-                        <div className="text-15 text-light-1">9.4</div>
-                      </div>
-                      <div className="progressBar mt-10">
-                        <div className="progressBar__bg bg-blue-2" />
-                        <div
-                          className="progressBar__bar bg-blue-1"
-                          style={{ width: "90%" }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className>
-                      <div className="d-flex items-center justify-between">
-                        <div className="text-15 fw-500">Value for money</div>
-                        <div className="text-15 text-light-1">9.4</div>
-                      </div>
-                      <div className="progressBar mt-10">
-                        <div className="progressBar__bg bg-blue-2" />
-                        <div
-                          className="progressBar__bar bg-blue-1"
-                          style={{ width: "90%" }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className>
-                      <div className="d-flex items-center justify-between">
-                        <div className="text-15 fw-500">Comfort</div>
-                        <div className="text-15 text-light-1">9.4</div>
-                      </div>
-                      <div className="progressBar mt-10">
-                        <div className="progressBar__bg bg-blue-2" />
-                        <div
-                          className="progressBar__bar bg-blue-1"
-                          style={{ width: "90%" }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className>
-                      <div className="d-flex items-center justify-between">
-                        <div className="text-15 fw-500">Facilities</div>
-                        <div className="text-15 text-light-1">9.4</div>
-                      </div>
-                      <div className="progressBar mt-10">
-                        <div className="progressBar__bg bg-blue-2" />
-                        <div
-                          className="progressBar__bar bg-blue-1"
-                          style={{ width: "90%" }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className>
-                      <div className="d-flex items-center justify-between">
-                        <div className="text-15 fw-500">Free WiFi</div>
-                        <div className="text-15 text-light-1">9.4</div>
-                      </div>
-                      <div className="progressBar mt-10">
-                        <div className="progressBar__bg bg-blue-2" />
-                        <div
-                          className="progressBar__bar bg-blue-1"
-                          style={{ width: "90%" }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-8">
-                <div className="row y-gap-40">
-                  <div className="col-12">
-                    <div className="row x-gap-20 y-gap-20 items-center">
-                      <div className="col-auto">
-                        <img src={avatar} width={50} alt="image" />
-                      </div>
-                      <div className="col-auto">
-                        <div className="fw-500 lh-15">Tonko</div>
-                        <div className="text-14 text-light-1 lh-15">
-                          March 2022
-                        </div>
-                      </div>
-                    </div>
-                    <h5 className="fw-500 text-blue-1 mt-20">9.2 Superb</h5>
-                    <p className="text-15 text-dark-1 mt-10">
-                      Nice two level apartment in great London location. Located
-                      in quiet small street, but just 50 meters from main street
-                      and bus stop. Tube station is short walk, just like two
-                      grocery stores.{" "}
-                    </p>
-
-                    <div className="d-flex x-gap-30 items-center pt-20">
-                      <button className="d-flex items-center text-blue-1">
-                        <i className="icon-like text-16 mr-10" />
-                        Helpful
-                      </button>
-                      <button className="d-flex items-center text-light-1">
-                        <i className="icon-dislike text-16 mr-10" />
-                        Not helpful
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className="row x-gap-20 y-gap-20 items-center">
-                      <div className="col-auto">
-                        <img src={avatar} width={50} alt="image" />
-                      </div>
-                      <div className="col-auto">
-                        <div className="fw-500 lh-15">Tonko</div>
-                        <div className="text-14 text-light-1 lh-15">
-                          March 2022
-                        </div>
-                      </div>
-                    </div>
-                    <h5 className="fw-500 text-blue-1 mt-20">9.2 Superb</h5>
-                    <p className="text-15 text-dark-1 mt-10">
-                      Nice two level apartment in great London location. Located
-                      in quiet small street, but just 50 meters from main street
-                      and bus stop. Tube station is short walk, just like two
-                      grocery stores.{" "}
-                    </p>
-
-                    <div className="d-flex x-gap-30 items-center pt-20">
-                      <button className="d-flex items-center text-blue-1">
-                        <i className="icon-like text-16 mr-10" />
-                        Helpful
-                      </button>
-                      <button className="d-flex items-center text-light-1">
-                        <i className="icon-dislike text-16 mr-10" />
-                        Not helpful
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className="row x-gap-20 y-gap-20 items-center">
-                      <div className="col-auto">
-                        <img src={avatar} width={50} alt="image" />
-                      </div>
-                      <div className="col-auto">
-                        <div className="fw-500 lh-15">Tonko</div>
-                        <div className="text-14 text-light-1 lh-15">
-                          March 2022
-                        </div>
-                      </div>
-                    </div>
-                    <h5 className="fw-500 text-blue-1 mt-20">9.2 Superb</h5>
-                    <p className="text-15 text-dark-1 mt-10">
-                      Nice two level apartment in great London location. Located
-                      in quiet small street, but just 50 meters from main street
-                      and bus stop. Tube station is short walk, just like two
-                      grocery stores.{" "}
-                    </p>
-                    <div className="d-flex x-gap-30 items-center pt-20">
-                      <button className="d-flex items-center text-blue-1">
-                        <i className="icon-like text-16 mr-10" />
-                        Helpful
-                      </button>
-                      <button className="d-flex items-center text-light-1">
-                        <i className="icon-dislike text-16 mr-10" />
-                        Not helpful
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="col-auto">
-                    <Link
-                      to=""
-                      className="button -md -outline-blue-1 text-blue-1"
-                    >
-                      Show all 116 reviews{" "}
-                      <div className="icon-arrow-top-right ml-15" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
         <section>
-          <div className="container">
-            <div className="row">
-              <div className="col-xl-8 py-50 mx-auto">
-                <div className="col-12">
-                  <div className="col-auto">
-                    <h3 className="text-22 fw-500">Leave a Reply</h3>
-                    <p className="text-15 text-dark-1 mt-5">
-                      Your email address will not be published.
-                    </p>
-                  </div>
-                </div>
-                <div className="row y-gap-30">
-                  <div className="col-xl-6">
-                    <div className="form-input ">
-                      <input type="text" required />
-                      <label className="lh-1 text-16 text-light-1">Text</label>
-                    </div>
-                  </div>
-                  <div className="col-xl-6">
-                    <div className="form-input ">
-                      <input type="text" required />
-                      <label className="lh-1 text-16 text-light-1">Email</label>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className="form-input ">
-                      <textarea required rows={6} defaultValue={""} />
-                      <label className="lh-1 text-16 text-light-1">
-                        Write Your Comment
-                      </label>
-                    </div>
-                  </div>
-                  <div className="col-auto">
-                    <Link
-                      to=""
-                      className="button -md -dark-1 bg-blue-1 text-white"
-                    >
-                      Post Comment{" "}
-                      <div className="icon-arrow-top-right ml-15" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="layout-pt-md layout-pb-md bg-dark-2">
-          <div className="container">
-            <div className="row y-gap-30 justify-between items-center">
-              <div className="col-auto">
-                <div className="row y-gap-20  flex-wrap items-center">
-                  <div className="col-auto">
-                    <div className="icon-newsletter text-60 sm:text-40 text-white" />
-                  </div>
-                  <div className="col-auto">
-                    <h4 className="text-26 text-white fw-600">
-                      Your Travel Journey Starts Here
-                    </h4>
-                    <div className="text-white">
-                      Sign up and we'll send the best deals to you
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-auto">
-                <div className="single-field -w-410 d-flex x-gap-10 y-gap-20">
-                  <div>
-                    <input
-                      className="bg-white h-60"
-                      type="text"
-                      placeholder="Your Email"
-                    />
-                  </div>
-                  <div>
-                    <button className="button -md h-60 bg-blue-1 text-white">
-                      Subscribe
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {hotelDetail?.ops?.map((option) => {
+            // const totalPrice = option.tp;
+            return (
+              <React.Fragment>
+                {option.ris.map((room) => {
+                  const roomType = room.rt;
+                  const roomCategory = room.rc;
+                  const roomPrice = room.tp;
+                  const roomAmenities = room.fcs;
+                  return (
+                    <React.Fragment>
+                      <div>{`${roomCategory} - ${roomType}`}</div>
+                      {roomAmenities.map((amenity) => {
+                        return <div>{amenity}</div>;
+                      })}
+                      <div>{roomPrice}</div>
+                      <button
+                        className="btn btn-primary"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          selectRoom(option);
+                        }}
+                      >
+                        Book
+                      </button>
+                    </React.Fragment>
+                  );
+                })}
+              </React.Fragment>
+            );
+          })}
         </section>
         <Footer />
       </main>
