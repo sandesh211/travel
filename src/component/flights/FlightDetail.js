@@ -14,9 +14,11 @@ const FlightDetail = (props) => {
   const navigate = useNavigate();
 
   const [reviewResponse, setReviewResponse] = useState();
-  const [TotalPriceId, setTotalPriceID] = useState([]);
 
   const { state } = useLocation();
+  const [topReviewResponse, setTopReviewResponse] = useState(
+    state?.data?.ONWARD[0]?.sI
+  );
   const [travelClass, setTravelClass] = useState(state?.info?.travelClass);
   const [preferdAirLine, setPreferdAirLine] = useState(
     state?.info?.preferdAirLine
@@ -43,6 +45,10 @@ const FlightDetail = (props) => {
       : undefined
   );
 
+  const [TotalPriceId, setTotalPriceID] = useState([
+    LocationData && LocationData[0]?.totalPriceList[0]?.id,
+  ]);
+
   const convertTime = (data) => {
     const dateString = data;
     const date = new Date(dateString);
@@ -68,8 +74,14 @@ const FlightDetail = (props) => {
     return `${year}-${month}-${day}`;
   };
 
-  const BookOneWayFlight = (data) => {
+  const BookOneWayFlight = (data, index, isReturnFlight) => {
     setTotalPriceID([data?.totalPriceList[0]?.id]);
+
+    setSelectedFlight({
+      data,
+      fare: data?.totalPriceList[0]?.fd?.ADULT?.fC?.TF,
+      index,
+    });
   };
 
   const SelectTwoWayFlight = (flight, index, isReturnFlight) => {
@@ -103,6 +115,7 @@ const FlightDetail = (props) => {
         headers: headers,
       })
       .then((res) => {
+        // reviewResponse?.data?.tripInfos[0]?.sI?.
         setReviewResponse(res);
       })
       .catch((err) => {
@@ -321,14 +334,14 @@ const FlightDetail = (props) => {
                           eventKey="0"
                           className="accordion-hide"
                           style={
-                            LocationDataReturn && selectedFlight?.index === idx
+                            LocationData && selectedFlight?.index === idx
                               ? { border: "solid blue" }
                               : {}
                           }
                         >
                           <div className="px-20 py-20 justify-between">
                             <div className="col-12 my-auto p-0 gap-2">
-                              {item?.sI?.map((item2) => {
+                              {item?.sI?.map((item2, idx) => {
                                 return (
                                   <div className="row y-gap-10 mb-3 items-center">
                                     <div className="col-sm-auto">
@@ -400,7 +413,7 @@ const FlightDetail = (props) => {
                                   {!LocationDataReturn && (
                                     <button
                                       onClick={() => {
-                                        BookOneWayFlight(item);
+                                        BookOneWayFlight(item, idx, true);
                                       }}
                                       className=" button btn text-sm -dark-1 px-10 h-40 bg-blue-1 text-white"
                                     >

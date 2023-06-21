@@ -19,4 +19,14 @@ export const AuthService = {
   isUserLoggedIn: function () {
     return !!localStorage.getItem("access_token");
   },
+  register: async function (name, email, password, confirm_password) {
+    const requestBody = {
+      name,
+      email,
+      password,
+      confirm_password,
+    };
+    const response = await axios.post(`${APIBaseURL}/register`, requestBody);
+    return response;
+  },
 };
