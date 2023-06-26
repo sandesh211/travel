@@ -7,9 +7,11 @@ const headers = {
   apikey: ApiKey,
 };
 
+let abc = localStorage.getItem("access_token");
+
 const phpConfig = {
   headers: {
-    authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    authorization: `Bearer ${abc}`,
   },
 };
 
@@ -125,7 +127,7 @@ export const FlightService = {
       phpConfig
     );
   },
-  paymentPHP: async function (booking_id, type, pay_id, status, amount) {
+  paymentPHP: async function (booking_id, type, pay_id, status, amount, token) {
     return axios.post(
       "https://rasatva.apponedemo.top/travel/api/payment-store",
       {

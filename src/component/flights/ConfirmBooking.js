@@ -60,8 +60,10 @@ const ConfirmBooking = () => {
             1,
             response.razorpay_payment_id,
             "SUCCESS",
-            review.totalPriceInfo.totalFareDetail.fC.TF
+            review.totalPriceInfo.totalFareDetail.fC.TF,
+            token
           );
+
           // if()
           const bookResponse = await FlightService.flightBooking({
             bookingId: review.bookingId,
@@ -145,6 +147,10 @@ const ConfirmBooking = () => {
   const [token, setToken] = React.useState(
     localStorage.getItem("access_token")
   );
+
+  useEffect(() => {
+    console.log("paymentPHP", localStorage.getItem("access_token"));
+  }, [token]);
 
   const onSignIn = async () => {
     setLoading(true);

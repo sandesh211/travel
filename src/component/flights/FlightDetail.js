@@ -10,6 +10,13 @@ import { ApiUrl, ApiKey } from "../../config/Config";
 import ReturnPriceBar from "./PriceBar";
 import { FlightService } from "../../services/flight";
 
+// Go First "G8"
+// IndiGo  "6E"
+// Vistara "UK"
+// Air India "AI"
+// AirAsia India "I5"
+// AkasaAir "QP"
+
 const FlightDetail = (props) => {
   const navigate = useNavigate();
 
@@ -20,9 +27,8 @@ const FlightDetail = (props) => {
     state?.data?.ONWARD[0]?.sI
   );
   const [travelClass, setTravelClass] = useState(state?.info?.travelClass);
-  const [preferdAirLine, setPreferdAirLine] = useState(
-    state?.info?.preferdAirLine
-  );
+  const [preferdAirLine, setPreferdAirLine] = useState([]);
+  let preferdAirLineArray = [];
   const [directFlight, setDirectFlight] = useState(state?.info?.directFlight);
 
   const [LocationData, setLocationData] = useState(state?.data?.ONWARD);
@@ -168,8 +174,11 @@ const FlightDetail = (props) => {
 
   useEffect(() => {
     searchFlights();
-  }, [directFlight, travelClass]);
+    // console.log("preferdAirLine", preferdAirLine.includes("G8"));
+    // console.log("preferdAirLineArray", preferdAirLine);
+  }, [directFlight, travelClass, preferdAirLine]);
 
+  console.log("LocationDataLocationData", LocationData);
   return (
     <div>
       <main>
@@ -305,6 +314,159 @@ const FlightDetail = (props) => {
                                 </div>
                               </div>
                               <div className="text-15 ml-10">First</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* airline filter   */}
+
+                    <div className="sidebar__item">
+                      <h5 className="text-18 fw-500 mb-10">Airline</h5>
+                      <div className="sidebar-checkbox">
+                        <div className="row y-gap-10 items-center justify-between">
+                          <div className="col-auto">
+                            <div className="d-flex items-center">
+                              <div className="form-checkbox ">
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={preferdAirLine[0]?.code === "G8"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setPreferdAirLine([{ code: "G8" }]);
+                                    } else {
+                                      setPreferdAirLine([]);
+                                    }
+                                  }}
+                                />
+                                <div className="form-checkbox__mark">
+                                  <div className="form-checkbox__icon icon-check" />
+                                </div>
+                              </div>
+                              <div className="text-15 ml-10">Go First</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row y-gap-10 items-center justify-between">
+                          <div className="col-auto">
+                            <div className="d-flex items-center">
+                              <div className="form-checkbox ">
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={preferdAirLine[0]?.code === "6E"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setPreferdAirLine([{ code: "6E" }]);
+                                    } else {
+                                      setPreferdAirLine([]);
+                                    }
+                                  }}
+                                />
+                                <div className="form-checkbox__mark">
+                                  <div className="form-checkbox__icon icon-check" />
+                                </div>
+                              </div>
+                              <div className="text-15 ml-10">IndiGo</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row y-gap-10 items-center justify-between">
+                          <div className="col-auto">
+                            <div className="d-flex items-center">
+                              <div className="form-checkbox ">
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={preferdAirLine[0]?.code === "UK"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setPreferdAirLine([{ code: "UK" }]);
+                                    } else {
+                                      setPreferdAirLine([]);
+                                    }
+                                  }}
+                                />
+                                <div className="form-checkbox__mark">
+                                  <div className="form-checkbox__icon icon-check" />
+                                </div>
+                              </div>
+                              <div className="text-15 ml-10">Vistara</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row y-gap-10 items-center justify-between">
+                          <div className="col-auto">
+                            <div className="d-flex items-center">
+                              <div className="form-checkbox ">
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={preferdAirLine[0]?.code === "AI"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setPreferdAirLine([{ code: "AI" }]);
+                                    } else {
+                                      setPreferdAirLine([]);
+                                    }
+                                  }}
+                                />
+                                <div className="form-checkbox__mark">
+                                  <div className="form-checkbox__icon icon-check" />
+                                </div>
+                              </div>
+                              <div className="text-15 ml-10">Air India</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row y-gap-10 items-center justify-between">
+                          <div className="col-auto">
+                            <div className="d-flex items-center">
+                              <div className="form-checkbox ">
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={preferdAirLine[0]?.code === "I5"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setPreferdAirLine([{ code: "I5" }]);
+                                    } else {
+                                      setPreferdAirLine([]);
+                                    }
+                                  }}
+                                />
+                                <div className="form-checkbox__mark">
+                                  <div className="form-checkbox__icon icon-check" />
+                                </div>
+                              </div>
+                              <div className="text-15 ml-10">AirAsia India</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row y-gap-10 items-center justify-between">
+                          <div className="col-auto">
+                            <div className="d-flex items-center">
+                              <div className="form-checkbox ">
+                                <input
+                                  type="checkbox"
+                                  name="name"
+                                  checked={preferdAirLine[0]?.code === "QP"}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setPreferdAirLine([{ code: "QP" }]);
+                                    } else {
+                                      setPreferdAirLine([]);
+                                    }
+                                  }}
+                                />
+                                <div className="form-checkbox__mark">
+                                  <div className="form-checkbox__icon icon-check" />
+                                </div>
+                              </div>
+                              <div className="text-15 ml-10">AkasaAir</div>
                             </div>
                           </div>
                         </div>
