@@ -249,7 +249,7 @@ const HotelDetails = () => {
                   return (
                     <React.Fragment>
                       <div>{`${roomCategory} - ${roomType}`}</div>
-                      {roomAmenities.map((amenity) => {
+                      {roomAmenities?.map((amenity) => {
                         return <div>{amenity}</div>;
                       })}
                       <div>{roomPrice}</div>

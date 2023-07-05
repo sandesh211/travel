@@ -26,9 +26,10 @@ const ConfirmHotelBooking = () => {
       console.log("Razorpay script not loaded.");
       return;
     }
+    const totalAmount = parseInt(option.tp.toString().replace(".", ""))
     const options = {
       key: "rzp_test_YeQYaEfvpWfjLn",
-      amount: option.tp * 100, // amount in paise
+      amount: totalAmount, // amount in paise
       currency: "INR",
       name: "Delightful Holidays",
       description: "Payment for your product",
@@ -41,7 +42,8 @@ const ConfirmHotelBooking = () => {
             2,
             response.razorpay_payment_id,
             "SUCCESS",
-            option.tp
+            totalAmount,
+            token
           );
           // if()
           // const bookResponse = await FlightService.flightBooking({

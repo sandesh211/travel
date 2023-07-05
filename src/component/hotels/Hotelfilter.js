@@ -121,9 +121,11 @@ const Hotelfilter = () => {
           },
         ],
         searchCriteria: {
-          city: selectedCityObject?.id,
+          // city: selectedCityObject?.id,
+          city: "727635",
           // city: setid.toString(),
-          nationality: selectnationlity,
+          // nationality: selectnationlity,
+          nationality: "106",
           currency: "INR",
         },
         searchPreferences: {
