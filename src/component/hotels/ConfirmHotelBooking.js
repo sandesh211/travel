@@ -8,6 +8,7 @@ const ConfirmHotelBooking = () => {
   const { state } = useLocation();
 
   const { hotelDetail, option } = state;
+  const totalAmount = parseInt(option.tp.toString().replace(".", ""))
 
   useEffect(() => {
     loadScript("https://checkout.razorpay.com/v1/checkout.js", "razorpayScript")
@@ -26,7 +27,6 @@ const ConfirmHotelBooking = () => {
       console.log("Razorpay script not loaded.");
       return;
     }
-    const totalAmount = parseInt(option.tp.toString().replace(".", ""))
     const options = {
       key: "rzp_test_YeQYaEfvpWfjLn",
       amount: totalAmount, // amount in paise
@@ -350,7 +350,7 @@ const ConfirmHotelBooking = () => {
               </div>
               <div className="flex justify-between text-black font-bold pt-2 text-base border-t-2 border-gray-400">
                 <p>Total Amount</p>
-                <p>₹ 41000</p>
+                <p>₹ {totalAmount}</p>
               </div>
             </div>
           </div>
