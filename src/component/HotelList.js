@@ -32,6 +32,9 @@ const HotelList = () => {
     navigate(`/HotelDetails/${id}`);
   };
 
+  const [searchFilter, setSearchFilter] = React.useState("")
+  const [priceFilter, setPriceFilter] = React.useState(Math.min())
+
   return (
     <div>
       <div className="header-margin"></div>
@@ -123,6 +126,8 @@ const HotelList = () => {
                       className="pl-50 border-light text-dark-1 h-50 rounded-8"
                       type="text"
                       placeholder="Search Hotels"
+                      value={searchFilter}
+                      onChange={e => setSearchFilter(e.target.value)}
                     />
                     <button className="absolute d-flex items-center h-full">
                       <i className="icon-search text-20 px-15 text-dark-1" />
@@ -130,397 +135,54 @@ const HotelList = () => {
                   </div>
                 </div>
                 <div className="sidebar__item">
-                  <h5 className="text-18 fw-500 mb-10">Deals</h5>
+                  <h5 className="text-18 fw-500 mb-10">Price</h5>
                   <div className="sidebar-checkbox">
                     <div className="row y-gap-10 items-center justify-between">
                       <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="form-checkbox">
-                            <input type="checkbox" />
+                            <input type="checkbox" checked={priceFilter === 500} onClick={() => setPriceFilter(500)} />
                             <div className="form-checkbox__mark">
                               <div className="form-checkbox__icon icon-check" />
                             </div>
                           </div>
-                          <div className="text-15 ml-10">Free cancellation</div>
+                          <div className="text-15 ml-10">Upto 500</div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="form-checkbox">
-                            <input type="checkbox" />
+                            <input type="checkbox" checked={priceFilter === 1000} onClick={() => setPriceFilter(1000)} />
                             <div className="form-checkbox__mark">
                               <div className="form-checkbox__icon icon-check" />
                             </div>
                           </div>
-                          <div className="text-15 ml-10">
-                            Reserve now, pay at stay{" "}
-                          </div>
+                          <div className="text-15 ml-10">Upto 1000</div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="form-checkbox">
-                            <input type="checkbox" />
+                            <input type="checkbox" checked={priceFilter === 2000} onClick={() => setPriceFilter(2000)} />
                             <div className="form-checkbox__mark">
                               <div className="form-checkbox__icon icon-check" />
                             </div>
                           </div>
-                          <div className="text-15 ml-10">
-                            Properties with special offers
-                          </div>
+                          <div className="text-15 ml-10">Upto 2000</div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="sidebar__item">
-                  <h5 className="text-18 fw-500 mb-10">Popular Filters</h5>
-                  <div className="sidebar-checkbox">
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="form-checkbox">
-                            <input type="checkbox" />
+                            <input type="checkbox" checked={priceFilter === 5000} onClick={() => setPriceFilter(5000)} />
                             <div className="form-checkbox__mark">
                               <div className="form-checkbox__icon icon-check" />
                             </div>
                           </div>
-                          <div className="text-15 ml-10">
-                            Breakfast Included
-                          </div>
+                          <div className="text-15 ml-10">Upto 5000</div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
                         <div className="d-flex items-center">
                           <div className="form-checkbox">
-                            <input type="checkbox" />
+                            <input type="checkbox" checked={priceFilter === 10000} onClick={() => setPriceFilter(10000)} />
                             <div className="form-checkbox__mark">
                               <div className="form-checkbox__icon icon-check" />
                             </div>
                           </div>
-                          <div className="text-15 ml-10">Romantic</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox">
-                            <input type="checkbox" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Airport Transfer</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox">
-                            <input type="checkbox" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">WiFi Included </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox">
-                            <input type="checkbox" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">5 Star</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="sidebar__item">
-                  <h5 className="text-18 fw-500 mb-10">Amenities</h5>
-                  <div className="sidebar-checkbox">
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">
-                            Breakfast Included
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">WiFi Included </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Pool</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Restaurant </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Air conditioning </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="sidebar__item">
-                  <h5 className="text-18 fw-500 mb-10">Guest Rating</h5>
-                  <div className="sidebar-checkbox">
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="form-radio d-flex items-center ">
-                          <div className="radio">
-                            <input type="radio" name="name" />
-                            <div className="radio__mark">
-                              <div className="radio__icon" />
-                            </div>
-                          </div>
-                          <div className="ml-10">Any</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="form-radio d-flex items-center ">
-                          <div className="radio">
-                            <input type="radio" name="name" />
-                            <div className="radio__mark">
-                              <div className="radio__icon" />
-                            </div>
-                          </div>
-                          <div className="ml-10">Wonderful 4.5+</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="form-radio d-flex items-center ">
-                          <div className="radio">
-                            <input type="radio" name="name" />
-                            <div className="radio__mark">
-                              <div className="radio__icon" />
-                            </div>
-                          </div>
-                          <div className="ml-10">Very good 4+</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="form-radio d-flex items-center ">
-                          <div className="radio">
-                            <input type="radio" name="name" />
-                            <div className="radio__mark">
-                              <div className="radio__icon" />
-                            </div>
-                          </div>
-                          <div className="ml-10">Good 3.5+ </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="sidebar__item">
-                  <h5 className="text-18 fw-500 mb-10">Style</h5>
-                  <div className="sidebar-checkbox">
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Budget</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Mid-range </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Luxury</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Family-friendly </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Business </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="sidebar__item">
-                  <h5 className="text-18 fw-500 mb-10">Neighborhood</h5>
-                  <div className="sidebar-checkbox">
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Central London</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">
-                            Guests' favourite area{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">
-                            Westminster Borough
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">
-                            Kensington and Chelsea{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row y-gap-10 items-center justify-between">
-                      <div className="col-auto">
-                        <div className="d-flex items-center">
-                          <div className="form-checkbox ">
-                            <input type="checkbox" name="name" />
-                            <div className="form-checkbox__mark">
-                              <div className="form-checkbox__icon icon-check" />
-                            </div>
-                          </div>
-                          <div className="text-15 ml-10">Oxford Street </div>
+                          <div className="text-15 ml-10">Upto 10000</div>
                         </div>
                       </div>
                     </div>
@@ -537,12 +199,12 @@ const HotelList = () => {
                 </div>
                 <div className="col-auto">
                   <div className="row x-gap-20 y-gap-20">
-                    <div className="col-auto">
+                    {/* <div className="col-auto">
                       <button className="button -blue-1 h-40 px-20 rounded-100 bg-blue-1-05 text-15 text-blue-1">
                         <i className="icon-up-down text-14 mr-10" />
                         Sort
                       </button>
-                    </div>
+                    </div> */}
                     <div className="col-auto d-none lg:d-block">
                       <button
                         data-x-click="filterPopup"
@@ -558,7 +220,7 @@ const HotelList = () => {
 
               <div className="mt-30" />
               <div className="row y-gap-30">
-                {data?.map((item, index) => {
+                {data?.filter(item => item.name.toLowerCase().includes(searchFilter.toLowerCase()) && item?.ops[0].ris[0].tp < priceFilter).map((item, index) => {
                   return (
                     <div className="col-12" key={index}>
                       <div className="border-top-light pt-30">
@@ -574,6 +236,7 @@ const HotelList = () => {
                                       ? item?.img[0]?.tns
                                       : item?.img[0]?.url
                                   }
+                                  alt=""
                                 />
                               </div>
                               <div className="cardImage__wishlist">
@@ -694,27 +357,6 @@ const HotelList = () => {
           </div>
         </div>
       </section>
-
-      {/* <section className="layout-pt-lg layout-pb-lg">
-          <div className="container">
-              <div className="row col-md-8 mx-auto">
-                  <div className="col-lg-3 me-5">
-                      <img src={hotelnot} alt="hotel" />
-                  </div>
-                  <div className="col-lg-7 my-auto">
-                      <div className="no-page">
-
-                          <h2 className="text-30 fw-600">Sorry,</h2>
-                          <div className="pr-30 mt-5">Sorry, There were no data found for this Hotel
-                              Please, Modify your search and try again.</div>
-                          <div className="d-inline-block mt-40 md:mt-20">
-                              <a href="#" className="button -md -dark-1 bg-blue-1 text-white">Go back to homepage</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section> */}
 
       <Footer />
     </div>
