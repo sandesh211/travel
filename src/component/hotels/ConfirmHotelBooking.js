@@ -38,66 +38,79 @@ const ConfirmHotelBooking = () => {
         // Handle success callback
         console.log("payment", response);
         if (response.razorpay_payment_id) {
-          const paymentResponse = await FlightService.paymentPHP(
-            option.id,
-            2,
-            response.razorpay_payment_id,
-            "SUCCESS",
-            totalAmount,
-            token
-          );
+          // const paymentResponse = await FlightService.paymentPHP(
+          //   option.id,
+          //   2,
+          //   response.razorpay_payment_id,
+          //   "SUCCESS",
+          //   totalAmount,
+          //   token
+          // );
 
-          const reviewResponse = await HotelService.review(hotelDetail.id, option.id)
+          // const reviewResponse = await HotelService.review(hotelDetail.id, option.id)
+
+          // console.log(reviewResponse)
 
           const bookResponse = await HotelService.hotelBooking({
-            bookingId: reviewResponse.data.id,
-            paymentInfos: [
-              {
-                amount: totalAmount,
-              },
-            ],
+            // "bookingId": reviewResponse?.data?.bookingId,
+            bookingId: "TJS206800617165",
             "roomTravellerInfo": [
               {
-                travellerInfo: [
+                "travellerInfo": [
                   {
-                    ti: "Mr",
-                    fN: "Test",
-                    lN: "AdultA",
-                    pt: "ADULT",
-                  },
-                ],
+                    "fN": "akash",
+                    "lN": "sdfsd",
+                    "ti": "Mr",
+                    "pt": "ADULT",
+                    "pan": "ABCDE1224F"
+                  }
+                ]
               }
             ],
-            type: "HOTEL",
-            deliveryInfo: {
-              emails: [travelEmail],
-              contacts: [mobile],
+            "deliveryInfo": {
+              "emails": [
+                "xyz@technogramsolutions.com"
+              ],
+              "contacts": [
+                "1234567890"
+              ],
+              "code": [
+                "+91"
+              ]
             },
+            "type": "HOTEL",
+            "paymentInfos": [
+              {
+                "amount": totalAmount / 100
+              }
+            ]
           });
           if (bookResponse?.data?.status?.success === true) {
-            const bookingDetailResponse = await FlightService.getBookingDetail(
+            const bookingDetailResponse = await HotelService.getBookingDetail(
               bookResponse.data.bookingId
             );
-            const PNR = Object.values(
-              bookingDetailResponse.data.itemInfos.AIR.travellerInfos[0]
-                .pnrDetails
-            )[0];
-            const { amount, bookingId, deliveryInfo, status } =
-              bookingDetailResponse.data.order;
-            const formData = new FormData();
-            formData.append("pnr_number", PNR);
-            formData.append("booking_id", bookingId);
-            formData.append("amount", amount);
-            formData.append("email", deliveryInfo.emails[0]);
-            formData.append("mobile", deliveryInfo.contacts[0]);
-            formData.append("status", status);
-            formData.append(
-              "full_detail",
-              JSON.stringify(bookingDetailResponse.data)
-            );
-            formData.append("user_id", localStorage.getItem("id"));
-            const phpBookResponse = await FlightService.flightBookingPHP(
-              formData
+            // const PNR = Object.values(
+            //   bookingDetailResponse.data.itemInfos.AIR.travellerInfos[0]
+            //     .pnrDetails
+            // )[0];
+            // const { amount, bookingId, deliveryInfo, status } =
+            //   bookingDetailResponse.data.order;
+            // const formData = new FormData();
+            // formData.append("pnr_number", PNR);
+            // formData.append("booking_id", bookingId);
+            // formData.append("amount", amount);
+            // formData.append("email", deliveryInfo.emails[0]);
+            // formData.append("mobile", deliveryInfo.contacts[0]);
+            // formData.append("status", status);
+            // formData.append(
+            //   "full_detail",
+            //   JSON.stringify(bookingDetailResponse.data)
+            // );
+            // formData.append("user_id", localStorage.getItem("id"));
+            const phpBookResponse = await HotelService.hotelBookingPHP(
+              {
+                fullDetail: bookingDetailResponse.data
+              }
             );
 
             if (!phpBookResponse?.data?.status) {

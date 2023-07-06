@@ -46,8 +46,18 @@ export const HotelService = {
   // },
   hotelBooking: async function (data) {
     return axios.post(
-      "https://apitest.tripjack.com/hms/v1/hotel/book",
+      "https://apitest.tripjack.com/oms/v1/hotel/book",
       data,
+      { headers }
+    );
+  },
+  getBookingDetail: async function (bookingId) {
+    return axios.post(
+      "https://apitest.tripjack.com/oms/v1/hotel/booking-details",
+      {
+        // data: "oms/v1/booking-details",
+        bookingId,
+      },
       { headers }
     );
   },
