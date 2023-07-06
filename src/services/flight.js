@@ -139,6 +139,12 @@ export const FlightService = {
         amount,
       },
       phpConfig
+        ? phpConfig
+        : {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
     );
   },
 };
