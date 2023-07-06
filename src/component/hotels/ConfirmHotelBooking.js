@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { loadScript } from "../../config/Utils";
 import { AuthService } from "../../services/auth";
 import { FlightService } from "../../services/flight";
+import { HotelService } from "../../services/hotel";
 
 const ConfirmHotelBooking = () => {
   const { state } = useLocation();
@@ -45,68 +46,67 @@ const ConfirmHotelBooking = () => {
             totalAmount,
             token
           );
-          // if()
-          // const bookResponse = await FlightService.flightBooking({
-          //   bookingId: review.bookingId,
-          //   paymentInfos: [
-          //     {
-          //       amount: review.totalPriceInfo.totalFareDetail.fC.TF,
-          //     },
-          //   ],
-          //   travellerInfo: [
-          //     {
-          //       ti: "Mr",
-          //       fN: "Test",
-          //       lN: "AdultA",
-          //       pt: "ADULT",
-          //     },
-          //   ],
 
-          //   gstInfo: {
-          //     gstNumber: "09AABCU9603R1ZL",
-          //     email: "apitest@apitest.com ",
-          //     registeredName: "XYZ Pvt Ltd",
-          //     mobile: "9728408906",
-          //     address: "Delhi",
-          //   },
-          //   deliveryInfo: {
-          //     emails: [travelEmail],
-          //     contacts: [mobile],
-          //   },
-          // });
-          // if (bookResponse?.data?.status?.success === true) {
-          //   const bookingDetailResponse = await FlightService.getBookingDetail(
-          //     bookResponse.data.bookingId
-          //   );
-          //   const PNR = Object.values(
-          //     bookingDetailResponse.data.itemInfos.AIR.travellerInfos[0]
-          //       .pnrDetails
-          //   )[0];
-          //   const { amount, bookingId, deliveryInfo, status } =
-          //     bookingDetailResponse.data.order;
-          //   const formData = new FormData();
-          //   formData.append("pnr_number", PNR);
-          //   formData.append("booking_id", bookingId);
-          //   formData.append("amount", amount);
-          //   formData.append("email", deliveryInfo.emails[0]);
-          //   formData.append("mobile", deliveryInfo.contacts[0]);
-          //   formData.append("status", status);
-          //   formData.append(
-          //     "full_detail",
-          //     JSON.stringify(bookingDetailResponse.data)
-          //   );
-          //   formData.append("user_id", localStorage.getItem("id"));
-          //   const phpBookResponse = await FlightService.flightBookingPHP(
-          //     formData
-          //   );
+          const reviewResponse = await HotelService.review(hotelDetail.id, option.id)
 
-          //   if (!phpBookResponse?.data?.status) {
-          //     console.log("phpError");
-          //     return;
-          //   }
+          const bookResponse = await HotelService.hotelBooking({
+            bookingId: reviewResponse.data.id,
+            paymentInfos: [
+              {
+                amount: totalAmount,
+              },
+            ],
+            "roomTravellerInfo": [
+              {
+                travellerInfo: [
+                  {
+                    ti: "Mr",
+                    fN: "Test",
+                    lN: "AdultA",
+                    pt: "ADULT",
+                  },
+                ],
+              }
+            ],
+            type: "HOTEL",
+            deliveryInfo: {
+              emails: [travelEmail],
+              contacts: [mobile],
+            },
+          });
+          if (bookResponse?.data?.status?.success === true) {
+            const bookingDetailResponse = await FlightService.getBookingDetail(
+              bookResponse.data.bookingId
+            );
+            const PNR = Object.values(
+              bookingDetailResponse.data.itemInfos.AIR.travellerInfos[0]
+                .pnrDetails
+            )[0];
+            const { amount, bookingId, deliveryInfo, status } =
+              bookingDetailResponse.data.order;
+            const formData = new FormData();
+            formData.append("pnr_number", PNR);
+            formData.append("booking_id", bookingId);
+            formData.append("amount", amount);
+            formData.append("email", deliveryInfo.emails[0]);
+            formData.append("mobile", deliveryInfo.contacts[0]);
+            formData.append("status", status);
+            formData.append(
+              "full_detail",
+              JSON.stringify(bookingDetailResponse.data)
+            );
+            formData.append("user_id", localStorage.getItem("id"));
+            const phpBookResponse = await FlightService.flightBookingPHP(
+              formData
+            );
 
-          //   navigate("/flight-booking-success");
-          // }
+            if (!phpBookResponse?.data?.status) {
+              console.log("phpError");
+              return;
+            }
+
+            navigate("/flight-booking-success");
+          }
         }
       },
       prefill: {
@@ -174,8 +174,8 @@ const ConfirmHotelBooking = () => {
                         <input
                           type="text"
                           className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          // value={travelEmail}
-                          // onChange={(e) => setTravelEmail(e.target.value)}
+                        // value={travelEmail}
+                        // onChange={(e) => setTravelEmail(e.target.value)}
                         />
                       </div>
                       <div>
@@ -183,8 +183,8 @@ const ConfirmHotelBooking = () => {
                         <input
                           type="text"
                           className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          // value={travelEmail}
-                          // onChange={(e) => setTravelEmail(e.target.value)}
+                        // value={travelEmail}
+                        // onChange={(e) => setTravelEmail(e.target.value)}
                         />
                       </div>
                       {option?.ipr && (
@@ -193,8 +193,8 @@ const ConfirmHotelBooking = () => {
                           <input
                             type="text"
                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            // value={travelEmail}
-                            // onChange={(e) => setTravelEmail(e.target.value)}
+                          // value={travelEmail}
+                          // onChange={(e) => setTravelEmail(e.target.value)}
                           />
                         </div>
                       )}
@@ -204,8 +204,8 @@ const ConfirmHotelBooking = () => {
                           <input
                             type="text"
                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            // value={travelEmail}
-                            // onChange={(e) => setTravelEmail(e.target.value)}
+                          // value={travelEmail}
+                          // onChange={(e) => setTravelEmail(e.target.value)}
                           />
                         </div>
                       )}
