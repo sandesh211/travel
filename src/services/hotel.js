@@ -18,4 +18,21 @@ export const HotelService = {
       phpConfig
     );
   },
+  hotelBooking: async function (data) {
+    return axios.post(
+      "https://rasatva.apponedemo.top/travel/api/request-send",
+      {
+        data: "oms/v1/air/book",
+        ...data,
+      },
+      phpConfig
+    );
+  },
+  hotelBookingPHP: async function (data) {
+    return axios.post(
+      "https://rasatva.apponedemo.top/travel/api/hotel-booking",
+      data,
+      phpConfig
+    );
+  },
 };
