@@ -69,7 +69,7 @@ const ConfirmHotelBooking = () => {
             ],
             "deliveryInfo": {
               "emails": [
-                "xyz@technogramsolutions.com"
+                email
               ],
               "contacts": [
                 "1234567890"
@@ -109,6 +109,11 @@ const ConfirmHotelBooking = () => {
             // formData.append("user_id", localStorage.getItem("id"));
             const phpBookResponse = await HotelService.hotelBookingPHP(
               {
+                bookingId: bookResponse.data.bookingId,
+                amount: totalAmount / 100,
+                email: email,
+                mobile: mobile,
+                status: "SUCCESS",
                 fullDetail: bookingDetailResponse.data
               }
             );

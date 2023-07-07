@@ -44,10 +44,10 @@ const FlightDetail = (props) => {
   const [selectedReturnFlight, setSelectedReturnFlight] = useState(
     LocationDataReturn
       ? {
-          flight: LocationDataReturn[0],
-          fare: LocationDataReturn[0].totalPriceList[0]?.fd?.ADULT?.fC?.TF,
-          index: 0,
-        }
+        flight: LocationDataReturn[0],
+        fare: LocationDataReturn[0].totalPriceList[0]?.fd?.ADULT?.fC?.TF,
+        index: 0,
+      }
       : undefined
   );
 
@@ -489,7 +489,7 @@ const FlightDetail = (props) => {
                   {LocationData?.map((item, idx) => {
                     return (
                       <Accordion
-                        className="col-12 col-md-12 col-lg-6 mb-3"
+                        className={`col-12 col-md-12 col-lg-6 mb-3 ${LocationDataReturn ? "return-flight" : "single-flight"}`}
                         defaultKey="0"
                       >
                         <Accordion.Item
@@ -716,7 +716,7 @@ const FlightDetail = (props) => {
                   <div className="accordion__item base-tr">
                     {LocationDataReturn?.map((item, idx) => {
                       return (
-                        <Accordion defaultKey="0">
+                        <Accordion defaultKey="0" className={`${LocationDataReturn ? "return-flight" : "single-flight"}`}>
                           <Accordion.Item
                             eventKey="0"
                             className="accordion-hide"
@@ -760,9 +760,8 @@ const FlightDetail = (props) => {
                                             <div className="text-13 lh-15 text-light-1 mt-10">
                                               {item?.sI?.length === 1
                                                 ? "Nonstop"
-                                                : `${
-                                                    item?.sI?.length - 1
-                                                  } stop`}
+                                                : `${item?.sI?.length - 1
+                                                } stop`}
                                             </div>
                                           </div>
                                           <div className="col-auto">
@@ -969,10 +968,9 @@ const FlightDetail = (props) => {
                                           {reviewResponse?.data?.tripInfos[0]
                                             ?.sI?.length === 1
                                             ? "Nonstop"
-                                            : `${
-                                                reviewResponse?.data
-                                                  ?.tripInfos[0]?.sI?.length - 1
-                                              } stop`}
+                                            : `${reviewResponse?.data
+                                              ?.tripInfos[0]?.sI?.length - 1
+                                            } stop`}
                                         </div>
                                       </div>
                                       <div className="col-auto">
