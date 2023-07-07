@@ -23,6 +23,7 @@ const FlightDetail = (props) => {
   const [reviewResponse, setReviewResponse] = useState();
 
   const { state } = useLocation();
+  console.log("state", state)
   const [topReviewResponse, setTopReviewResponse] = useState(
     state?.data?.ONWARD[0]?.sI
   );
@@ -137,7 +138,7 @@ const FlightDetail = (props) => {
 
     if (response.status === 200) {
       navigate("/confirm-booking", {
-        state: { data: response?.data?.tripInfos[0], review: response.data },
+        state: { data: response?.data?.tripInfos[0], review: response.data, info: state?.info },
       });
     }
   };
@@ -148,6 +149,7 @@ const FlightDetail = (props) => {
         state: {
           data: reviewResponse?.data?.tripInfos[0],
           review: reviewResponse.data,
+          info: state?.info,
         },
       });
     }

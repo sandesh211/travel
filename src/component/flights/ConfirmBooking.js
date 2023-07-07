@@ -7,8 +7,20 @@ import { FlightService } from "../../services/flight";
 const ConfirmBooking = () => {
   const { state } = useLocation();
   const bookingData = state;
-  const { review } = state;
+  const { review, info } = state;
+  console.log("adults", info)
   console.log("location data", bookingData);
+  const travellerObj = {
+    ti: "Mr",
+    fN: "",
+    lN: "",
+    pt: "ADULT",
+  }
+  const defaultTravellerInfo = []
+  for (let i = 0; i < info?.adults; i++) {
+    defaultTravellerInfo.push({ ...travellerObj })
+  }
+  const [travellerInfo, setTravellerInfo] = React.useState(defaultTravellerInfo)
   const TotalPriceFare = review?.totalPriceInfo?.totalFareDetail;
 
   const convertTime = (data) => {
@@ -345,6 +357,50 @@ const ConfirmBooking = () => {
                         />
                       </div>
                     </div>
+                    <h6>Passenger Details</h6>
+                    {Array(info?.adults).fill().map((_, i) => {
+                      return <>
+                        <div>Person {i + 1}</div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <label
+                              htmlFor="Mobile-number"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              First Name
+                            </label>
+                            <input
+                              type="text"
+                              className="border border-gray-1 form-control"
+                              value={travellerInfo[i]?.fN}
+                              onChange={(e) => setTravellerInfo(tinfo => {
+                                const newtinfo = [...tinfo]
+                                newtinfo[i].fN = e.target.value
+                                return newtinfo
+                              })}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Last Name
+                            </label>
+                            <input
+                              type="text"
+                              className="border border-gray-1 form-control"
+                              required
+                              value={travellerInfo[i]?.lN}
+                              onChange={(e) => setTravellerInfo(tinfo => {
+                                const newtinfo = [...tinfo]
+                                newtinfo[i].lN = e.target.value
+                                return newtinfo
+                              })}
+                            />
+                          </div>
+                        </div>
+                      </>
+                    })}
                     <button
                       // type="submit"
                       // className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

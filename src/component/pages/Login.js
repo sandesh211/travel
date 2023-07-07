@@ -17,7 +17,7 @@ const Login = () => {
     setError();
     const res = await AuthService.login(email, password);
     if (res.data.status !== false) {
-      if (res.data.user_type === "Normal User" && agentLogin) {
+      if ((res.data.user_type === "Normal User" && agentLogin) || (res.data.user_type === "Agent" && !agentLogin)) {
         setError("Unable to login")
         return
       }
@@ -28,6 +28,10 @@ const Login = () => {
       localStorage.setItem("id", res.data.data.id);
       localStorage.setItem("name", res.data.name);
       localStorage.setItem("user_type", res.data.user_type)
+      if (res.data.user_type === "Agent") {
+        localStorage.setItem("agent_commission_percentage", res.data.data.agent_commission.percentage)
+        localStorage.setItem("agent_limit", res.data.data.agent_limit.limit)
+      }
     } else {
       setError(res.data.message);
     }
