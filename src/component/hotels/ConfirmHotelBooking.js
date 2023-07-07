@@ -176,6 +176,12 @@ const ConfirmHotelBooking = () => {
         <div className="text-xl font-bold">Complete your booking</div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 md:gap-3 lg:gap-4 mt-6">
           <div className="col-span-2">
+            <div className="bg-white shadow-lg rounded mt-3">
+              <div>{option?.ris[0]?.rt}</div>
+              <div>{option?.ris[0]?.des}</div>
+              <div>{option?.ris[0]?.fcs?.map(a => <div>{a}</div>)}</div>
+              <div className="d-flex nowrap">{option?.ris[0]?.imgs?.map(a => <img src={a.url} alt="" />)}</div>
+            </div>
             {token ? (
               <div className="bg-white shadow-lg rounded mt-3">
                 <div className="p-4">

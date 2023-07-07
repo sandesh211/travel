@@ -15,6 +15,10 @@ const HotelList = () => {
   const data = state?.data?.searchResult?.his;
   const [detailId, setDetailId] = useState("");
   // const [response, setResponse] = useState(null);
+  // const aminities = data?.map(item => data.ops?.map(option => option.ris.map(roomInformation => {
+  //   return roomInformation.fcs
+  // })))
+  // console.log(aminities)
   const navigate = useNavigate();
 
   console.log(data);
@@ -34,6 +38,26 @@ const HotelList = () => {
 
   const [searchFilter, setSearchFilter] = React.useState("")
   const [priceFilter, setPriceFilter] = React.useState(Math.min())
+  const [ratingFilter, setRatingFilter] = React.useState([1, 2, 3, 4, 5])
+
+  React.useEffect(() => {
+    // debugger
+    console.log(ratingFilter)
+  }, [ratingFilter])
+
+  const toggleRatingFilter = (num) => {
+    // debugger
+    setRatingFilter(ratingFilter => {
+      if (!ratingFilter.includes(num)) {
+        return [...ratingFilter, num]
+      } else {
+        const idx = ratingFilter.indexOf(num)
+        const newRatingfilter = [...ratingFilter]
+        newRatingfilter.splice(idx, 1)
+        return newRatingfilter
+      }
+    })
+  }
 
   return (
     <div>
@@ -106,7 +130,7 @@ const HotelList = () => {
                       className="d-flex items-center icon-menu text-inherit text-20"
                       data-x-click="html, header, header-logo, header-mobile-icons, mobile-menu"
                     />
-                  </div>
+                  </div>Price
                 </div>
               </div>
             </div>
@@ -188,6 +212,58 @@ const HotelList = () => {
                     </div>
                   </div>
                 </div>
+                <div className="sidebar__item">
+                  <h5 className="text-18 fw-500 mb-10">Rating</h5>
+                  <div className="sidebar-checkbox">
+                    <div className="row y-gap-10 items-center justify-between">
+                      <div className="col-auto">
+                        <div className="d-flex items-center">
+                          <div className="form-checkbox">
+                            <input type="checkbox" checked={ratingFilter.includes(5)} onClick={() => toggleRatingFilter(5)} />
+                            <div className="form-checkbox__mark">
+                              <div className="form-checkbox__icon icon-check" />
+                            </div>
+                          </div>
+                          <div className="text-15 ml-10">5</div>
+                        </div>
+                        <div className="d-flex items-center">
+                          <div className="form-checkbox">
+                            <input type="checkbox" checked={ratingFilter.includes(4)} onClick={() => toggleRatingFilter(4)} />
+                            <div className="form-checkbox__mark">
+                              <div className="form-checkbox__icon icon-check" />
+                            </div>
+                          </div>
+                          <div className="text-15 ml-10">4</div>
+                        </div>
+                        <div className="d-flex items-center">
+                          <div className="form-checkbox">
+                            <input type="checkbox" checked={ratingFilter.includes(3)} onClick={() => toggleRatingFilter(3)} />
+                            <div className="form-checkbox__mark">
+                              <div className="form-checkbox__icon icon-check" />
+                            </div>
+                          </div>
+                          <div className="text-15 ml-10">3</div>
+                        </div>                        <div className="d-flex items-center">
+                          <div className="form-checkbox">
+                            <input type="checkbox" checked={ratingFilter.includes(2)} onClick={() => toggleRatingFilter(2)} />
+                            <div className="form-checkbox__mark">
+                              <div className="form-checkbox__icon icon-check" />
+                            </div>
+                          </div>
+                          <div className="text-15 ml-10">2</div>
+                        </div>                        <div className="d-flex items-center">
+                          <div className="form-checkbox">
+                            <input type="checkbox" checked={ratingFilter.includes(1)} onClick={() => toggleRatingFilter(1)} />
+                            <div className="form-checkbox__mark">
+                              <div className="form-checkbox__icon icon-check" />
+                            </div>
+                          </div>
+                          <div className="text-15 ml-10">1</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </aside>
             </div>
             <div className="col-xl-9 col-lg-8">
@@ -220,7 +296,7 @@ const HotelList = () => {
 
               <div className="mt-30" />
               <div className="row y-gap-30">
-                {data?.filter(item => item.name.toLowerCase().includes(searchFilter.toLowerCase()) && item?.ops[0].ris[0].tp < priceFilter).map((item, index) => {
+                {data?.filter(item => item.name.toLowerCase().includes(searchFilter.toLowerCase()) && item?.ops[0].ris[0].tp < priceFilter && ratingFilter.includes(item.rt)).map((item, index) => {
                   return (
                     <div className="col-12" key={index}>
                       <div className="border-top-light pt-30">
