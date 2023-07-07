@@ -38,22 +38,22 @@ const ConfirmHotelBooking = () => {
         // Handle success callback
         console.log("payment", response);
         if (response.razorpay_payment_id) {
-          // const paymentResponse = await FlightService.paymentPHP(
-          //   option.id,
-          //   2,
-          //   response.razorpay_payment_id,
-          //   "SUCCESS",
-          //   totalAmount,
-          //   token
-          // );
+          const paymentResponse = await FlightService.paymentPHP(
+            option.id,
+            2,
+            response.razorpay_payment_id,
+            "SUCCESS",
+            totalAmount,
+            token
+          );
 
-          // const reviewResponse = await HotelService.review(hotelDetail.id, option.id)
+          const reviewResponse = await HotelService.review(hotelDetail.id, option.id)
 
-          // console.log(reviewResponse)
+          console.log(reviewResponse)
 
           const bookResponse = await HotelService.hotelBooking({
-            // "bookingId": reviewResponse?.data?.bookingId,
-            bookingId: "TJS206800617165",
+            "bookingId": reviewResponse?.data?.bookingId,
+            // bookingId: "TJS206800617165",
             "roomTravellerInfo": [
               {
                 "travellerInfo": [
@@ -113,12 +113,12 @@ const ConfirmHotelBooking = () => {
               }
             );
 
-            if (!phpBookResponse?.data?.status) {
-              console.log("phpError");
-              return;
-            }
+            // if (!phpBookResponse?.data?.status) {
+            //   console.log("phpError");
+            //   return;
+            // }
 
-            navigate("/flight-booking-success");
+            navigate("/hotel-booking-success");
           }
         }
       },

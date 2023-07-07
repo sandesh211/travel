@@ -20,6 +20,7 @@ import "../src/main.css";
 import ConfirmBooking from "./component/flights/ConfirmBooking";
 import { FlightBookingSuccess } from "./component/flights/FlightBookingSuccess";
 import ConfirmHotelBooking from "./component/hotels/ConfirmHotelBooking";
+import { HotelBookingSuccess } from "./component/hotels/HotelBookingSuccess"
 
 function App() {
   return (
@@ -46,6 +47,10 @@ function App() {
           <Route
             path="/flight-booking-success"
             element={<FlightBookingSuccess />}
+          />
+          <Route
+            path="/hotel-booking-success"
+            element={<HotelBookingSuccess />}
           />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
