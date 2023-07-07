@@ -43,7 +43,7 @@ const ConfirmHotelBooking = () => {
             2,
             response.razorpay_payment_id,
             "SUCCESS",
-            totalAmount,
+            totalAmount / 100,
             token
           );
 

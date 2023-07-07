@@ -120,12 +120,17 @@ const Hotelfilter = () => {
             childAge: children ? childrenAge : [],
           },
         ],
+        // searchCriteria: {
+        //   // city: selectedCityObject?.id,
+        //   city: "727635",
+        //   // city: setid.toString(),
+        //   // nationality: selectnationlity,
+        //   nationality: "106",
+        //   currency: "INR",
+        // },
         searchCriteria: {
-          // city: selectedCityObject?.id,
-          city: "727635",
-          // city: setid.toString(),
-          // nationality: selectnationlity,
-          nationality: "106",
+          city: selectedCityObject?.id,
+          nationality: selectnationlity,
           currency: "INR",
         },
         searchPreferences: {
