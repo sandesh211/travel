@@ -74,12 +74,13 @@ const Header = () => {
                 <div className="mobile-footer px-20 py-20 border-top-light js-mobile-footer"></div>
               </div>
             </div>
-            
+
             <div className="col-auto d-flex gap-3 items-center">
-              <div className="mybalance gap-2 d-flex content-between">
-                <div className="text-gray-1">My Balance :</div>
-              <div className="text-dark"><b>₹ 86497</b></div>
-              </div>
+
+              {localStorage.getItem("user_type") === "Agent" && <div className="mybalance gap-2 d-flex content-between">
+                <div className="text-gray-1">Transaction Limit:</div>
+                <div className="text-dark"><b>₹ {localStorage.getItem("agent_limit")}</b></div>
+              </div>}
               <div className="d-flex items-center">
                 {!isUserLoggedIn ? (
                   <div className="d-flex">
