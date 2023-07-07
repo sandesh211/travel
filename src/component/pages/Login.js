@@ -56,8 +56,8 @@ const Login = () => {
                 </div>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <ButtonGroup>
-                  <Button color="dark" className="bg-blue-1 py-3 border-0" onClick={() => setAgentLogin(false)} active={!agentLogin}>User</Button>
-                  <Button color="primary" className="bg-dark-1 py-3 border-0" onClick={() => setAgentLogin(true)} active={agentLogin}>Agent</Button>
+                  <Button className={`${!agentLogin ? "bg-blue-1" : "bg-dark-1"} py-3 border-0`} onClick={() => setAgentLogin(false)} active={!agentLogin}>User</Button>
+                  <Button className={`${agentLogin ? "bg-blue-1" : "bg-dark-1"} py-3 border-0`} onClick={() => setAgentLogin(true)} active={agentLogin}>Agent</Button>
                 </ButtonGroup>
                 <div className="col-12">
                   <div className="form-input ">
@@ -83,7 +83,7 @@ const Login = () => {
                     </label>
                   </div>
                 </div>
-                
+
                 <div className="col-12">
                   <a href="#" className="text-14 fw-500 text-blue-1 underline">
                     Forgot your password?
