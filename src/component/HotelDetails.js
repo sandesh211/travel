@@ -236,8 +236,27 @@ const HotelDetails = () => {
           </div>
         </section>
 
-        <section>
-          {hotelDetail?.ops?.map((option) => {
+
+        <section id="rooms" className="pt-30">
+          <div className="container">
+            <div className="row pb-20">
+              <div className="col-auto">
+                <h3 className="text-22 fw-500">Available Rooms</h3>
+              </div>
+            </div>
+
+            <div className="border-light rounded-4 px-30 py-30 sm:px-20 sm:py-20">
+              <div className="row y-gap-20">
+                <div className="col-12">
+                 
+                  <div className="roomGrid">
+                    <div className="roomGrid__header hotelroomsd">
+                      <div>Room</div>
+                      <div>Hotel Info</div>
+                      <div>Price</div>
+                    </div>
+
+                    {hotelDetail?.ops?.map((option) => {
             // const totalPrice = option.tp;
             return (
               <React.Fragment>
@@ -248,13 +267,14 @@ const HotelDetails = () => {
                   const roomAmenities = room.fcs;
                   return (
                     <React.Fragment>
-                      <div>{`${roomCategory} - ${roomType}`}</div>
-                      {roomAmenities?.map((amenity) => {
+                      <div className="hotelsfd">
+                        <div><img src="http://tms.tripjack.com//cpfv3/images/?image=aHR0cDovL2NvbnRlbnRzLmFicmV1b25saW5lLmNvbS9zdGF0aWMvMjMvMzMvNjk5L2ltYWdlcy9zb3VyY2U1LmpwZw==" alt="" /></div>
+                      <div>{`${roomCategory} - ${roomType}`} {roomAmenities?.map((amenity) => {
                         return <div>{amenity}</div>;
-                      })}
-                      <div>{roomPrice}</div>
-                      <button
-                        className="btn btn-primary"
+                      })}</div>
+                    <div className="pricebtn">{roomPrice}</div>
+                    <button
+                        className="button -md -dark-1 bg-blue-1 text-white mt-24"
                         onClick={(e) => {
                           e.preventDefault();
                           selectRoom(option);
@@ -262,13 +282,23 @@ const HotelDetails = () => {
                       >
                         Book
                       </button>
+                    </div>
                     </React.Fragment>
                   );
                 })}
               </React.Fragment>
             );
           })}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
         </section>
+
         <Footer />
       </main>
     </div>

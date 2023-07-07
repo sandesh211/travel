@@ -171,16 +171,16 @@ const ConfirmHotelBooking = () => {
   );
 
   return (
-    <div className="bg-stone-100">
-      <section className="container layout-pb-md bg-light-2 py-20">
-        <div className="text-xl font-bold">Complete your booking</div>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 md:gap-3 lg:gap-4 mt-6">
-          <div className="col-span-2">
-            <div className="bg-white shadow-lg rounded mt-3">
-              <div>{option?.ris[0]?.rt}</div>
+    <div className="bg-stone-100 layout-pb-md bg-light-2 py-20">
+      <section className="container">
+        <div className="text-xl font-bold mb-3">Complete your booking</div>
+        <div className="row">
+          <div className="col-md-8 col-lg-8">
+            <div className="bg-white shadow-lg rounded p-4 bookingdetails">
+              <div className="mb-2"><h4>{option?.ris[0]?.rt}</h4></div>
               <div>{option?.ris[0]?.des}</div>
               <div>{option?.ris[0]?.fcs?.map(a => <div>{a}</div>)}</div>
-              <div className="d-flex nowrap">{option?.ris[0]?.imgs?.map(a => <img src={a.url} alt="" />)}</div>
+              <div className="nowrap bookinghotelimg">{option?.ris[0]?.imgs?.map(a => <img src={a.url} alt="" />)}</div>
             </div>
             {token ? (
               <div className="bg-white shadow-lg rounded mt-3">
@@ -344,7 +344,7 @@ const ConfirmHotelBooking = () => {
               </div>
             )}
           </div>
-          <div className="box mt-4 md:mt-0 lg:mt-0">
+          <div className="col-md-4 col-lg-4">
             <div className="bg-white p-4 shadow-lg rounded">
               <div className="font-bold text-gray-900">Fare Summary</div>
               <h6 className="text-base font-medium text-gray-900 mt-3 mb-1">

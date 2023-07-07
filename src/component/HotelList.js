@@ -375,12 +375,12 @@ const HotelList = () => {
                             </div> */}
                             <div className="row x-gap-10 y-gap-10 pt-20">
                               <div className="col-auto">
-                                <div className="border-light rounded-100 py-5 px-20 text-14 lh-14">
+                                <div className="border-light rounded-100 py-2 px-4 text-14 lh-14">
                                   Breakfast
                                 </div>
                               </div>
                               <div className="col-auto">
-                                <div className="border-light rounded-100 py-5 px-20 text-14 lh-14">
+                                <div className="border-light rounded-100 py-2 px-4 text-14 lh-14">
                                   WiFi
                                 </div>
                               </div>

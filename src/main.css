@@ -9316,6 +9316,8 @@ div[data-slider] > input[type=range]::-ms-tooltip {
   align-items: center !important;
 }
 
+
+
 @media (max-width: 1199px) {
   .xl\:justify-start {
     justify-content: flex-start !important;
@@ -14786,6 +14788,36 @@ position: relative;
   width: 41px;
 }
 
+.hotelsfd {
+  display: grid;
+  grid-template-columns: 150px 1fr 200px 140px;
+  gap: 30px;
+  margin-top: 20px;
+  border-bottom: solid 1px #ddd;
+  padding-bottom: 20px;
+  align-items: center;
+}
+.hotelsfd div img {
+  border-radius: 5px;
+}
+
+.pricebtn {
+  font-weight: 700;
+}
+
+.roomGrid__header.hotelroomsd {
+  grid-template-columns: 150px 1fr 200px 140px; align-items: center;
+}
+
+.nowrap.bookinghotelimg {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 15px;
+}
+
+.nowrap.bookinghotelimg img {
+  border-radius: 5px;
+}
 
 /* Responsive */
 @media only screen and (min-width : 320px) and (max-width : 575px) {

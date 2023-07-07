@@ -51,6 +51,10 @@ const Login = () => {
                   </p>
                 </div>
                 {error && <div className="alert alert-danger">{error}</div>}
+                <ButtonGroup>
+                  <Button color="dark" className="bg-blue-1 py-3 border-0" onClick={() => setAgentLogin(false)} active={!agentLogin}>User</Button>
+                  <Button color="primary" className="bg-dark-1 py-3 border-0" onClick={() => setAgentLogin(true)} active={agentLogin}>Agent</Button>
+                </ButtonGroup>
                 <div className="col-12">
                   <div className="form-input ">
                     <input
@@ -75,22 +79,19 @@ const Login = () => {
                     </label>
                   </div>
                 </div>
-                <ButtonGroup>
-                  <Button color="primary" onClick={() => setAgentLogin(false)} active={!agentLogin}>User</Button>
-                  <Button color="primary" onClick={() => setAgentLogin(true)} active={agentLogin}>Agent</Button>
-                </ButtonGroup>
+                
                 <div className="col-12">
                   <a href="#" className="text-14 fw-500 text-blue-1 underline">
                     Forgot your password?
                   </a>
                 </div>
                 <div className="col-12">
-                  <div
-                    className="button py-20 -dark-1 bg-blue-1 text-white"
+                  <button
+                    className="button py-20 w-100 -dark-1 bg-blue-1 text-white"
                     onClick={onSignIn}
                   >
                     Sign In <div className="icon-arrow-top-right ml-15" />
-                  </div>
+                  </button>
                 </div>
               </div>
               <div className="row y-gap-20 pt-30">
