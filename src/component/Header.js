@@ -74,7 +74,12 @@ const Header = () => {
                 <div className="mobile-footer px-20 py-20 border-top-light js-mobile-footer"></div>
               </div>
             </div>
-            <div className="col-auto">
+            
+            <div className="col-auto d-flex gap-3 items-center">
+              <div className="mybalance gap-2 d-flex content-between">
+                <div className="text-gray-1">My Balance :</div>
+              <div className="text-dark"><b>₹ 86497</b></div>
+              </div>
               <div className="d-flex items-center">
                 {!isUserLoggedIn ? (
                   <div className="d-flex">

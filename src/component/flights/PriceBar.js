@@ -48,8 +48,9 @@ const ReturnPriceBar = ({
 }) => {
   return (
     <div className="additional-detail">
-      <div className="fixedbottom position-fixed bottom-0 rounded">
-        <div className="row w-100 bg-dark text-white p-3">
+      <div className="fixedbottom bg-dark text-white position-fixed bottom-0">
+        <div className="container">
+        <div className="row w-100 p-3">
           <FlightInfo
             departure={true}
             airline={airlineDeparture}
@@ -82,6 +83,7 @@ const ReturnPriceBar = ({
                       </button> */}
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

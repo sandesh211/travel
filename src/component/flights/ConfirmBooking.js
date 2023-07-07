@@ -176,18 +176,18 @@ const ConfirmBooking = () => {
   );
 
   return (
-    <div className="bg-stone-100">
-      <section className="container layout-pb-md bg-light-2 py-20">
-        <div className="text-xl font-bold">Complete your booking</div>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 md:gap-3 lg:gap-4 mt-6">
-          <div className="col-span-2">
+    <div className="bg-stone-100 bg-light-2 py-20">
+      <section className="container layout-pb-md">
+        <div className="text-xl font-bold mb-3">Complete your booking</div>
+        <div className="row">
+          <div className="col-md-8 col-lg-8">
             {review?.tripInfos?.map((tripInfo) => {
               return tripInfo?.sI?.map((bookingDetail) => {
                 return (
                   <div className=" bg-white p-3 md:p-4 lg:p-5 shadow-lg rounded mb-3">
                     <div className="shadow-md p-2">
-                      <div className="md:flex lg:flex justify-between">
-                        <div className="border-l-4 border-green-600 ps-3">
+                      <div className="d-flex justify-between">
+                        <div className="border-left-light  border-green-600 ps-3">
                           <h5 className="font-bold">
                             {bookingDetail?.da?.city} →{" "}
                             {bookingDetail?.aa?.city}
@@ -200,12 +200,12 @@ const ConfirmBooking = () => {
                           </p>
                         </div>
                         <div className="mt-3">
-                          <small className="bg-emerald-600 text-white p-1 px-2 rounded">
+                          <small className="bg-green-2 text-white p-1 px-2 rounded">
                             CANCELLATION FEES APPLY
                           </small>
                         </div>
                       </div>
-                      <div className="md:flex lg:flex justify-between">
+                      <div className="d-flex justify-between">
                         <div className="ps-0 md:ps-2 lg:ps-3">
                           <p className="mt-3 text-sm">
                             <span className="font-medium">
@@ -223,33 +223,33 @@ const ConfirmBooking = () => {
                           </h6>
                         </div>
                       </div>
-                      <div className="grid md:grid-cols-3 lg:grid-cols-3 justify-between bg-stone-100 p-2 rounded mt-3">
+                      <div className="grid grid-cols-2  justify-between bg-info-1 p-2 rounded mt-3">
                         <div className="px-2 col-span-2">
                           <div className="flex gap-3 items-center">
-                            <div className="font-bold text-base">
+                            <div className="font-bold text-base flight-time">
                               {" "}
                               {convertTime(bookingDetail?.dt)}
                             </div>
-                            <div className="border border-gray-500 p-1 h-2 w-2 rounded-full"></div>
-                            <div className="font-bold text-base">
+                            <div className="border-dark-1 p-1 h-2 w-2 rounded-full"></div>
+                            <div className="font-bold text-base ">
                               {bookingDetail?.da?.city} .{" "}
                               <small className="font-normal">
                                 {bookingDetail?.da?.name}
                               </small>
                             </div>
                           </div>
-                          <div className="ms-14 ps-4 border-l-2 border-dashed border-gray-500">
+                          <div className="ms-14 border-l-2 border_left border-dashed">
                             {handleCalculate(
                               bookingDetail?.dt,
                               bookingDetail?.at
                             )}
                           </div>
                           <div className="flex gap-3 items-center">
-                            <div className="font-bold text-base">
+                            <div className="font-bold text-base flight-time">
                               {" "}
                               {convertTime(bookingDetail?.at)}
                             </div>
-                            <div className="border border-gray-500 p-1 h-2 w-2 rounded-full"></div>
+                            <div className="border-dark-1 p-1 h-2 w-2 rounded-full"></div>
                             <div className="font-bold text-base">
                               {bookingDetail?.aa?.city} .{" "}
                               <small className="font-normal">
@@ -296,7 +296,7 @@ const ConfirmBooking = () => {
                     Booking details will be sent to
                   </div> */}
                   <div className="space-y-4 md:space-y-6" action="#">
-                    <div className="md:grid lg:grid grid-cols-3 gap-4">
+                    <div className="row">
                       {/* <div>
                       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Country Code
@@ -307,7 +307,8 @@ const ConfirmBooking = () => {
                         <option>India(91)</option>
                       </select>
                     </div> */}
-                      <div className="lg:my-0 md:my-0">
+
+                      <div className="col-md-6">
                         <label
                           htmlFor="Mobile-number"
                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -318,14 +319,14 @@ const ConfirmBooking = () => {
                           type="number"
                           name="name"
                           id="Mobile-number"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="border border-gray-1 form-control"
                           placeholder="Mobile No."
                           required
                           value={mobile}
                           onChange={(e) => setMobile(e.target.value)}
                         />
                       </div>
-                      <div>
+                      <div className="col-md-6">
                         <label
                           htmlFor="email"
                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -336,7 +337,7 @@ const ConfirmBooking = () => {
                           type="email"
                           name="email"
                           id="email"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="border border-gray-1 form-control"
                           placeholder="Email ID"
                           required
                           value={travelEmail}
@@ -347,7 +348,7 @@ const ConfirmBooking = () => {
                     <button
                       // type="submit"
                       // className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                      className="btn btn-primary"
+                      className="btn bg-green-2 text-white"
                       onClick={handlePayment}
                     >
                       CONTINUE
@@ -420,7 +421,7 @@ const ConfirmBooking = () => {
               </div>
             )}
           </div>
-          <div className="box mt-4 md:mt-0 lg:mt-0">
+          <div className="col-md-4 col-lg-4">
             <div className="bg-white p-4 shadow-lg rounded">
               <div className="font-bold text-gray-900">Fare Summary</div>
               <h6 className="text-base font-medium text-gray-900 mt-3 mb-1">
@@ -448,9 +449,9 @@ const ConfirmBooking = () => {
                   <p>₹ 1,598</p>
                 </div> */}
               </div>
-              <div className="flex justify-between text-black font-bold pt-2 text-base border-t-2 border-gray-400">
-                <p>Total Amount</p>
-                <p>₹ {review?.totalPriceInfo?.totalFareDetail?.fC?.TF}</p>
+              <div className="flex justify-between text-dark font-bold pt-2 text-base border-t-2 border-gray-400">
+                <p className="text-dark"><b>Total Amount</b></p>
+                <p className="text-dark">₹ {review?.totalPriceInfo?.totalFareDetail?.fC?.TF}</p>
               </div>
             </div>
           </div>

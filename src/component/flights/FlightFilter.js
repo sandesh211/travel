@@ -302,7 +302,7 @@ const FlightFilter = () => {
                     data-x-dd="searchMenu-loc"
                     data-x-dd-toggle="-is-active"
                   >
-                    <div className="bg-white px-30 py-30 sm:px-0 sm:py-15">
+                    <div className="bg-white px-0 py-0 sm:px-0 sm:py-15">
                       <div className="y-gap-5 js-results">
                         <div className="cityDataScroll">
                           {airportFilterValueDest?.map((data) => {
@@ -564,7 +564,7 @@ const FlightFilter = () => {
                   FlightApiCall();
                 }}
               >
-                <i className="icon-search text-20 mr-10"></i>
+                {/* <i className="icon-search text-20 mr-10"></i> */}
                 {loaderApiRes ? (
                   <div className="spinner-border" role="status">
                     <span className="sr-only"></span>

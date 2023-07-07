@@ -14755,11 +14755,37 @@ position: relative;
 }
 
 .fixedbottom.position-fixed {
-  width: 85%;
+  width: 100%;
   margin: auto;
   left: 0;
   right: 0;
 }
+
+
+.singleflight {
+  display: flex;
+  flex-wrap: inherit;
+  width: 100%;
+}
+
+.single__list .accordion {
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 10px !important;
+}
+
+
+
+.border_left {
+  border-left: solid 1px #858585;
+  border-style: dashed;
+  padding: 0 0 0 20px;
+  margin-left: 61px;
+}
+.flight-time {
+  width: 41px;
+}
+
 
 /* Responsive */
 @media only screen and (min-width : 320px) and (max-width : 575px) {
@@ -14993,5 +15019,6 @@ grid-template-columns: auto auto;
   width: 100%;
 }
 }
+
 
 
