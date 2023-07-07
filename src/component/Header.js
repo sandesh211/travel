@@ -77,10 +77,15 @@ const Header = () => {
 
             <div className="col-auto d-flex gap-3 items-center">
 
-              {localStorage.getItem("user_type") === "Agent" && <div className="mybalance gap-2 d-flex content-between">
-                <div className="text-gray-1">Transaction Limit:</div>
-                <div className="text-dark"><b>₹ {localStorage.getItem("agent_limit")}</b></div>
-              </div>}
+              {localStorage.getItem("user_type") === "Agent" &&
+                <>
+                  <div className="mybalance gap-2 d-flex content-between">
+                    <div className="text-gray-1">Transaction Limit:</div>
+                    <div className="text-dark"><b>₹ {localStorage.getItem("agent_limit")}</b></div>
+                  </div>
+                  <a className="button -outline-blue-1 px-20 md:px-20 lg:px-30 fw-400 text-14 h-50 text-blue-1 m-0" href="https://rasatva.apponedemo.top/travel/" target="_blank" rel="noreferrer">Booking details</a>
+                </>
+              }
               <div className="d-flex items-center">
                 {!isUserLoggedIn ? (
                   <div className="d-flex">
