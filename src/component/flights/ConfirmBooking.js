@@ -84,14 +84,15 @@ const ConfirmBooking = () => {
                 amount: review.totalPriceInfo.totalFareDetail.fC.TF,
               },
             ],
-            travellerInfo: [
-              {
-                ti: "Mr",
-                fN: "Test",
-                lN: "AdultA",
-                pt: "ADULT",
-              },
-            ],
+            travellerInfo,
+            // travellerInfo: [
+            //   {
+            //     ti: "Mr",
+            //     fN: "Test",
+            //     lN: "AdultA",
+            //     pt: "ADULT",
+            //   },
+            // ],
 
             gstInfo: {
               gstNumber: "09AABCU9603R1ZL",

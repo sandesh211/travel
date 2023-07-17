@@ -152,7 +152,7 @@ const Hotelfilter = () => {
       .then((response) => {
         setLoaderApiRes(false);
         console.log("response", response);
-        navigate("/HotelList", { state: { data: response.data } });
+        navigate("/HotelList", { state: { data: response.data, info: { adults } } });
       })
       .catch((error) => {
         console.log("error", error.message);

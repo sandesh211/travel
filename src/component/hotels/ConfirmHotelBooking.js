@@ -8,7 +8,7 @@ import { HotelService } from "../../services/hotel";
 const ConfirmHotelBooking = () => {
   const { state } = useLocation();
 
-  const { hotelDetail, option } = state;
+  const { hotelDetail, option, info } = state;
   const totalAmount = parseInt(option.tp.toString().replace(".", ""))
 
   useEffect(() => {
@@ -22,6 +22,20 @@ const ConfirmHotelBooking = () => {
   }, []);
 
   const navigate = useNavigate();
+
+  const travellerObj =
+  {
+    fN: "",
+    lN: "",
+    ti: "Mr",
+    pt: "ADULT",
+    pan: ""
+  }
+  const defaultTravellerInfo = []
+  for (let i = 0; i < info?.adults; i++) {
+    defaultTravellerInfo.push({ ...travellerObj })
+  }
+  const [travellerInfo, setTravellerInfo] = React.useState(defaultTravellerInfo)
 
   const handlePayment = () => {
     if (!window.Razorpay) {
@@ -56,23 +70,24 @@ const ConfirmHotelBooking = () => {
             // bookingId: "TJS206800617165",
             "roomTravellerInfo": [
               {
-                "travellerInfo": [
-                  {
-                    "fN": "akash",
-                    "lN": "sdfsd",
-                    "ti": "Mr",
-                    "pt": "ADULT",
-                    "pan": "ABCDE1224F"
-                  }
-                ]
+                travellerInfo
+                // "travellerInfo": [
+                //   {
+                //     "fN": "akash",
+                //     "lN": "sdfsd",
+                //     "ti": "Mr",
+                //     "pt": "ADULT",
+                //     "pan": "ABCDE1224F"
+                //   }
+                // ]
               }
             ],
             "deliveryInfo": {
               "emails": [
-                email
+                travelEmail
               ],
               "contacts": [
-                "1234567890"
+                mobile
               ],
               "code": [
                 "+91"
@@ -109,12 +124,12 @@ const ConfirmHotelBooking = () => {
             // formData.append("user_id", localStorage.getItem("id"));
             const phpBookResponse = await HotelService.hotelBookingPHP(
               {
-                bookingId: bookResponse.data.bookingId,
+                booking_id: bookResponse.data.bookingId,
                 amount: totalAmount / 100,
-                email: email,
+                email: travelEmail,
                 mobile: mobile,
                 status: "SUCCESS",
-                fullDetail: bookingDetailResponse.data
+                full_detail: bookingDetailResponse.data
               }
             );
 
@@ -192,82 +207,100 @@ const ConfirmHotelBooking = () => {
                     Booking details will be sent to
                   </div> */}
                   <div className="space-y-4 md:space-y-6" action="#">
-                    <div className="md:grid lg:grid grid-cols-3 gap-4">
-                      <div>
-                        <label>First Name</label>
-                        <input
-                          type="text"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        // value={travelEmail}
-                        // onChange={(e) => setTravelEmail(e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <label>Last Name</label>
-                        <input
-                          type="text"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        // value={travelEmail}
-                        // onChange={(e) => setTravelEmail(e.target.value)}
-                        />
-                      </div>
-                      {option?.ipr && (
-                        <div>
-                          <label>PAN</label>
-                          <input
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          // value={travelEmail}
-                          // onChange={(e) => setTravelEmail(e.target.value)}
-                          />
+
+                    {Array(info?.adults).fill().map((_, i) => {
+                      return <>
+                        <div>Person {i + 1}</div>
+                        <div className="md:grid lg:grid grid-cols-3 gap-4">
+                          <div>
+                            <label>First Name</label>
+                            <input
+                              type="text"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              value={travellerInfo[i]?.fN}
+                              onChange={(e) => setTravellerInfo(tinfo => {
+                                const newtinfo = [...tinfo]
+                                newtinfo[i].fN = e.target.value
+                                return newtinfo
+                              })}
+                            />
+                          </div>
+                          <div>
+                            <label>Last Name</label>
+                            <input
+                              type="text"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              value={travellerInfo[i]?.lN}
+                              onChange={(e) => setTravellerInfo(tinfo => {
+                                const newtinfo = [...tinfo]
+                                newtinfo[i].lN = e.target.value
+                                return newtinfo
+                              })}
+                            />
+                          </div>
+                          {option?.ipr && (
+                            <div>
+                              <label>PAN</label>
+                              <input
+                                type="text"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                value={travellerInfo[i]?.pan}
+                                onChange={(e) => setTravellerInfo(tinfo => {
+                                  const newtinfo = [...tinfo]
+                                  newtinfo[i].pan = e.target.value
+                                  return newtinfo
+                                })}
+                              />
+                            </div>
+                          )}
+                          {/* {option?.ipm && (
+                            <div>
+                              <label>Passport Number</label>
+                              <input
+                                type="text"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              // value={travelEmail}
+                              // onChange={(e) => setTravelEmail(e.target.value)}
+                              />
+                            </div>
+                          )} */}
+                          <div className="lg:my-0 md:my-0">
+                            <label
+                              htmlFor="Mobile-number"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Mobile No
+                            </label>
+                            <input
+                              type="number"
+                              name="name"
+                              id="Mobile-number"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              value={mobile}
+                              onChange={(e) => setMobile(e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <label
+                              htmlFor="email"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Your email
+                            </label>
+                            <input
+                              type="email"
+                              name="email"
+                              id="email"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="Email ID"
+                              required
+                              value={travelEmail}
+                              onChange={(e) => setTravelEmail(e.target.value)}
+                            />
+                          </div>
                         </div>
-                      )}
-                      {option?.ipm && (
-                        <div>
-                          <label>Passport Number</label>
-                          <input
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          // value={travelEmail}
-                          // onChange={(e) => setTravelEmail(e.target.value)}
-                          />
-                        </div>
-                      )}
-                      <div className="lg:my-0 md:my-0">
-                        <label
-                          htmlFor="Mobile-number"
-                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                          Mobile No
-                        </label>
-                        <input
-                          type="number"
-                          name="name"
-                          id="Mobile-number"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          value={mobile}
-                          onChange={(e) => setMobile(e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                          Your email
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          id="email"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="Email ID"
-                          required
-                          value={travelEmail}
-                          onChange={(e) => setTravelEmail(e.target.value)}
-                        />
-                      </div>
-                    </div>
+                      </>
+                    })}
                     <button
                       // type="submit"
                       // className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

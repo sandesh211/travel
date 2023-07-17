@@ -33,7 +33,11 @@ const HotelList = () => {
   // const apikey = "7121268d836907-c712-4301-81f3-bf819f0c159f";
 
   const handleApiCall = (id) => {
-    navigate(`/HotelDetails/${id}`);
+    navigate(`/HotelDetails/${id}`, {
+      state: {
+        info: state?.info
+      }
+    });
   };
 
   const [searchFilter, setSearchFilter] = React.useState("")

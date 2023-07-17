@@ -93,7 +93,7 @@ const HotelDetails = () => {
   const selectRoom = (option) => {
     console.log("room selected", hotelDetail, option);
     navigate("/confirm-hotel-booking", {
-      state: { hotelDetail, option },
+      state: { hotelDetail, option, info: state?.info },
     });
   };
 
@@ -248,7 +248,7 @@ const HotelDetails = () => {
             <div className="border-light rounded-4 px-30 py-30 sm:px-20 sm:py-20">
               <div className="row y-gap-20">
                 <div className="col-12">
-                 
+
                   <div className="roomGrid">
                     <div className="roomGrid__header hotelroomsd">
                       <div>Room</div>
@@ -257,38 +257,38 @@ const HotelDetails = () => {
                     </div>
 
                     {hotelDetail?.ops?.map((option) => {
-            // const totalPrice = option.tp;
-            return (
-              <React.Fragment>
-                {option.ris.map((room) => {
-                  const roomType = room.rt;
-                  const roomCategory = room.rc;
-                  const roomPrice = room.tp;
-                  const roomAmenities = room.fcs;
-                  return (
-                    <React.Fragment>
-                      <div className="hotelsfd">
-                        <div><img src="http://tms.tripjack.com//cpfv3/images/?image=aHR0cDovL2NvbnRlbnRzLmFicmV1b25saW5lLmNvbS9zdGF0aWMvMjMvMzMvNjk5L2ltYWdlcy9zb3VyY2U1LmpwZw==" alt="" /></div>
-                      <div>{`${roomCategory} - ${roomType}`} {roomAmenities?.map((amenity) => {
-                        return <div>{amenity}</div>;
-                      })}</div>
-                    <div className="pricebtn">{roomPrice}</div>
-                    <button
-                        className="button -md -dark-1 bg-blue-1 text-white mt-24"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          selectRoom(option);
-                        }}
-                      >
-                        Book
-                      </button>
-                    </div>
-                    </React.Fragment>
-                  );
-                })}
-              </React.Fragment>
-            );
-          })}
+                      // const totalPrice = option.tp;
+                      return (
+                        <React.Fragment>
+                          {option.ris.map((room) => {
+                            const roomType = room.rt;
+                            const roomCategory = room.rc;
+                            const roomPrice = room.tp;
+                            const roomAmenities = room.fcs;
+                            return (
+                              <React.Fragment>
+                                <div className="hotelsfd">
+                                  <div><img src={room.imgs[0]?.url} alt="" /></div>
+                                  <div>{`${roomCategory} - ${roomType}`} {roomAmenities?.map((amenity) => {
+                                    return <div>{amenity}</div>;
+                                  })}</div>
+                                  <div className="pricebtn">{roomPrice}</div>
+                                  <button
+                                    className="button -md -dark-1 bg-blue-1 text-white mt-24"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      selectRoom(option);
+                                    }}
+                                  >
+                                    Book
+                                  </button>
+                                </div>
+                              </React.Fragment>
+                            );
+                          })}
+                        </React.Fragment>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
