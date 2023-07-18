@@ -8,7 +8,7 @@ const ConfirmBooking = () => {
   const { state } = useLocation();
   const bookingData = state;
   const { review, info } = state;
-  console.log("adults", info)
+  console.log("adults", info?.adults + info?.children + info?.infants)
   console.log("location data", bookingData);
   const travellerObj = {
     ti: "Mr",
@@ -16,8 +16,9 @@ const ConfirmBooking = () => {
     lN: "",
     pt: "ADULT",
   }
+  let NumOfPassengers = info?.adults + info?.children + info?.infants;
   const defaultTravellerInfo = []
-  for (let i = 0; i < info?.adults; i++) {
+  for (let i = 0; i < NumOfPassengers; i++) {
     defaultTravellerInfo.push({ ...travellerObj })
   }
   const [travellerInfo, setTravellerInfo] = React.useState(defaultTravellerInfo)
@@ -359,7 +360,7 @@ const ConfirmBooking = () => {
                       </div>
                     </div>
                     <h6>Passenger Details</h6>
-                    {Array(info?.adults).fill().map((_, i) => {
+                    {NumOfPassengers && Array(NumOfPassengers).fill().map((_, i) => {
                       return <>
                         <div>Person {i + 1}</div>
                         <div className="row">

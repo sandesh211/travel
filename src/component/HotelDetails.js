@@ -260,30 +260,33 @@ const HotelDetails = () => {
                       // const totalPrice = option.tp;
                       return (
                         <React.Fragment>
-                          {option.ris.map((room) => {
-                            const roomType = room.rt;
-                            const roomCategory = room.rc;
-                            const roomPrice = room.tp;
-                            const roomAmenities = room.fcs;
+                          {option?.ris?.map((room, index) => {
+                            const roomType = room?.rt;
+                            const roomCategory = room?.rc;
+                            const roomPrice = room?.tp;
+                            const roomAmenities = room?.fcs;
                             return (
-                              <React.Fragment>
-                                <div className="hotelsfd">
-                                  <div><img src={room.imgs[0]?.url} alt="" /></div>
-                                  <div>{`${roomCategory} - ${roomType}`} {roomAmenities?.map((amenity) => {
-                                    return <div>{amenity}</div>;
-                                  })}</div>
-                                  <div className="pricebtn">{roomPrice}</div>
-                                  <button
-                                    className="button -md -dark-1 bg-blue-1 text-white mt-24"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      selectRoom(option);
-                                    }}
-                                  >
-                                    Book
-                                  </button>
+
+                              <div className="hotelsfd" key={index}>
+                                {/* {console.log("room?.imgs[0]?.url", room)} */}
+                                <div>
+                                  {room?.imgs ? <img src={room?.imgs[0]?.url} alt="" /> : null}
                                 </div>
-                              </React.Fragment>
+                                <div>{`${roomCategory} - ${roomType}`} {roomAmenities?.map((amenity) => {
+                                  return <div>{amenity}</div>;
+                                })}</div>
+                                <div className="pricebtn">{roomPrice}</div>
+                                <button
+                                  className="button -md -dark-1 bg-blue-1 text-white mt-24"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    selectRoom(option);
+                                  }}
+                                >
+                                  Book
+                                </button>
+                              </div>
+
                             );
                           })}
                         </React.Fragment>
