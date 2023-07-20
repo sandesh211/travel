@@ -21,6 +21,7 @@ const FlightDetail = (props) => {
   const navigate = useNavigate();
 
   const [reviewResponse, setReviewResponse] = useState();
+  const [selectedRes, setSelectedRes] = useState();
 
   const { state } = useLocation();
   console.log("state", state)
@@ -83,7 +84,7 @@ const FlightDetail = (props) => {
 
   const BookOneWayFlight = (data, index, isReturnFlight) => {
     setTotalPriceID([data?.totalPriceList[0]?.id]);
-
+    setSelectedRes(data)
     setSelectedFlight({
       data,
       fare: data?.totalPriceList[0]?.fd?.ADULT?.fC?.TF,
@@ -129,6 +130,11 @@ const FlightDetail = (props) => {
         console.log(err);
       });
   }, [TotalPriceId]);
+
+  useEffect(() => {
+    console.log("selectedFlightselectedFlight", selectedFlight)
+  }, [selectedFlight])
+
 
   const BookNowReturn = async () => {
     const response = await FlightService.review([
@@ -321,9 +327,7 @@ const FlightDetail = (props) => {
                         </div>
                       </div>
                     </div>
-
                     {/* airline filter   */}
-
                     <div className="sidebar__item">
                       <h5 className="text-18 fw-500 mb-10">Airline</h5>
                       <div className="sidebar-checkbox">
@@ -948,6 +952,7 @@ const FlightDetail = (props) => {
                                           src={flighticon2}
                                           alt="image"
                                         />
+
                                         <span className="text-14">
                                           {item2?.fD?.aI?.name}
                                           {item2?.fD?.aI?.code}
@@ -1031,6 +1036,8 @@ const FlightDetail = (props) => {
 
                     {LocationDataReturn && (
                       <ReturnPriceBar
+                        selectedReturnFlight={selectedReturnFlight}
+                        selectedFlight={selectedFlight}
                         airlineDeparture={
                           selectedFlight.flight?.sI[0]?.fD?.aI?.name
                         }
