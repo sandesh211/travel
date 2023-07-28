@@ -22,6 +22,7 @@ const ConfirmBooking = () => {
     defaultTravellerInfo.push({ ...travellerObj })
   }
   const [travellerInfo, setTravellerInfo] = React.useState(defaultTravellerInfo)
+  const [bookingSuccessPopup, setBookingSuccessPopup] = React.useState(false)
   const TotalPriceFare = review?.totalPriceInfo?.totalFareDetail;
 
   const convertTime = (data) => {
@@ -68,6 +69,7 @@ const ConfirmBooking = () => {
         // Handle success callback
         console.log("payment", response);
         if (response.razorpay_payment_id) {
+          navigate("/", { replace: true });
           const paymentResponse = await FlightService.paymentPHP(
             review.bookingId,
             1,
@@ -138,7 +140,8 @@ const ConfirmBooking = () => {
               return;
             }
 
-            navigate("/flight-booking-success");
+            // navigate("/flight-booking-success");
+            navigate("/", { replace: true });
           }
         }
       },

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadScript } from "../../config/Utils";
 import { AuthService } from "../../services/auth";
@@ -7,7 +7,13 @@ import { HotelService } from "../../services/hotel";
 
 const ConfirmHotelBooking = () => {
   const { state } = useLocation();
+  var regex = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+  const [panError, setPanError] = useState(false)
 
+
+  useEffect(() => {
+    console.log("panError", panError)
+  }, [panError])
   const { hotelDetail, option, info } = state;
   const totalAmount = parseInt(option.tp.toString().replace(".", ""))
 
@@ -52,6 +58,7 @@ const ConfirmHotelBooking = () => {
         // Handle success callback
         console.log("payment", response);
         if (response.razorpay_payment_id) {
+          // navigate("/", { replace: true });
           const paymentResponse = await FlightService.paymentPHP(
             option.id,
             2,
@@ -104,24 +111,7 @@ const ConfirmHotelBooking = () => {
             const bookingDetailResponse = await HotelService.getBookingDetail(
               bookResponse.data.bookingId
             );
-            // const PNR = Object.values(
-            //   bookingDetailResponse.data.itemInfos.AIR.travellerInfos[0]
-            //     .pnrDetails
-            // )[0];
-            // const { amount, bookingId, deliveryInfo, status } =
-            //   bookingDetailResponse.data.order;
-            // const formData = new FormData();
-            // formData.append("pnr_number", PNR);
-            // formData.append("booking_id", bookingId);
-            // formData.append("amount", amount);
-            // formData.append("email", deliveryInfo.emails[0]);
-            // formData.append("mobile", deliveryInfo.contacts[0]);
-            // formData.append("status", status);
-            // formData.append(
-            //   "full_detail",
-            //   JSON.stringify(bookingDetailResponse.data)
-            // );
-            // formData.append("user_id", localStorage.getItem("id"));
+
             const phpBookResponse = await HotelService.hotelBookingPHP(
               {
                 booking_id: bookResponse.data.bookingId,
@@ -138,7 +128,8 @@ const ConfirmHotelBooking = () => {
             //   return;
             // }
 
-            navigate("/hotel-booking-success");
+            // navigate("/hotel-booking-success");
+            navigate("/", { replace: true });
           }
         }
       },
@@ -245,12 +236,17 @@ const ConfirmHotelBooking = () => {
                                 type="text"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 value={travellerInfo[i]?.pan}
-                                onChange={(e) => setTravellerInfo(tinfo => {
-                                  const newtinfo = [...tinfo]
-                                  newtinfo[i].pan = e.target.value
-                                  return newtinfo
-                                })}
+                                onChange={(e) => {
+                                  setTravellerInfo(tinfo => {
+                                    const newtinfo = [...tinfo]
+                                    newtinfo[i].pan = e.target.value
+                                    return newtinfo
+                                  });
+
+                                  regex.test(e.target.value) ? setPanError(true) : setPanError(false)
+                                }}
                               />
+                              {!panError ? <div style={{ color: "red" }}>Please enter a valid pan</div> : null}
                             </div>
                           )}
                           {/* {option?.ipm && (
@@ -301,14 +297,23 @@ const ConfirmHotelBooking = () => {
                         </div>
                       </>
                     })}
-                    <button
-                      // type="submit"
-                      // className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                      className="btn btn-primary"
-                      onClick={handlePayment}
-                    >
-                      CONTINUE
-                    </button>
+                    {
+                      panError ?
+                        <button
+                          className="btn btn-primary"
+                          onClick={handlePayment}
+                        >
+                          CONTINUE
+                        </button> :
+                        <button
+                          disabled
+                          className="btn btn-primary"
+                          onClick={handlePayment}
+                        >
+                          CONTINUE
+                        </button>
+                    }
+
                   </div>
                   {/* <PaymentForm /> */}
                 </div>
@@ -323,7 +328,7 @@ const ConfirmHotelBooking = () => {
                     <div className="col-12">
                       {/* <h1 className="text-22 fw-500">Welcome back</h1> */}
                       <p className="mt-10">
-                        Please login to continue flight booking
+                        Please login to continue hotel booking
                       </p>
                     </div>
                     {error && <div className="alert alert-danger">{error}</div>}
@@ -387,15 +392,7 @@ const ConfirmHotelBooking = () => {
                 <p></p>
                 <p>₹ Price BF</p>
               </div>
-              <div className="border-t py-2.5 mt-3">
-                <h6 className="text-base font-medium text-gray-900">
-                  Taxes and Surcharges
-                </h6>
-                <div className="flex justify-between text-gray-600 text-sm">
-                  <p>Airline Taxes and Surcharges</p>
-                  <p>₹ TAF</p>
-                </div>
-              </div>
+
               <div className="border-t py-2.5 mt-3">
                 <h6 className="text-base font-medium text-gray-900">
                   Other Services

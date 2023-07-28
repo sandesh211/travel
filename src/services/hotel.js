@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment";
-import { ApiUrl, ApiKey } from "../config/Config";
+import { ApiUrl, ApiKey, APIBaseURL, APIBaseURLLocal } from "../config/Config";
 
 const headers = {
   "Content-Type": "application/json ",
@@ -63,7 +63,7 @@ export const HotelService = {
   },
   hotelBookingPHP: async function (data) {
     return axios.post(
-      "https://rasatva.apponedemo.top/travel/api/hotel-booking",
+      `${APIBaseURLLocal}/hotel-booking`,
       data,
       phpConfig
     );

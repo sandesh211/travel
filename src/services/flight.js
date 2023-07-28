@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment";
-import { ApiUrl, ApiKey } from "../config/Config";
+import { ApiUrl, ApiKey, APIBaseURL, APIBaseURLLocal } from "../config/Config";
 
 const headers = {
   "Content-Type": "application/json ",
@@ -92,7 +92,7 @@ export const FlightService = {
   },
   review: async function (priceIds) {
     return await axios.post(
-      "https://rasatva.apponedemo.top/travel/api/request-send",
+      `${APIBaseURLLocal}/request-send`,
       {
         data: "fms/v1/review",
         priceIds,
@@ -102,7 +102,7 @@ export const FlightService = {
   },
   flightBooking: async function (data) {
     return axios.post(
-      "https://rasatva.apponedemo.top/travel/api/request-send",
+      `${APIBaseURLLocal}/request-send`,
       {
         data: "oms/v1/air/book",
         ...data,
@@ -112,14 +112,14 @@ export const FlightService = {
   },
   flightBookingPHP: async function (data) {
     return axios.post(
-      "https://rasatva.apponedemo.top/travel/api/flight-booking",
+      `${APIBaseURL}/flight-booking`,
       data,
       phpConfig
     );
   },
   getBookingDetail: async function (bookingId) {
     return axios.post(
-      "https://rasatva.apponedemo.top/travel/api/request-send",
+      `${APIBaseURLLocal}/request-send`,
       {
         data: "oms/v1/booking-details",
         bookingId,
@@ -129,7 +129,7 @@ export const FlightService = {
   },
   paymentPHP: async function (booking_id, type, pay_id, status, amount, token) {
     return axios.post(
-      "https://rasatva.apponedemo.top/travel/api/payment-store",
+      `${APIBaseURL}/payment-store`,
       {
         booking_id,
         type,
@@ -141,10 +141,10 @@ export const FlightService = {
       phpConfig
         ? phpConfig
         : {
-            headers: {
-              authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
     );
   },
 };

@@ -2,4 +2,6 @@
 export const ApiUrl = "https://apitest.tripjack.com/fms/v1/";
 export const ApiUrlHotel = "https://apitest.tripjack.com/hms/v1/";
 export const ApiKey = "7121263907a14f-69b8-4cf1-922f-f42425517663";
+export const APIBaseURLLocal = " https://rasatva.apponedemo.top/travel/api";
 export const APIBaseURL = " https://rasatva.apponedemo.top/travel/api";
+// export const APIBaseURL = "https://delightfulholidays.in/admin/api";

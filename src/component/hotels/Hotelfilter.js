@@ -5,7 +5,7 @@ import Datepicker from "react-tailwindcss-datepicker";
 import "react-bootstrap";
 import axios from "axios";
 import Country from "../Country.json";
-import { ApiKey, ApiUrlHotel } from "../../config/Config";
+import { ApiKey, ApiUrlHotel, APIBaseURL } from "../../config/Config";
 
 const Hotelfilter = () => {
   const navigate = useNavigate();
@@ -172,7 +172,7 @@ const Hotelfilter = () => {
   const handleSearchCity = (val) => {
     setCityFilterValue([]);
     axios
-      .get(`https://rasatva.apponedemo.top/travel/api/cities?searchVal=${val}`)
+      .get(`${APIBaseURL}/cities?searchVal=${val}`)
       .then((data) => {
         console.log("cityyyy data", data?.data?.data);
         const newData = data?.data?.data?.filter((item) =>
