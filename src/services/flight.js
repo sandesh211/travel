@@ -10,7 +10,7 @@ const headers = {
 let abc = localStorage.getItem("access_token");
 
 const phpConfig = {
-  headers: {
+  headers: abc && {
     authorization: `Bearer ${abc}`,
   },
 };
@@ -128,6 +128,7 @@ export const FlightService = {
     );
   },
   paymentPHP: async function (booking_id, type, pay_id, status, amount, token) {
+    console.log("rajawat", token)
     return axios.post(
       `${APIBaseURL}/payment-store`,
       {
@@ -137,14 +138,13 @@ export const FlightService = {
         currency: "INR",
         status,
         amount,
+        token
       },
-      phpConfig
-        ? phpConfig
-        : {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
+      {
+        headers: {
+          authorization: `Bearer ${JSON.stringify(token)}`,
+        },
+      }
     );
   },
 };

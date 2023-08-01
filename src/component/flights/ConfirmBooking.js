@@ -5,6 +5,8 @@ import { AuthService } from "../../services/auth";
 import { FlightService } from "../../services/flight";
 
 const ConfirmBooking = () => {
+  const agentLimit = localStorage.getItem("agent_limit")
+  const user_type = localStorage.getItem("user_type")
   const { state } = useLocation();
   const bookingData = state;
   const { review, info } = state;
@@ -406,14 +408,36 @@ const ConfirmBooking = () => {
                         </div>
                       </>
                     })}
-                    <button
+                    {/* <button
                       // type="submit"
                       // className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                       className="btn bg-green-2 text-white"
                       onClick={handlePayment}
                     >
                       CONTINUE
-                    </button>
+                    </button> */}
+
+
+
+                    {user_type == "Normal User" ?
+                      <button
+                        className="btn btn-primary"
+                        onClick={handlePayment}
+                      >
+                        CONTINUE
+                      </button> : null
+                    }
+                    {
+                      review?.totalPriceInfo?.totalFareDetail?.fC?.TF <= agentLimit ?
+                        <button
+                          // disabled={totalAmount < agentLimit && !panError ? true : false}
+                          className="btn btn-primary"
+                          onClick={handlePayment}
+                        >
+                          CONTINUE
+                        </button> : <div style={{ color: "red" }}> Agent Limit is not sufficient for this booking</div>
+
+                    }
                   </div>
                   {/* <PaymentForm /> */}
                 </div>

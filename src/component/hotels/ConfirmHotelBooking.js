@@ -6,16 +6,26 @@ import { FlightService } from "../../services/flight";
 import { HotelService } from "../../services/hotel";
 
 const ConfirmHotelBooking = () => {
+  const agentLimit = localStorage.getItem("agent_limit")
+  const user_type = localStorage.getItem("user_type")
+
   const { state } = useLocation();
   var regex = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
   const [panError, setPanError] = useState(false)
 
+  useEffect(() => {
+    if (totalAmount > agentLimit && !panError) {
+      console.log("totalAmountABCTY1234D", totalAmount, agentLimit)
+    }
+  }, [])
 
   useEffect(() => {
     console.log("panError", panError)
   }, [panError])
   const { hotelDetail, option, info } = state;
-  const totalAmount = parseInt(option.tp.toString().replace(".", ""))
+  // const totalAmount = parseInt(option.tp.toString().replace(".", ""))
+
+  const totalAmount = parseFloat(option.tp.toString())
 
   useEffect(() => {
     loadScript("https://checkout.razorpay.com/v1/checkout.js", "razorpayScript")
@@ -59,6 +69,7 @@ const ConfirmHotelBooking = () => {
         console.log("payment", response);
         if (response.razorpay_payment_id) {
           // navigate("/", { replace: true });
+          debugger;
           const paymentResponse = await FlightService.paymentPHP(
             option.id,
             2,
@@ -67,6 +78,7 @@ const ConfirmHotelBooking = () => {
             totalAmount / 100,
             token
           );
+          console.log("rajawat", token)
 
           const reviewResponse = await HotelService.review(hotelDetail.id, option.id)
 
@@ -297,21 +309,24 @@ const ConfirmHotelBooking = () => {
                         </div>
                       </>
                     })}
+                    {user_type == "Normal User" && panError ?
+                      <button
+                        className="btn btn-primary"
+                        onClick={handlePayment}
+                      >
+                        CONTINUE
+                      </button> : null
+                    }
                     {
-                      panError ?
+                      totalAmount <= agentLimit && panError ?
                         <button
+                          // disabled={totalAmount < agentLimit && !panError ? true : false}
                           className="btn btn-primary"
                           onClick={handlePayment}
                         >
                           CONTINUE
-                        </button> :
-                        <button
-                          disabled
-                          className="btn btn-primary"
-                          onClick={handlePayment}
-                        >
-                          CONTINUE
-                        </button>
+                        </button> : (totalAmount > agentLimit && agentLimit) ? <div style={{ color: "red" }}> Agent Limit is not sufficient for this booking</div> : null
+
                     }
 
                   </div>
