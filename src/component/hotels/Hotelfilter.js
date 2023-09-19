@@ -178,6 +178,7 @@ const Hotelfilter = () => {
         const newData = data?.data?.data?.filter((item) =>
           item.cityName.toLowerCase().includes(cityvalue.toLowerCase())
         );
+
         setCityFilterValue(newData);
       });
   };

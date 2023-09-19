@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import homebanner from "../../src/images/flight-bg.png";
 import Header from "./Header";
 import Tabss from "./Tabss";
 import Footer from "./Footer";
 let Home = () => {
+
   return (
     <div>
       <Header />

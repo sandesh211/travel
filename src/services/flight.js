@@ -128,7 +128,6 @@ export const FlightService = {
     );
   },
   paymentPHP: async function (booking_id, type, pay_id, status, amount, token) {
-    console.log("rajawat", token)
     return axios.post(
       `${APIBaseURL}/payment-store`,
       {
@@ -142,7 +141,22 @@ export const FlightService = {
       },
       {
         headers: {
-          authorization: `Bearer ${JSON.stringify(token)}`,
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  },
+
+
+  AgentLimit: async function (token) {
+    return axios.post(
+      `${APIBaseURL}/agent-limit`,
+      {
+
+      },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
         },
       }
     );

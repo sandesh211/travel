@@ -3,7 +3,7 @@ import moment from "moment";
 import { ApiUrl, ApiKey, APIBaseURL, APIBaseURLLocal } from "../config/Config";
 
 const headers = {
-  "Content-Type": "application/json ",
+  "Content-Type": "application/json",
   apikey: ApiKey,
 };
 const phpConfig = {
@@ -44,7 +44,7 @@ export const HotelService = {
   //     phpConfig
   //   );
   // },
-  hotelBooking: async function (data) {
+  hotelBooking: async function (data, token) {
     return axios.post(
       "https://apitest.tripjack.com/oms/v1/hotel/book",
       data,

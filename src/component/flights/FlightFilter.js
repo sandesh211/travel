@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { useNavigate } from "react-router-dom";
 import "react-bootstrap";
@@ -41,6 +41,8 @@ const FlightFilter = () => {
       setIsShown(false);
     }
   };
+
+
 
   const validateMaxBooking = () => {
     return adults + children < 9;
@@ -91,7 +93,15 @@ const FlightFilter = () => {
     const newData = Airport?.Airport?.filter((data) =>
       data.city.toLowerCase().includes(val.toLowerCase())
     );
-    setAirportFilterValue(newData);
+    const newData2 = Airport?.Airport?.filter((data) =>
+      data.code.toUpperCase().includes(val.toUpperCase())
+    );
+    if (newData.lenght > 0) {
+      setAirportFilterValue(newData);
+    } else {
+      setAirportFilterValue(newData2);
+    }
+    // setAirportFilterValue(newData2);
   };
 
   const handleAirportLocationDest = (val) => {
@@ -101,7 +111,14 @@ const FlightFilter = () => {
     const newData = Airport.Airport.filter((data) =>
       data.city.toLowerCase().includes(val.toLowerCase())
     );
-    setAirportFilterValueDest(newData);
+    const newData2 = Airport?.Airport?.filter((data) =>
+      data.code.toUpperCase().includes(val.toUpperCase())
+    );
+    if (newData.lenght > 0) {
+      setAirportFilterValueDest(newData);
+    } else {
+      setAirportFilterValueDest(newData2);
+    }
   };
 
   const handleAirportSelect = (val) => {

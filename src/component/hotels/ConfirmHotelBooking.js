@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadScript } from "../../config/Utils";
 import { AuthService } from "../../services/auth";
 import { FlightService } from "../../services/flight";
 import { HotelService } from "../../services/hotel";
+import { Button, ButtonGroup } from "react-bootstrap";
+import Modal from 'react-bootstrap/Modal';
 
 const ConfirmHotelBooking = () => {
   const agentLimit = localStorage.getItem("agent_limit")
@@ -12,6 +14,18 @@ const ConfirmHotelBooking = () => {
   const { state } = useLocation();
   var regex = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
   const [panError, setPanError] = useState(false)
+  const [show, setShow] = useState(false);
+  const [agentLogin, setAgentLogin] = React.useState(false)
+
+  let paymentModal = useRef(false)
+  // const [paymentModal, setPaymentModal] = useState(false);
+  const handleClose = () => { paymentModal.current = false; setShow(false); };
+  const handleClose2 = () => (crossCheckPayment())
+  const crossCheckPayment = () => {
+    paymentModal.current = true; setShow(false);
+    handlePayment()
+  }
+  const handleShow = () => { setShow(true) }
 
   useEffect(() => {
     if (totalAmount > agentLimit && !panError) {
@@ -25,7 +39,7 @@ const ConfirmHotelBooking = () => {
   const { hotelDetail, option, info } = state;
   // const totalAmount = parseInt(option.tp.toString().replace(".", ""))
 
-  const totalAmount = parseFloat(option.tp.toString())
+  const totalAmount = Math.round(option.tp.toString())
 
   useEffect(() => {
     loadScript("https://checkout.razorpay.com/v1/checkout.js", "razorpayScript")
@@ -54,13 +68,14 @@ const ConfirmHotelBooking = () => {
   const [travellerInfo, setTravellerInfo] = React.useState(defaultTravellerInfo)
 
   const handlePayment = () => {
+    console.log("paymentModal", paymentModal)
     if (!window.Razorpay) {
       console.log("Razorpay script not loaded.");
       return;
     }
     const options = {
       key: "rzp_test_YeQYaEfvpWfjLn",
-      amount: totalAmount, // amount in paise
+      amount: totalAmount * 100, // amount in paise
       currency: "INR",
       name: "Delightful Holidays",
       description: "Payment for your product",
@@ -68,23 +83,24 @@ const ConfirmHotelBooking = () => {
         // Handle success callback
         console.log("payment", response);
         if (response.razorpay_payment_id) {
-          // navigate("/", { replace: true });
-          debugger;
+          navigate("/", { replace: true });
           const paymentResponse = await FlightService.paymentPHP(
             option.id,
             2,
             response.razorpay_payment_id,
             "SUCCESS",
-            totalAmount / 100,
+            totalAmount,
             token
           );
-          console.log("rajawat", token)
+
+          const agentLimit = await FlightService.AgentLimit(localStorage.getItem("access_token")).then((data) => {
+            localStorage.setItem("agent_limit", data.data.data.agent_limit.limit);
+          }).catch((err) => { console.log("agent_limit", err); })
 
           const reviewResponse = await HotelService.review(hotelDetail.id, option.id)
 
           console.log(reviewResponse)
-
-          const bookResponse = await HotelService.hotelBooking({
+          let hotelBookingData = {
             "bookingId": reviewResponse?.data?.bookingId,
             // bookingId: "TJS206800617165",
             "roomTravellerInfo": [
@@ -115,25 +131,41 @@ const ConfirmHotelBooking = () => {
             "type": "HOTEL",
             "paymentInfos": [
               {
-                "amount": totalAmount / 100
+                "amount": totalAmount
               }
             ]
-          });
+          }
+
+          const phpBookResponse = await HotelService.hotelBookingPHP(
+            {
+              // booking_id: bookResponse.data.bookingId,
+              booking_id: reviewResponse?.data?.bookingId,
+              amount: totalAmount,
+              email: travelEmail,
+              mobile: mobile,
+              status: "SUCCESS",
+              // full_detail: bookingDetailResponse.data
+              full_detail: hotelBookingData
+            }
+          );
+
+          const bookResponse = await HotelService.hotelBooking(hotelBookingData);
           if (bookResponse?.data?.status?.success === true) {
             const bookingDetailResponse = await HotelService.getBookingDetail(
               bookResponse.data.bookingId
             );
 
-            const phpBookResponse = await HotelService.hotelBookingPHP(
-              {
-                booking_id: bookResponse.data.bookingId,
-                amount: totalAmount / 100,
-                email: travelEmail,
-                mobile: mobile,
-                status: "SUCCESS",
-                full_detail: bookingDetailResponse.data
-              }
-            );
+            // const phpBookResponse = await HotelService.hotelBookingPHP(
+            //   {
+            //     // booking_id: bookResponse.data.bookingId,
+            //     booking_id: reviewResponse?.data?.bookingId,
+            //     amount: totalAmount,
+            //     email: travelEmail,
+            //     mobile: mobile,
+            //     status: "SUCCESS",
+            //     full_detail: bookingDetailResponse.data
+            //   }
+            // );
 
             // if (!phpBookResponse?.data?.status) {
             //   console.log("phpError");
@@ -142,6 +174,9 @@ const ConfirmHotelBooking = () => {
 
             // navigate("/hotel-booking-success");
             navigate("/", { replace: true });
+            setTimeout(() => {
+              window.location.reload()
+            }, 1000);
           }
         }
       },
@@ -153,7 +188,10 @@ const ConfirmHotelBooking = () => {
     };
 
     const razorpay = new window.Razorpay(options);
+    // let isBoss = window.confirm("Are you sure?");
     razorpay.open();
+    paymentModal.current = false;
+    // setPaymentModal(false)
   };
 
   // const navigate = useNavigate();
@@ -170,13 +208,22 @@ const ConfirmHotelBooking = () => {
     setError();
     const res = await AuthService.login(email, password);
     if (res.data.status !== false) {
+      if ((res.data.user_type === "Normal User" && agentLogin) || (res.data.user_type === "Agent" && !agentLogin)) {
+        setError("Unable to login")
+        return
+      }
       // navigate("/");
       localStorage.setItem("access_token", res.data.access_token);
       localStorage.setItem("token_type", res.data.token_type);
       localStorage.setItem("email", res.data.data.email);
       localStorage.setItem("id", res.data.data.id);
       localStorage.setItem("name", res.data.name);
-      setToken(res.data.access_token);
+      localStorage.setItem("user_type", res.data.user_type)
+      setToken(res.data.access_token)
+      if (res.data.user_type === "Agent") {
+        localStorage.setItem("agent_commission_percentage", res.data.data.agent_commission.percentage)
+        localStorage.setItem("agent_limit", res.data.data.agent_limit.limit)
+      }
     } else {
       setError(res.data.message);
     }
@@ -189,79 +236,80 @@ const ConfirmHotelBooking = () => {
   );
 
   return (
-    <div className="bg-stone-100 layout-pb-md bg-light-2 py-20">
-      <section className="container">
-        <div className="text-xl font-bold mb-3">Complete your booking</div>
-        <div className="row">
-          <div className="col-md-8 col-lg-8">
-            <div className="bg-white shadow-lg rounded p-4 bookingdetails">
-              <div className="mb-2"><h4>{option?.ris[0]?.rt}</h4></div>
-              <div>{option?.ris[0]?.des}</div>
-              <div>{option?.ris[0]?.fcs?.map(a => <div>{a}</div>)}</div>
-              <div className="nowrap bookinghotelimg">{option?.ris[0]?.imgs?.map(a => <img src={a.url} alt="" />)}</div>
-            </div>
-            {token ? (
-              <div className="bg-white shadow-lg rounded mt-3">
-                <div className="p-4">
-                  <h5 className="text-xl font-bold">Details</h5>
-                </div>
-                <div className="border-t p-4">
-                  {/* <div className="text-gray-900 font-medium text-lg mb-3">
+    <>
+      <div className="bg-stone-100 layout-pb-md bg-light-2 py-20">
+        <section className="container">
+          <div className="text-xl font-bold mb-3">Complete your booking</div>
+          <div className="row">
+            <div className="col-md-8 col-lg-8">
+              <div className="bg-white shadow-lg rounded p-4 bookingdetails">
+                <div className="mb-2"><h4>{option?.ris[0]?.rt}</h4></div>
+                <div>{option?.ris[0]?.des}</div>
+                <div>{option?.ris[0]?.fcs?.map(a => <div>{a}</div>)}</div>
+                <div className="nowrap bookinghotelimg">{option?.ris[0]?.imgs?.map(a => <img src={a.url} alt="" />)}</div>
+              </div>
+              {token ? (
+                <div className="bg-white shadow-lg rounded mt-3">
+                  <div className="p-4">
+                    <h5 className="text-xl font-bold">Details</h5>
+                  </div>
+                  <div className="border-t p-4">
+                    {/* <div className="text-gray-900 font-medium text-lg mb-3">
                     Booking details will be sent to
                   </div> */}
-                  <div className="space-y-4 md:space-y-6" action="#">
+                    <div className="space-y-4 md:space-y-6" action="#">
 
-                    {Array(info?.adults).fill().map((_, i) => {
-                      return <>
-                        <div>Person {i + 1}</div>
-                        <div className="md:grid lg:grid grid-cols-3 gap-4">
-                          <div>
-                            <label>First Name</label>
-                            <input
-                              type="text"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              value={travellerInfo[i]?.fN}
-                              onChange={(e) => setTravellerInfo(tinfo => {
-                                const newtinfo = [...tinfo]
-                                newtinfo[i].fN = e.target.value
-                                return newtinfo
-                              })}
-                            />
-                          </div>
-                          <div>
-                            <label>Last Name</label>
-                            <input
-                              type="text"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              value={travellerInfo[i]?.lN}
-                              onChange={(e) => setTravellerInfo(tinfo => {
-                                const newtinfo = [...tinfo]
-                                newtinfo[i].lN = e.target.value
-                                return newtinfo
-                              })}
-                            />
-                          </div>
-                          {option?.ipr && (
+                      {Array(info?.adults).fill().map((_, i) => {
+                        return <>
+                          <div>Person {i + 1}</div>
+                          <div className="md:grid lg:grid grid-cols-3 gap-4">
                             <div>
-                              <label>PAN</label>
+                              <label>First Name</label>
                               <input
                                 type="text"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                value={travellerInfo[i]?.pan}
-                                onChange={(e) => {
-                                  setTravellerInfo(tinfo => {
-                                    const newtinfo = [...tinfo]
-                                    newtinfo[i].pan = e.target.value
-                                    return newtinfo
-                                  });
-
-                                  regex.test(e.target.value) ? setPanError(true) : setPanError(false)
-                                }}
+                                value={travellerInfo[i]?.fN}
+                                onChange={(e) => setTravellerInfo(tinfo => {
+                                  const newtinfo = [...tinfo]
+                                  newtinfo[i].fN = e.target.value
+                                  return newtinfo
+                                })}
                               />
-                              {!panError ? <div style={{ color: "red" }}>Please enter a valid pan</div> : null}
                             </div>
-                          )}
-                          {/* {option?.ipm && (
+                            <div>
+                              <label>Last Name</label>
+                              <input
+                                type="text"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                value={travellerInfo[i]?.lN}
+                                onChange={(e) => setTravellerInfo(tinfo => {
+                                  const newtinfo = [...tinfo]
+                                  newtinfo[i].lN = e.target.value
+                                  return newtinfo
+                                })}
+                              />
+                            </div>
+                            {option?.ipr && (
+                              <div>
+                                <label>PAN</label>
+                                <input
+                                  type="text"
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  value={travellerInfo[i]?.pan}
+                                  onChange={(e) => {
+                                    setTravellerInfo(tinfo => {
+                                      const newtinfo = [...tinfo]
+                                      newtinfo[i].pan = e.target.value
+                                      return newtinfo
+                                    });
+
+                                    regex.test(e.target.value) ? setPanError(true) : setPanError(false)
+                                  }}
+                                />
+                                {!panError ? <div style={{ color: "red" }}>Please enter a valid pan</div> : null}
+                              </div>
+                            )}
+                            {/* {option?.ipm && (
                             <div>
                               <label>Passport Number</label>
                               <input
@@ -272,160 +320,182 @@ const ConfirmHotelBooking = () => {
                               />
                             </div>
                           )} */}
-                          <div className="lg:my-0 md:my-0">
-                            <label
-                              htmlFor="Mobile-number"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Mobile No
-                            </label>
-                            <input
-                              type="number"
-                              name="name"
-                              id="Mobile-number"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              value={mobile}
-                              onChange={(e) => setMobile(e.target.value)}
-                            />
+                            <div className="lg:my-0 md:my-0">
+                              <label
+                                htmlFor="Mobile-number"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                Mobile No
+                              </label>
+                              <input
+                                type="number"
+                                name="name"
+                                id="Mobile-number"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                value={mobile}
+                                onChange={(e) => setMobile(e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="email"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                Your email
+                              </label>
+                              <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Email ID"
+                                required
+                                value={travelEmail}
+                                onChange={(e) => setTravelEmail(e.target.value)}
+                              />
+                            </div>
                           </div>
-                          <div>
-                            <label
-                              htmlFor="email"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Your email
-                            </label>
-                            <input
-                              type="email"
-                              name="email"
-                              id="email"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              placeholder="Email ID"
-                              required
-                              value={travelEmail}
-                              onChange={(e) => setTravelEmail(e.target.value)}
-                            />
-                          </div>
-                        </div>
-                      </>
-                    })}
-                    {user_type == "Normal User" && panError ?
-                      <button
-                        className="btn btn-primary"
-                        onClick={handlePayment}
-                      >
-                        CONTINUE
-                      </button> : null
-                    }
-                    {
-                      totalAmount <= agentLimit && panError ?
+                        </>
+                      })}
+                      {user_type == "Normal User" && panError ?
                         <button
-                          // disabled={totalAmount < agentLimit && !panError ? true : false}
                           className="btn btn-primary"
-                          onClick={handlePayment}
+                          onClick={() => { handleShow(); }}
                         >
                           CONTINUE
-                        </button> : (totalAmount > agentLimit && agentLimit) ? <div style={{ color: "red" }}> Agent Limit is not sufficient for this booking</div> : null
+                        </button> : null
+                      }
+                      {
+                        totalAmount <= agentLimit && panError ?
+                          <button
+                            // disabled={totalAmount < agentLimit && !panError ? true : false}
+                            className="btn btn-primary"
+                            onClick={() => { handleShow(); }}
+                          >
+                            CONTINUE
+                          </button> : (totalAmount > agentLimit && agentLimit) ? <div style={{ color: "red" }}> Agent Limit is not sufficient for this booking</div> : null
 
-                    }
+                      }
 
-                  </div>
-                  {/* <PaymentForm /> */}
-                </div>
-              </div>
-            ) : (
-              <div className="bg-white shadow-lg rounded mt-3">
-                <div className="p-4">
-                  <h5 className="text-xl font-bold">Traveller Details</h5>
-                </div>
-                <div className="border-t p-4">
-                  <div className="row y-gap-20">
-                    <div className="col-12">
-                      {/* <h1 className="text-22 fw-500">Welcome back</h1> */}
-                      <p className="mt-10">
-                        Please login to continue hotel booking
-                      </p>
                     </div>
-                    {error && <div className="alert alert-danger">{error}</div>}
-                    <div className="col-12">
-                      <div className="form-input ">
-                        <input
-                          type="text"
-                          required
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <label className="lh-1 text-14 text-light-1">
-                          Email
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-input ">
-                        <input
-                          type="password"
-                          required
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <label className="lh-1 text-14 text-light-1">
-                          Password
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <a
-                        href="#"
-                        className="text-14 fw-500 text-blue-1 underline"
-                      >
-                        Forgot your password?
-                      </a>
-                    </div>
-                    <div to="/Register" className="text-blue-1">
-                      Or sign up for a free
-                    </div>
-                    <div className="col-12">
-                      <div
-                        className="button py-20 -dark-1 bg-blue-1 text-white"
-                        onClick={onSignIn}
-                      >
-                        Sign In
-                      </div>
-                    </div>
+                    {/* <PaymentForm /> */}
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-          <div className="col-md-4 col-lg-4">
-            <div className="bg-white p-4 shadow-lg rounded">
-              <div className="font-bold text-gray-900">Fare Summary</div>
-              <h6 className="text-base font-medium text-gray-900 mt-3 mb-1">
-                Base Fare
-              </h6>
-              <div className="flex justify-between text-gray-600 text-sm">
-                <p></p>
-                <p>₹ Price BF</p>
-              </div>
+              ) : (
+                <div className="bg-white shadow-lg rounded mt-3">
+                  <div className="p-4">
+                    <h5 className="text-xl font-bold">Traveller Details</h5>
+                  </div>
+                  <div className="border-t p-4">
+                    <div className="row y-gap-20">
+                      <div className="col-12">
+                        {/* <h1 className="text-22 fw-500">Welcome back</h1> */}
+                        <p className="mt-10">
+                          Please login to continue hotel booking
+                        </p>
+                      </div>
+                      {error && <div className="alert alert-danger">{error}</div>}
+                      <div className="col-12">
+                        <ButtonGroup>
+                          <Button className={`${!agentLogin ? "bg-blue-1" : "bg-dark-1"} py-3 border-0`} onClick={() => setAgentLogin(false)} active={!agentLogin}>User</Button>
+                          <Button className={`${agentLogin ? "bg-blue-1" : "bg-dark-1"} py-3 border-0`} onClick={() => setAgentLogin(true)} active={agentLogin}>Agent</Button>
+                        </ButtonGroup>
+                      </div>
+                      <div className="col-12">
+                        <div className="form-input ">
+                          <input
+                            type="text"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                          />
+                          <label className="lh-1 text-14 text-light-1">
+                            Email
+                          </label>
+                        </div>
+                      </div>
 
-              <div className="border-t py-2.5 mt-3">
-                <h6 className="text-base font-medium text-gray-900">
-                  Other Services
+                      <div className="col-12">
+                        <div className="form-input ">
+                          <input
+                            type="password"
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                          <label className="lh-1 text-14 text-light-1">
+                            Password
+                          </label>
+                        </div>
+                      </div>
+                      <div className="col-12">
+                        <a
+                          href="#"
+                          className="text-14 fw-500 text-blue-1 underline"
+                        >
+                          Forgot your password?
+                        </a>
+                      </div>
+                      <div to="/Register" className="text-blue-1">
+                        Or sign up for a free
+                      </div>
+                      <div className="col-12">
+                        <div
+                          className="button py-20 -dark-1 bg-blue-1 text-white"
+                          onClick={onSignIn}
+                        >
+                          Sign In
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="col-md-4 col-lg-4">
+              <div className="bg-white p-4 shadow-lg rounded">
+                <div className="font-bold text-gray-900">Fare Summary</div>
+                <h6 className="text-base font-medium text-gray-900 mt-3 mb-1">
+                  Base Fare
                 </h6>
-                {/* <div className="flex justify-between text-gray-600 text-sm">
+                <div className="flex justify-between text-gray-600 text-sm">
+                  <p></p>
+                  <p>₹ Price BF</p>
+                </div>
+
+                <div className="border-t py-2.5 mt-3">
+                  <h6 className="text-base font-medium text-gray-900">
+                    Other Services
+                  </h6>
+                  {/* <div className="flex justify-between text-gray-600 text-sm">
                   <p>Zero Cancellation</p>
                   <p>₹ 1,598</p>
                 </div> */}
-              </div>
-              <div className="flex justify-between text-black font-bold pt-2 text-base border-t-2 border-gray-400">
-                <p>Total Amount</p>
-                <p>₹ {totalAmount}</p>
+                </div>
+                <div className="flex justify-between text-black font-bold pt-2 text-base border-t-2 border-gray-400">
+                  <p>Total Amount</p>
+                  <p>₹ {totalAmount}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Payment Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure to make payment!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            No
+          </Button>
+          <Button variant="primary" onClick={() => { handleClose2() }}>
+            Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
