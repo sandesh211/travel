@@ -1,11 +1,10 @@
 import axios from "axios";
-import moment from "moment";
-import { ApiUrl, ApiKey, APIBaseURL } from "../config/Config";
+import { APIBaseURL } from "../config/Config";
 
-const headers = {
-  "Content-Type": "application/json ",
-  apikey: ApiKey,
-};
+// const headers = {
+//   "Content-Type": "application/json ",
+//   apikey: ApiKey,
+// };
 
 export const AuthService = {
   login: async function (email, password) {

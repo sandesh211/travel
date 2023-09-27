@@ -1,6 +1,5 @@
 import axios from "axios";
-import moment from "moment";
-import { ApiUrl, ApiKey, APIBaseURL, APIBaseURLLocal } from "../config/Config";
+import { ApiKey, APIBaseURLLocal } from "../config/Config";
 
 const headers = {
   "Content-Type": "application/json",

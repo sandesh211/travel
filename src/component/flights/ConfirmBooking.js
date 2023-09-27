@@ -586,11 +586,38 @@ const ConfirmBooking = () => {
           <Modal.Title>Payment Confirmation</Modal.Title>
         </Modal.Header>
         <Modal.Body>Are you sure to make payment!</Modal.Body>
+        <Modal.Body>
+          <strong>Mobile No:</strong>
+          {mobile}
+        </Modal.Body>
+        <Modal.Body>
+          {" "}
+          <strong>Email:</strong>
+          {travelEmail}
+        </Modal.Body>
+        <div style={{ display: "flex" }}>
+          {travellerInfo.map((info, i) => (
+            <div key={i}>
+              <Modal.Body>
+                <strong>First Name {i + 1}:</strong> {info.fN}
+              </Modal.Body>
+              <Modal.Body>
+                <strong> Last Name {i + 1}:</strong> {info.lN}
+              </Modal.Body>
+            </div>
+          ))}
+        </div>
+
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             No
           </Button>
-          <Button variant="primary" onClick={() => { handleClose2() }}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleClose2();
+            }}
+          >
             Yes
           </Button>
         </Modal.Footer>
